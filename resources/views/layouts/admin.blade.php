@@ -16,10 +16,16 @@
                 <a href="{{ route('admin.users.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5">Участники</a>
                 <a href="{{ route('admin.promocodes.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5">Промокоды</a>
                 <a href="{{ route('admin.referrals.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5">Рефералы</a>
+                <a href="{{ route('admin.lessons.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5">Уроки (видео)</a>
                 <a href="{{ route('dashboard') }}" class="mt-6 rounded-lg px-3 py-2 text-[#869274] hover:bg-white/5">← Кабинет</a>
             </nav>
         </aside>
         <main class="flex-1 p-8">
+            @unless (request()->routeIs('admin.dashboard'))
+                <nav class="mb-6 text-sm text-white/60" aria-label="Навигация в админке">
+                    <a href="{{ route('admin.dashboard') }}" class="text-[#869274] hover:underline">← К обзору админки</a>
+                </nav>
+            @endunless
             @yield('content')
         </main>
     </div>

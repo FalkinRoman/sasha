@@ -7,7 +7,6 @@ use App\Models\PromoCode;
 use App\Models\Tariff;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,13 +14,25 @@ class DatabaseSeeder extends Seeder
     {
         User::query()->where('email', 'test@example.com')->delete();
 
-        User::query()->create([
-            'name' => 'Администратор',
-            'email' => 'admin@prostoyoga.ru',
-            'password' => Hash::make('password'),
-            'is_admin' => true,
-            'referral_code' => 'PROSTOADM',
-        ]);
+        User::query()->updateOrCreate(
+            ['email' => 'admin@prostoyoga.ru'],
+            [
+                'name' => 'Администратор',
+                'password' => 'password',
+                'is_admin' => true,
+                'referral_code' => 'PROSTOADM',
+            ]
+        );
+
+        User::query()->updateOrCreate(
+            ['email' => 'user@prostoyoga.ru'],
+            [
+                'name' => 'Обычный пользователь',
+                'password' => 'password',
+                'is_admin' => false,
+                'referral_code' => 'PROSTOUSR',
+            ]
+        );
 
         Tariff::query()->insert([
             [

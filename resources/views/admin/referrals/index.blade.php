@@ -3,8 +3,33 @@
 @section('title', 'Реферальные начисления')
 
 @section('content')
-    <h1 class="text-2xl font-semibold text-white">Реферальные начисления</h1>
-    <p class="mt-2 text-sm text-white/50">10% от суммы покупки приглашённого (настраивается в CoursePurchaseService).</p>
+    <h1 class="text-2xl font-semibold text-white">Реферальная программа</h1>
+    <p class="mt-2 text-sm text-white/50">Начисления: доля от покупки приглашённого (логика в CoursePurchaseService).</p>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p class="text-xs uppercase text-white/50">По реф. пришло</p>
+            <p class="mt-1 text-xl font-semibold">{{ $referredUsersCount }}</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p class="text-xs uppercase text-white/50">Рефереров</p>
+            <p class="mt-1 text-xl font-semibold">{{ $referrersWhoInvitedCount }}</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p class="text-xs uppercase text-white/50">Записей начислений</p>
+            <p class="mt-1 text-xl font-semibold">{{ $recordsTotal }}</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p class="text-xs uppercase text-white/50">К выплате ₽</p>
+            <p class="mt-1 text-xl font-semibold text-amber-200">{{ number_format($pendingSumRub, 0, ',', ' ') }}</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p class="text-xs uppercase text-white/50">Выплачено ₽</p>
+            <p class="mt-1 text-xl font-semibold text-emerald-200/90">{{ number_format($paidSumRub, 0, ',', ' ') }}</p>
+        </div>
+    </div>
+
+    <h2 class="mt-10 text-lg font-semibold text-white">Список начислений</h2>
     @if (session('ok'))
         <p class="mt-4 text-sm text-emerald-400">{{ session('ok') }}</p>
     @endif

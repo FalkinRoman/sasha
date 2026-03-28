@@ -4,12 +4,18 @@
 
 @section('content')
     <div class="mx-auto max-w-lg">
-        <h1 class="text-2xl font-semibold text-[#2d312d]">{{ $tariff->name }}</h1>
-        <p class="mt-2 text-[#7a837a]">{{ $tariff->description }}</p>
-        <p class="mt-6 text-3xl font-semibold">{{ number_format($tariff->price_rub, 0, ',', ' ') }} ₽</p>
-        <p class="text-sm text-[#7a837a]">Доступ на {{ $tariff->duration_days }} дней</p>
+        <div data-pv-reveal class="pv-reveal pv-reveal--up">
+            <h1 class="text-2xl font-semibold text-[#2d312d]">{{ $tariff->name }}</h1>
+        </div>
+        <div data-pv-reveal class="pv-reveal pv-reveal--fade mt-2" style="--rv-delay: 0.06s">
+            <p class="text-[#7a837a]">{{ $tariff->description }}</p>
+        </div>
+        <div data-pv-reveal class="pv-reveal pv-reveal--up mt-6" style="--rv-delay: 0.1s">
+            <p class="text-3xl font-semibold">{{ number_format($tariff->price_rub, 0, ',', ' ') }} ₽</p>
+            <p class="text-sm text-[#7a837a]">Доступ на {{ $tariff->duration_days }} дней</p>
+        </div>
 
-        <ul class="mt-6 space-y-2 text-sm text-[#2d312d]">
+        <ul data-pv-reveal class="pv-reveal pv-reveal--fade mt-6 space-y-2 text-sm text-[#2d312d]" style="--rv-delay: 0.12s">
             <li>• Все 8 видеоуроков</li>
             @if ($tariff->includes_telegram)
                 <li>• Закрытый чат в Telegram</li>
@@ -31,6 +37,10 @@
             @endif
         </ul>
 
+        @if (session('flash'))
+            <div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">{{ session('flash') }}</div>
+        @endif
+
         <form action="{{ route('checkout.store', $tariff) }}" method="post" class="mt-10 space-y-6">
             @csrf
             <div>
@@ -41,10 +51,20 @@
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
-            <button type="submit" class="w-full rounded-full bg-[#2d312d] py-3.5 text-sm font-semibold text-[#fffffa] hover:bg-black/85">
-                Оплатить (демо — доступ сразу)
+            <button type="submit" class="pv-btn-dark w-full py-3.5 text-sm font-semibold">
+                @if ($yookassaConfigured ?? false)
+                    Оплатить в ЮKassa
+                @else
+                    Получить доступ
+                @endif
             </button>
         </form>
-        <p class="mt-6 text-center text-xs text-[#7a837a]">Реальную оплату подключим через платёжный агрегатор.</p>
+        <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-6 text-center text-xs text-[#7a837a]" style="--rv-delay: 0.1s">
+            @if ($yookassaConfigured ?? false)
+                Платёж проходит в ЮKassa. После успешной оплаты доступ откроется автоматически.
+            @else
+                Без ключей ЮKassa в .env доступ выдаётся сразу (удобно для локальной разработки).
+            @endif
+        </p>
     </div>
 @endsection

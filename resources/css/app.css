@@ -31,3 +31,371 @@
         radial-gradient(800px 400px at 100% 0%, rgba(196, 164, 164, 0.08), transparent),
         #fffffa;
 }
+
+/*
+ * ProstoYoga motion: очень мягкие кривые (как йога-выдох), длиннее duration, меньше сдвиг.
+ */
+@layer components {
+    /* Тарифы — лендинг: лёгкий подъём */
+    .pv-tariff-card {
+        @apply relative flex flex-col rounded-2xl border border-[#cfd4c9] bg-[#fffffa] p-6 shadow-[0_6px_28px_-14px_rgba(45,49,45,0.08)]
+            transition-[transform,box-shadow,border-color] duration-[950ms] ease-[cubic-bezier(0.25,0.85,0.35,1)]
+            hover:-translate-y-[2px] hover:border-[#869274]/42 hover:shadow-[0_16px_44px_-24px_rgba(45,49,45,0.11)];
+    }
+
+    .pv-tariff-card--featured {
+        @apply border-2 border-[#869274]/42 shadow-[0_12px_40px_-18px_rgba(134,146,116,0.24)]
+            hover:-translate-y-[2px] hover:border-[#869274]/58 hover:shadow-[0_20px_50px_-22px_rgba(134,146,116,0.2)];
+    }
+
+    /* Тарифы — кабинет: без «прыжка», только тень и бордер (мягче) */
+    .pv-tariff-card-cabinet {
+        @apply relative flex flex-col rounded-2xl border border-[#cfd4c9] bg-[#fffffa] p-6 shadow-[0_6px_28px_-14px_rgba(45,49,45,0.07)]
+            transition-[box-shadow,border-color] duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)];
+    }
+
+    .pv-tariff-card-cabinet:hover {
+        @apply border-[#869274]/38 shadow-[0_22px_56px_-28px_rgba(45,49,45,0.13)];
+    }
+
+    .pv-tariff-card-cabinet--featured {
+        @apply border-2 border-[#869274]/40 shadow-[0_12px_44px_-20px_rgba(134,146,116,0.2)];
+    }
+
+    .pv-tariff-card-cabinet--featured:hover {
+        @apply border-[#869274]/55 shadow-[0_26px_60px_-24px_rgba(134,146,116,0.26)];
+    }
+
+    .pv-btn-dark {
+        @apply inline-flex justify-center rounded-full bg-[#2d312d] text-center text-sm font-medium text-[#fffffa]
+            transition-[transform,box-shadow,background-color] duration-[700ms] ease-[cubic-bezier(0.33,1,0.68,1)]
+            hover:-translate-y-px hover:bg-[#1a1d1a] hover:shadow-[0_10px_28px_-12px_rgba(0,0,0,0.28)]
+            active:translate-y-0 active:shadow-sm active:duration-150;
+    }
+
+    .pv-btn-olive {
+        @apply inline-flex justify-center rounded-full bg-[#869274] text-center text-sm font-medium text-[#fffffa]
+            transition-[transform,box-shadow,opacity] duration-[700ms] ease-[cubic-bezier(0.33,1,0.68,1)]
+            hover:-translate-y-px hover:opacity-95 hover:shadow-[0_10px_28px_-12px_rgba(134,146,116,0.35)]
+            active:translate-y-0 active:duration-150;
+    }
+
+    /* Строка урока: сдвиг вбок в тени — отличается от карточек */
+    .pv-lesson-row {
+        @apply flex gap-4 overflow-hidden rounded-2xl border border-[#cfd4c9] bg-[#fffffa] p-3 pr-4 shadow-[0_4px_20px_-12px_rgba(45,49,45,0.06)]
+            transition-[transform,box-shadow,border-color] duration-[900ms] ease-[cubic-bezier(0.33,1,0.68,1)] md:gap-5 md:p-4
+            hover:translate-x-[2px] hover:border-[#869274]/35 hover:shadow-[0_12px_36px_-16px_rgba(45,49,45,0.1)];
+    }
+
+    /* Карточка «доступ к курсу» — в одном стиле с профилем / тарифами (без фото-фона) */
+    .pv-cabinet-access-card {
+        @apply rounded-2xl border border-[#cfd4c9] bg-gradient-to-br from-[#f6f8f1] to-[#fffffa] p-6 shadow-[0_6px_28px_-14px_rgba(45,49,45,0.1)] ring-1 ring-[#869274]/20 md:p-8;
+    }
+
+    .pv-cabinet-hero-guest {
+        @apply relative overflow-hidden rounded-2xl border border-dashed border-[#cfd4c9] bg-[#f9faf6] shadow-[0_8px_32px_-20px_rgba(45,49,45,0.08)];
+    }
+
+    /* Карточки «О курсе»: лёгкое масштабирование — другой характер, чем у тарифов */
+    .pv-spot-card {
+        @apply rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-7 shadow-sm
+            transition-[transform,box-shadow,border-color] duration-[1000ms] ease-[cubic-bezier(0.25,0.85,0.35,1)]
+            hover:scale-[1.015] hover:border-[#869274]/35 hover:shadow-[0_12px_40px_-18px_rgba(45,49,45,0.09)];
+    }
+
+    .pv-sidebar-link {
+        @apply rounded-lg px-3 py-2 transition-[background-color,color] duration-[500ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:bg-[#f6f8f1];
+    }
+
+    .pv-sidebar-link--active {
+        @apply bg-[#eaf3dd] font-medium;
+    }
+
+    .pv-nav-marketing {
+        @apply transition-colors duration-[500ms] ease-out hover:text-[#2d312d];
+    }
+
+    .pv-video-frame {
+        @apply relative overflow-hidden rounded-2xl bg-[#eef0ea] shadow-[0_12px_40px_-22px_rgba(45,49,45,0.14)];
+    }
+
+    /* Вход / регистрация: одна сетка, без «пляшущих» инпутов */
+    .pv-auth-card {
+        @apply rounded-2xl bg-white p-6 shadow-[0_4px_32px_-8px_rgba(26,29,26,0.12)] ring-1 ring-[#2d312d]/[0.06] sm:p-8;
+    }
+
+    .pv-auth-form {
+        @apply flex min-w-0 flex-col gap-5;
+    }
+
+    .pv-auth-field {
+        @apply flex min-w-0 flex-col gap-1.5;
+    }
+
+    .pv-auth-label {
+        @apply text-sm font-medium leading-snug text-[#2d312d];
+    }
+
+    .pv-auth-input {
+        @apply box-border min-h-11 w-full min-w-0 rounded-xl border border-[#dcdddb] bg-[#fafaf8] px-4 py-2.5 text-sm leading-normal text-[#2d312d] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-[color,background-color,border-color,box-shadow] placeholder:text-[#869274]/55 focus:border-[#869274] focus:outline-none focus:ring-2 focus:ring-[#869274]/25;
+    }
+
+    .pv-auth-check-row {
+        @apply flex items-start gap-3 text-sm leading-snug text-[#7a837a];
+    }
+
+    .pv-auth-check {
+        @apply mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-[#dcdddb] text-[#869274] focus:outline-none focus:ring-2 focus:ring-[#869274]/30 focus:ring-offset-0;
+    }
+
+    .pv-auth-error {
+        @apply text-sm leading-snug text-red-600;
+    }
+
+    .pv-auth-errors {
+        @apply rounded-xl border border-red-100 bg-red-50/90 px-3 py-2.5 text-red-800;
+    }
+
+    .pv-auth-submit-dark {
+        @apply box-border flex min-h-11 w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-[#2d312d] px-4 text-sm font-semibold text-[#fffffa] transition-colors hover:bg-[#1e211e] focus:outline-none focus:ring-2 focus:ring-[#2d312d]/30 focus:ring-offset-2;
+    }
+
+    .pv-auth-submit-olive {
+        @apply box-border flex min-h-11 w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-[#869274] px-4 text-sm font-semibold text-[#fffffa] transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-[#869274]/35 focus:ring-offset-2;
+    }
+
+    /* Play: декоративный; без тёмной «рамки» — лёгкий градиент для читаемости кнопки */
+    .pv-video-playhint {
+        @apply pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-gradient-to-t from-[#2d312d]/20 via-transparent to-transparent;
+    }
+
+    .pv-video-playhint-icon {
+        @apply flex h-14 w-14 items-center justify-center rounded-full bg-white/93 text-[#2d312d] shadow-[0_8px_32px_rgba(0,0,0,0.35)] ring-2 ring-white/50;
+        opacity: 0;
+        transform: scale(0.88);
+    }
+
+    .pv-video-reveal.is-revealed .pv-video-playhint-icon {
+        opacity: 1;
+        transform: scale(1);
+        transition:
+            opacity 0.38s cubic-bezier(0.33, 1, 0.68, 1),
+            transform 0.38s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    /* Появление по скроллу */
+    .pv-reveal {
+        opacity: 0;
+        transition:
+            opacity 0.8s cubic-bezier(0.28, 1, 0.45, 1),
+            transform 0.8s cubic-bezier(0.28, 1, 0.45, 1);
+        transition-delay: var(--rv-delay, 0s);
+        will-change: opacity, transform;
+    }
+
+    .pv-reveal--up {
+        transform: translate3d(0, 1.35rem, 0);
+    }
+
+    .pv-reveal--fade {
+        transform: none;
+    }
+
+    .pv-reveal--left {
+        transform: translate3d(1.5rem, 0, 0);
+    }
+
+    .pv-reveal--right {
+        transform: translate3d(-1.35rem, 0, 0);
+    }
+
+    .pv-reveal.is-revealed {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .pv-reveal--fade.is-revealed {
+        transform: none;
+    }
+
+    /* Личный кабинет: короткий лёгкий вход — не тот же «драматичный» ход, что на лендинге */
+    .pv-reveal.pv-reveal--cabinet {
+        transition: opacity 0.28s ease-out, transform 0.28s ease-out;
+        transition-delay: 0s;
+    }
+
+    .pv-reveal.pv-reveal--cabinet.pv-reveal--up:not(.is-revealed) {
+        transform: translate3d(0, 8px, 0);
+    }
+
+    .pv-reveal.pv-reveal--cabinet.is-revealed {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .pv-link-muted {
+        @apply text-[#869274] underline underline-offset-2 transition-colors duration-[500ms] hover:text-[#2d312d];
+    }
+
+    .pv-footer-link {
+        @apply text-[#c8ccc4] transition-[color,transform] duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:translate-x-0.5 hover:text-white;
+    }
+
+    .pv-social-icon {
+        @apply flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#b8c4ae] transition-all duration-[650ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:border-[#869274]/35 hover:bg-[#869274]/15 hover:text-[#eaf3dd];
+    }
+
+    /* Появление на главной: лёгкое всплытие */
+    @keyframes pv-soft-rise {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 1.125rem, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .pv-soft-in {
+        animation: pv-soft-rise 1.25s cubic-bezier(0.33, 1, 0.68, 1) both;
+    }
+
+    .pv-soft-in-delay-1 {
+        animation-delay: 0.1s;
+    }
+    .pv-soft-in-delay-2 {
+        animation-delay: 0.2s;
+    }
+    .pv-soft-in-delay-3 {
+        animation-delay: 0.32s;
+    }
+    .pv-soft-in-delay-4 {
+        animation-delay: 0.44s;
+    }
+    .pv-soft-in-delay-5 {
+        animation-delay: 0.56s;
+    }
+
+    @keyframes pv-soft-fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .pv-soft-fade {
+        animation: pv-soft-fade-in 1.35s cubic-bezier(0.33, 1, 0.68, 1) both;
+    }
+
+    @keyframes pv-soft-from-left {
+        from {
+            opacity: 0;
+            transform: translate3d(1.35rem, 0, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .pv-soft-from-left {
+        animation: pv-soft-from-left 1.25s cubic-bezier(0.28, 1, 0.4, 1) both;
+    }
+
+    @keyframes pv-soft-from-right {
+        from {
+            opacity: 0;
+            transform: translate3d(-1.1rem, 0, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    .pv-soft-from-right {
+        animation: pv-soft-from-right 1.25s cubic-bezier(0.28, 1, 0.4, 1) both;
+    }
+
+    /* Лёгкий «пульс» фона героя (очень тонко) */
+    @keyframes pv-hero-mist {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.92;
+        }
+    }
+
+    .pv-hero-breathe .pv-hero-mist-layer {
+        animation: pv-hero-mist 10s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+}
+
+/* Autofill WebKit — фон как у поля, без «кривого» жёлтого блока */
+.pv-auth-input:-webkit-autofill,
+.pv-auth-input:-webkit-autofill:hover,
+.pv-auth-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #2d312d;
+    box-shadow: 0 0 0 1000px #fafaf8 inset;
+    transition: background-color 99999s ease-out 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pv-tariff-card,
+    .pv-tariff-card--featured,
+    .pv-tariff-card-cabinet,
+    .pv-tariff-card-cabinet--featured,
+    .pv-lesson-row,
+    .pv-spot-card,
+    .pv-btn-dark,
+    .pv-btn-olive,
+    .pv-video-frame,
+    .pv-footer-link,
+    .pv-social-icon {
+        transition-duration: 0.01ms !important;
+        transform: none !important;
+    }
+
+    .pv-tariff-card:hover,
+    .pv-tariff-card--featured:hover,
+    .pv-tariff-card-cabinet:hover,
+    .pv-lesson-row:hover,
+    .pv-footer-link:hover {
+        transform: none !important;
+    }
+
+    .pv-btn-dark:hover,
+    .pv-btn-olive:hover {
+        transform: none !important;
+    }
+
+    .pv-soft-in,
+    .pv-soft-fade,
+    .pv-soft-from-left,
+    .pv-soft-from-right {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .pv-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .pv-video-reveal .pv-video-playhint-icon {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .pv-hero-breathe .pv-hero-mist-layer {
+        animation: none !important;
+    }
+}

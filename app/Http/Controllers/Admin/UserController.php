@@ -12,6 +12,14 @@ class UserController extends Controller
     {
         $users = User::query()
             ->withCount('purchases')
+            ->withCount([
+                'purchases as active_access_count' => function ($q): void {
+                    $q->where('status', 'paid')
+                        ->where(function ($q2): void {
+                            $q2->whereNull('expires_at')->orWhere('expires_at', '>', now());
+                        });
+                },
+            ])
             ->with('referrer:id,name,email')
             ->orderByDesc('id')
             ->paginate(20);

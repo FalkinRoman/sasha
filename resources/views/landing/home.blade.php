@@ -3,46 +3,27 @@
 @section('title', 'ProstoYoga — современная йога для жизни в движении')
 
 @section('content')
-    <header class="sticky top-0 z-40 w-full border-b border-[#ecece8]/80 bg-[#fffffa]/90 backdrop-blur-md">
-        <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12">
-            <a href="{{ route('home') }}" class="text-lg font-semibold tracking-tight text-[#2d312d] md:text-xl">
-                Prosto<span class="text-[#869274]">Yoga</span>
-            </a>
-            <nav class="hidden items-center gap-8 text-sm font-medium text-[#7a837a] md:flex">
-                <a href="#preview" class="hover:text-[#2d312d]">Превью</a>
-                <a href="#course" class="hover:text-[#2d312d]">О курсе</a>
-                <a href="#about" class="hover:text-[#2d312d]">Обо мне</a>
-                <a href="#tariffs" class="hover:text-[#2d312d]">Тарифы</a>
-            </nav>
-            <div class="flex items-center gap-2 text-sm">
-                @auth
-                    <a href="{{ route('dashboard') }}" class="rounded-full bg-[#2d312d] px-4 py-2 font-medium text-[#fffffa] hover:bg-black/80">Кабинет</a>
-                @else
-                    <a href="{{ route('login') }}" class="hidden px-3 py-2 text-[#7a837a] hover:text-[#2d312d] sm:inline">Вход</a>
-                    <a href="{{ route('register') }}" class="rounded-full bg-[#869274] px-4 py-2 font-medium text-[#fffffa] hover:opacity-95">Регистрация</a>
-                @endauth
-            </div>
-        </div>
-    </header>
+    @include('partials.marketing-header')
 
-    <section class="relative isolate w-full overflow-hidden">
-        <img src="{{ asset('images/figma/hero-bg.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover object-[center_25%]" width="1920" height="1080">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#1a1d1a]/92 via-[#2d312d]/65 to-transparent"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-[#1e211e]/80 via-transparent to-[#2d312d]/30"></div>
-        <div class="relative mx-auto flex min-h-[min(88vh,920px)] w-full max-w-[1440px] flex-col justify-end px-5 pb-16 pt-28 sm:px-8 md:justify-center md:pb-24 md:pt-32 lg:px-12">
+    <section class="pv-hero-breathe relative isolate w-full overflow-hidden">
+        <img src="{{ asset('images/figma/yoga-main3.png') }}" alt="" class="absolute inset-0 z-0 h-full w-full object-cover object-[center_30%]" width="1920" height="1080">
+        <div class="absolute inset-0 z-[1] bg-gradient-to-r from-[#1a1d1a]/92 via-[#2d312d]/65 to-transparent"></div>
+        <div class="absolute inset-0 z-[1] bg-gradient-to-t from-[#1e211e]/80 via-transparent to-[#2d312d]/30"></div>
+        <div class="pv-hero-mist-layer pointer-events-none absolute inset-0 z-[2] bg-gradient-to-br from-[#869274]/[0.07] via-transparent to-transparent opacity-90"></div>
+        <div class="relative z-10 mx-auto flex min-h-[min(88vh,920px)] w-full max-w-[1440px] flex-col justify-end px-5 pb-16 pt-28 sm:px-8 md:justify-center md:pb-24 md:pt-32 lg:px-12">
             <div class="max-w-2xl">
-                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#eaf3dd] drop-shadow-md">Онлайн-курс · 8 уроков</p>
-                <h1 class="mt-5 text-4xl font-semibold leading-[1.08] tracking-tight text-[#fffffa] drop-shadow-[0_2px_24px_rgba(0,0,0,0.45)] md:text-5xl lg:text-[3.5rem]">
+                <p class="pv-soft-in text-xs font-semibold uppercase tracking-[0.22em] text-[#eaf3dd] drop-shadow-md">Онлайн-курс · 8 уроков</p>
+                <h1 class="pv-soft-in pv-soft-in-delay-1 mt-5 text-4xl font-semibold leading-[1.08] tracking-tight text-[#fffffa] drop-shadow-[0_2px_24px_rgba(0,0,0,0.45)] md:text-5xl lg:text-[3.5rem]">
                     Современная йога для тех, кто живёт в ритме города
                 </h1>
-                <p class="mt-6 max-w-xl text-base leading-relaxed text-[#eef1e8] drop-shadow-md md:text-lg">
+                <p class="pv-soft-in pv-soft-in-delay-2 mt-6 max-w-xl text-base leading-relaxed text-[#eef1e8] drop-shadow-md md:text-lg">
                     ProstoYoga — это не про идеальные шпагаты. Это про живое тело, ясную голову и практику, которая встраивается в реальную жизнь: работу, дорогу, семью.
                 </p>
-                <div class="mt-10 flex flex-wrap gap-4">
-                    <a href="#tariffs" class="inline-flex rounded-full bg-[#fffffa] px-8 py-3.5 text-sm font-semibold text-[#2d312d] shadow-[0_8px_32px_rgba(0,0,0,0.35)] transition hover:brightness-95">
+                <div class="pv-soft-in pv-soft-in-delay-3 mt-10 flex flex-wrap gap-4">
+                    <a href="#tariffs" class="inline-flex rounded-full bg-[#fffffa] px-8 py-3.5 text-sm font-semibold text-[#2d312d] shadow-[0_8px_32px_rgba(0,0,0,0.35)] transition duration-[750ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:brightness-[0.98] hover:shadow-[0_14px_40px_rgba(0,0,0,0.38)]">
                         Выбрать формат
                     </a>
-                    <a href="{{ route('register') }}" class="inline-flex items-center rounded-full border border-white/50 bg-white/5 px-8 py-3.5 text-sm font-medium text-[#fffffa] backdrop-blur-sm hover:bg-white/15">
+                    <a href="{{ route('register') }}" class="inline-flex items-center rounded-full border border-white/50 bg-white/5 px-8 py-3.5 text-sm font-medium text-[#fffffa] backdrop-blur-sm transition duration-[750ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:bg-white/15">
                         Бесплатный урок после регистрации
                     </a>
                 </div>
@@ -53,29 +34,73 @@
     <section id="preview" class="scroll-mt-24 w-full border-b border-[#ecece8] bg-[#fffffa] py-20 md:py-28">
         <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
             <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                <div>
+                <div data-pv-reveal class="pv-reveal pv-reveal--fade max-w-2xl">
                     <p class="text-sm font-medium uppercase tracking-wider text-[#869274]">Превью</p>
                     <h2 class="mt-2 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl lg:text-[2.5rem]">Загляни внутрь курса</h2>
-                    <p class="mt-4 max-w-2xl text-lg text-[#5c655c]">Короткий фрагмент — стиль подачи, темп и атмосфера. Полный первый урок открывается бесплатно после регистрации.</p>
+                    <p class="mt-4 text-lg text-[#5c655c]">Короткий фрагмент — стиль подачи, темп и атмосфера. Полный первый урок открывается бесплатно после регистрации.</p>
                 </div>
             </div>
-            <div class="mt-12 aspect-video w-full overflow-hidden rounded-2xl bg-black shadow-[0_32px_90px_rgba(45,49,45,0.18)] ring-1 ring-black/5">
-                <iframe class="h-full w-full" src="https://www.youtube.com/embed/jfKfPfyJRdk" title="Превью ProstoYoga" allowfullscreen loading="lazy"></iframe>
+            <div
+                data-pv-reveal
+                class="pv-reveal pv-reveal--up pv-video-reveal relative mx-auto mt-12 w-full max-w-[56rem] overflow-hidden rounded-[1.35rem] p-4 shadow-[0_16px_48px_-28px_rgba(45,49,45,0.18)] sm:p-5 md:p-6"
+                style="--rv-delay: 0.1s"
+            >
+                <div class="relative z-10">
+                    {{-- Постер promo.png до клика: иначе iframe YouTube всегда чёрный и перекрывает подложку --}}
+                    <div class="pv-video-frame aspect-video w-full overflow-hidden rounded-xl">
+                        <iframe
+                            class="absolute inset-0 z-20 hidden h-full w-full"
+                            data-youtube-src="https://www.youtube.com/embed/jfKfPfyJRdk"
+                            src="about:blank"
+                            title="Превью ProstoYoga"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                        ></iframe>
+                        <button
+                            type="button"
+                            class="absolute inset-0 z-10 flex h-full w-full cursor-pointer items-stretch justify-stretch border-0 bg-transparent p-0"
+                            aria-label="Смотреть превью видео"
+                            data-youtube-poster-btn
+                        >
+                            <img
+                                src="{{ asset('images/figma/promo.png') }}"
+                                alt=""
+                                class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+                                width="1200"
+                                height="675"
+                            >
+                            <span class="pv-video-playhint">
+                                <span class="pv-video-playhint-icon">
+                                    <svg class="ml-1 h-7 w-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
             </div>
+            <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-5 text-center text-xs text-[#7a837a]" style="--rv-delay: 0.2s">
+                Формат 16:9 · смотри в полноэкранном режиме на планшете или ТВ
+            </p>
         </div>
     </section>
 
     <section id="course" class="scroll-mt-24 w-full bg-[#f9faf6] py-20 md:py-28">
         <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-            <h2 class="text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl lg:text-[2.5rem]">Что внутри курса</h2>
-            <p class="mt-5 max-w-3xl text-lg leading-relaxed text-[#5c655c]">8 последовательных занятий: от дыхания и осанки до цельного потока. Каждый урок — понятная структура, тайминг и ориентир по нагрузке.</p>
+            <div data-pv-reveal class="pv-reveal pv-reveal--right max-w-3xl">
+                <h2 class="text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl lg:text-[2.5rem]">Что внутри курса</h2>
+                <p class="mt-5 text-lg leading-relaxed text-[#5c655c]">8 последовательных занятий: от дыхания и осанки до цельного потока. Каждый урок — понятная структура, тайминг и ориентир по нагрузке.</p>
+            </div>
             <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
                 @foreach ([
                     ['n' => '01', 't' => 'Структура', 'd' => 'От простого к сложному: тело успевает адаптироваться без перегруза.'],
                     ['n' => '02', 't' => 'Современный формат', 'd' => 'Короткие блоки, удобно после работы. Можно заниматься дома с ковриком.'],
                     ['n' => '03', 't' => 'Ощущения, а не «нормы»', 'd' => 'Учимся слушать дыхание и границы тела — без давления «сделай как на картинке».'],
                 ] as $b)
-                    <div class="group rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-7 shadow-sm transition hover:border-[#869274]/40 hover:shadow-md">
+                    <div
+                        data-pv-reveal
+                        class="pv-spot-card pv-reveal pv-reveal--up group"
+                        style="--rv-delay: {{ 0.08 + $loop->index * 0.11 }}s"
+                    >
                         <span class="text-3xl font-light tabular-nums text-[#869274]/70">{{ $b['n'] }}</span>
                         <h3 class="mt-3 text-xl font-semibold text-[#2d312d]">{{ $b['t'] }}</h3>
                         <p class="mt-3 text-sm leading-relaxed text-[#5c655c]">{{ $b['d'] }}</p>
@@ -87,10 +112,14 @@
 
     <section id="about" class="scroll-mt-24 w-full border-t border-[#ecece8] bg-[#fffffa] py-20 md:py-28">
         <div class="mx-auto grid w-full max-w-[1440px] gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-12">
-            <div class="order-2 overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(45,49,45,0.12)] ring-1 ring-[#ecece8] lg:order-1">
-                <img src="{{ asset('images/figma/form-train.jpg') }}" alt="Практика" class="aspect-[4/3] h-full w-full object-cover lg:aspect-auto lg:min-h-[420px]" loading="lazy">
+            <div
+                data-pv-reveal
+                class="pv-reveal pv-reveal--left order-2 overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(45,49,45,0.12)] ring-1 ring-[#ecece8] transition duration-[900ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:shadow-[0_32px_70px_rgba(45,49,45,0.14)] hover:ring-[#869274]/20 lg:order-1"
+                style="--rv-delay: 0s"
+            >
+                <img src="{{ asset('images/figma/yoga-second.png') }}" alt="Практика" class="aspect-[4/3] h-full w-full object-cover lg:aspect-auto lg:min-h-[420px]" loading="lazy">
             </div>
-            <div class="order-1 lg:order-2">
+            <div data-pv-reveal class="pv-reveal pv-reveal--right order-1 lg:order-2" style="--rv-delay: 0.12s">
                 <p class="text-sm font-medium uppercase tracking-wider text-[#869274]">Позиционирование</p>
                 <h2 class="mt-2 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Йога для активных людей</h2>
                 <p class="mt-5 text-lg leading-relaxed text-[#5c655c]">
@@ -107,15 +136,21 @@
 
     <section id="tariffs" class="scroll-mt-24 w-full bg-gradient-to-b from-[#f6f8f1] to-[#fffffa] py-20 md:py-28">
         <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-            <h2 class="text-center text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Три формата доступа</h2>
-            <p class="mx-auto mt-5 max-w-2xl text-center text-lg text-[#5c655c]">Оплата — демо: сразу после «оплаты» открывается доступ в кабинете. Промокод можно ввести на шаге оформления.</p>
+            <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-2xl text-center">
+                <h2 class="text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Три формата доступа</h2>
+                <p class="mt-5 text-lg text-[#5c655c]">Оплата онлайн: после подтверждения оплаты доступ открывается в кабинете. Промокод можно ввести на шаге оформления.</p>
+            </div>
 
             <div class="mt-16 grid gap-8 lg:grid-cols-3 lg:gap-6 xl:gap-8">
                 @foreach ($tariffs as $tariff)
                     @php
                         $featured = $tariff->includes_personal_online;
                     @endphp
-                    <article class="flex flex-col rounded-2xl border bg-[#fffffa] p-8 shadow-[0_12px_48px_rgba(45,49,45,0.07)] transition hover:shadow-[0_20px_56px_rgba(45,49,45,0.1)] {{ $featured ? 'border-[#869274]/50 ring-2 ring-[#869274]/25 lg:scale-[1.02] lg:p-9' : 'border-[#dcdddb]' }}">
+                    <article
+                        data-pv-reveal
+                        class="pv-tariff-card pv-reveal pv-reveal--up p-8 {{ $featured ? 'pv-tariff-card--featured lg:p-9' : '' }}"
+                        style="--rv-delay: {{ $loop->index * 0.1 }}s"
+                    >
                         @if ($featured)
                             <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-[#869274]">С персональной поддержкой</p>
                         @endif
@@ -146,11 +181,11 @@
                             @endif
                         </ul>
                         @auth
-                            <a href="{{ route('checkout.show', $tariff) }}" class="mt-8 inline-flex justify-center rounded-full bg-[#2d312d] py-3.5 text-center text-sm font-medium text-[#fffffa] hover:bg-black/85">
-                                Купить (демо)
+                            <a href="{{ route('checkout.show', $tariff) }}" class="pv-btn-dark mt-8 py-3.5">
+                                Перейти к оплате
                             </a>
                         @else
-                            <a href="{{ route('register') }}" class="mt-8 inline-flex justify-center rounded-full bg-[#869274] py-3.5 text-center text-sm font-medium text-[#fffffa] hover:opacity-95">
+                            <a href="{{ route('register') }}" class="pv-btn-olive mt-8 py-3.5">
                                 Регистрация и покупка
                             </a>
                         @endauth
@@ -158,24 +193,8 @@
                 @endforeach
             </div>
 
-            <p class="mt-12 text-center text-xs text-[#7a837a]">Реферальная программа: поделись ссылкой с кодом после входа в кабинет — получай бонус с покупок приглашённых (начисление в админке).</p>
         </div>
     </section>
 
-    <footer class="w-full border-t border-[#ecece8] bg-[#1e211e] py-14 text-[#c8ccc4]">
-        <div class="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-5 sm:px-8 md:flex-row md:items-start md:justify-between lg:px-12">
-            <div>
-                <p class="text-lg font-semibold text-white">ProstoYoga</p>
-                <p class="mt-2 max-w-xs text-sm text-[#9aa396]">Современная йога онлайн. Не медицинские услуги. Демо-сайт для презентации продукта.</p>
-            </div>
-            <div class="flex flex-wrap gap-8 text-sm">
-                <a href="{{ route('login') }}" class="hover:text-white">Вход</a>
-                <a href="{{ route('register') }}" class="hover:text-white">Регистрация</a>
-                @auth
-                    <a href="{{ route('dashboard') }}" class="hover:text-white">Личный кабинет</a>
-                @endauth
-            </div>
-        </div>
-        <p class="mt-10 text-center text-xs text-[#6b7268]">© {{ date('Y') }} ProstoYoga</p>
-    </footer>
+    @include('partials.marketing-footer')
 @endsection

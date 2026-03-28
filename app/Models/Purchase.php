@@ -10,7 +10,7 @@ class Purchase extends Model
 {
     protected $fillable = [
         'user_id', 'tariff_id', 'promocode_id', 'price_rub', 'discount_rub',
-        'status', 'paid_at', 'expires_at',
+        'status', 'paid_at', 'expires_at', 'yookassa_payment_id',
     ];
 
     protected function casts(): array

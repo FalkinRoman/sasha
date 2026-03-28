@@ -13,6 +13,7 @@
                     <th class="px-4 py-3">Email</th>
                     <th class="px-4 py-3">Реф. код</th>
                     <th class="px-4 py-3">Пришёл от</th>
+                    <th class="px-4 py-3">Доступ</th>
                     <th class="px-4 py-3">Оплат</th>
                 </tr>
             </thead>
@@ -24,6 +25,13 @@
                         <td class="px-4 py-3">{{ $u->email }}</td>
                         <td class="px-4 py-3 font-mono text-xs">{{ $u->referral_code }}</td>
                         <td class="px-4 py-3 text-white/70">{{ $u->referrer?->email ?? '—' }}</td>
+                        <td class="px-4 py-3">
+                            @if ($u->active_access_count > 0)
+                                <span class="text-emerald-400/90">активен</span>
+                            @else
+                                <span class="text-white/40">нет</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3">{{ $u->purchases_count }}</td>
                     </tr>
                 @endforeach
