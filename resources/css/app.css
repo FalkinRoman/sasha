@@ -12,6 +12,7 @@
     --color-pv-muted: #7a837a;
     --color-pv-border: #dcdddb;
     --color-pv-olive: #869274;
+    --color-pv-rose: #c4a4a4;
     --color-pv-card-soft: #f6f8f1;
     --color-pv-card-alt: #f8f8f1;
     --color-pv-promo: #eaf3dd;
@@ -20,6 +21,13 @@
 
 @layer base {
     body {
-        @apply bg-[var(--color-pv-bg)] text-[var(--color-pv-ink)] antialiased;
+        @apply bg-[var(--color-pv-bg)] antialiased;
     }
+}
+
+/* Мягкий фон для кабинета */
+.app-shell {
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(134, 146, 116, 0.12), transparent),
+        radial-gradient(800px 400px at 100% 0%, rgba(196, 164, 164, 0.08), transparent),
+        #fffffa;
 }

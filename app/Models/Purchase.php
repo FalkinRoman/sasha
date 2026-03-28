@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class Purchase extends Model
+{
+    protected $fillable = [
+        'user_id', 'tariff_id', 'promocode_id', 'price_rub', 'discount_rub',
+        'status', 'paid_at', 'expires_at',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'paid_at' => 'datetime',
+            'expires_at' => 'datetime',
+        ];
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function tariff(): BelongsTo
+    {
+        return $this->belongsTo(Tariff::class);
+    }
+
+    public function promocode(): BelongsTo
+    {
+        return $this->belongsTo(PromoCode::class);
+    }
+
+    public function referralEarning(): HasOne
+    {
+        return $this->hasOne(ReferralEarning::class);
+    }
+
+    public function isActive(): bool
+    {
+        if ($this->status !== 'paid') {
+            return false;
+        }
+        if ($this->expires_at === null) {
+            return true;
+        }
+
+        return $this->expires_at->isFuture();
+    }
+}
