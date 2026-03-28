@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    --color-pv-bg: #fffffa;
+    --color-pv-ink: #2d312d;
+    --color-pv-muted: #7a837a;
+    --color-pv-border: #dcdddb;
+    --color-pv-olive: #869274;
+    --color-pv-card-soft: #f6f8f1;
+    --color-pv-card-alt: #f8f8f1;
+    --color-pv-promo: #eaf3dd;
+    --color-pv-divider: #dadada;
+}
+
+@layer base {
+    body {
+        @apply bg-[var(--color-pv-bg)] text-[var(--color-pv-ink)] antialiased;
+    }
+}
