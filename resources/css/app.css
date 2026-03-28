@@ -32,6 +32,23 @@
         #fffffa;
 }
 
+/* Заставка главной: уход оверлея */
+.pv-splash {
+    transition:
+        opacity 1.15s cubic-bezier(0.33, 1, 0.68, 1),
+        transform 1.15s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.pv-splash.pv-splash--out {
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(1.015);
+}
+
+.pv-cabinet-backdrop.opacity-100 {
+    pointer-events: auto;
+}
+
 /*
  * ProstoYoga motion: очень мягкие кривые (как йога-выдох), длиннее duration, меньше сдвиг.
  */
@@ -209,6 +226,11 @@
         transform: translate3d(-1.35rem, 0, 0);
     }
 
+    /* Блок «обо мне»: не слайд сбоку, а мягкий подъём + чуть-чуть «дыхания» по масштабу */
+    .pv-reveal--lift {
+        transform: translate3d(0, 1.15rem, 0) scale(0.985);
+    }
+
     .pv-reveal.is-revealed {
         opacity: 1;
         transform: translate3d(0, 0, 0);
@@ -216,6 +238,10 @@
 
     .pv-reveal--fade.is-revealed {
         transform: none;
+    }
+
+    .pv-reveal--lift.is-revealed {
+        transform: translate3d(0, 0, 0) scale(1);
     }
 
     /* Личный кабинет: короткий лёгкий вход — не тот же «драматичный» ход, что на лендинге */
@@ -346,6 +372,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+    #pv-splash {
+        display: none !important;
+    }
+
     .pv-tariff-card,
     .pv-tariff-card--featured,
     .pv-tariff-card-cabinet,

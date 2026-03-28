@@ -8,32 +8,43 @@
     @endphp
     <div class="mx-auto max-w-4xl">
         @if ($purchase)
-            <section class="pv-cabinet-access-card" aria-label="Твой доступ к курсу">
-                <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-                    <div class="min-w-0 flex-1">
-                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#869274]">Кабинет</p>
-                        <div class="mt-3 flex flex-wrap items-center gap-2">
-                            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#eaf3dd] px-3 py-1.5 text-xs font-semibold text-[#2d312d] ring-1 ring-[#869274]/25">
-                                <svg class="h-3.5 w-3.5 shrink-0 text-[#869274]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                Курс куплен · полный доступ
-                            </span>
+            <section
+                class="overflow-hidden rounded-2xl border border-[#cfd4c9] bg-[#fffffa] shadow-[0_6px_32px_-18px_rgba(45,49,45,0.1)]"
+                aria-label="Твой доступ к курсу"
+            >
+                <div class="border-b border-[#ecece8] bg-gradient-to-br from-[#f6f8f1]/90 to-[#fffffa] px-5 py-6 sm:px-8 sm:py-7">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#869274]">Кабинет</p>
+                            <h1 class="mt-2 text-2xl font-semibold tracking-tight text-[#2d312d] sm:text-3xl">Твой путь</h1>
                         </div>
-                        <h1 class="mt-5 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Твой путь</h1>
-                        <p class="mt-3 max-w-xl text-[#7a837a]">Ты внутри программы: смотри уроки в своём темпе — спокойный кабинет, без «рекламного» оформления.</p>
-                        <div class="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-4">
-                            <div class="rounded-xl border border-[#dcdddb] bg-[#fffffa] px-4 py-3 shadow-sm">
-                                <p class="text-xs font-medium uppercase tracking-wider text-[#7a837a]">Тариф</p>
-                                <p class="mt-1 text-lg font-semibold text-[#2d312d]">{{ $purchase->tariff->name }}</p>
-                            </div>
-                            <div class="rounded-xl border border-[#dcdddb] bg-[#fffffa] px-4 py-3 shadow-sm">
-                                <p class="text-xs font-medium uppercase tracking-wider text-[#7a837a]">Доступ до</p>
-                                <p class="mt-1 text-lg font-semibold text-[#2d312d]">{{ $purchase->expires_at?->translatedFormat('d F Y') ?? 'без срока' }}</p>
-                            </div>
-                        </div>
+                        <span class="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full bg-[#eaf3dd] px-3 py-1.5 text-xs font-semibold text-[#2d312d] ring-1 ring-[#869274]/25">
+                            <svg class="h-3.5 w-3.5 shrink-0 text-[#869274]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            Курс куплен · полный доступ
+                        </span>
                     </div>
+                    <p class="mt-4 max-w-2xl text-[#5c655c] leading-relaxed">Уроки в своём темпе — без лишнего шума, только практика.</p>
+                </div>
+                <div class="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:px-8 sm:py-6">
+                    <dl class="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 sm:gap-8">
+                        <div>
+                            <dt class="text-xs font-medium uppercase tracking-wider text-[#7a837a]">Тариф</dt>
+                            <dd class="mt-1 text-lg font-semibold text-[#2d312d]">{{ $purchase->tariff->name }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs font-medium uppercase tracking-wider text-[#7a837a]">Доступ до</dt>
+                            <dd class="mt-1 text-lg font-semibold text-[#2d312d]">
+                                @if ($purchase->expires_at)
+                                    {{ $purchase->expires_at->toRussianLongDate() }}
+                                @else
+                                    без срока
+                                @endif
+                            </dd>
+                        </div>
+                    </dl>
                     @if ($purchase->tariff->includes_telegram)
-                        <div class="shrink-0 md:max-w-[220px] md:pt-8">
-                            <a href="https://t.me/telegram" target="_blank" rel="noopener" class="pv-btn-dark inline-flex w-full justify-center px-6 py-3 md:w-auto">
+                        <div class="shrink-0 sm:pl-2">
+                            <a href="https://t.me/telegram" target="_blank" rel="noopener" class="pv-btn-dark inline-flex w-full justify-center px-6 py-3 sm:w-auto">
                                 Telegram-сообщество
                             </a>
                         </div>

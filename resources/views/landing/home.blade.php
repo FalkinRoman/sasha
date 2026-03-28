@@ -3,6 +3,7 @@
 @section('title', 'ProstoYoga — современная йога для жизни в движении')
 
 @section('content')
+    @include('partials.splash-intro')
     @include('partials.marketing-header')
 
     <section class="pv-hero-breathe relative isolate w-full overflow-hidden">
@@ -114,22 +115,26 @@
         <div class="mx-auto grid w-full max-w-[1440px] gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-12">
             <div
                 data-pv-reveal
-                class="pv-reveal pv-reveal--left order-2 overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(45,49,45,0.12)] ring-1 ring-[#ecece8] transition duration-[900ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:shadow-[0_32px_70px_rgba(45,49,45,0.14)] hover:ring-[#869274]/20 lg:order-1"
+                class="pv-reveal pv-reveal--lift order-2 overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(45,49,45,0.12)] ring-1 ring-[#ecece8] transition duration-[900ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:shadow-[0_32px_70px_rgba(45,49,45,0.14)] hover:ring-[#869274]/20 lg:order-1"
                 style="--rv-delay: 0s"
             >
                 <img src="{{ asset('images/figma/yoga-second.png') }}" alt="Практика" class="aspect-[4/3] h-full w-full object-cover lg:aspect-auto lg:min-h-[420px]" loading="lazy">
             </div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--right order-1 lg:order-2" style="--rv-delay: 0.12s">
-                <p class="text-sm font-medium uppercase tracking-wider text-[#869274]">Позиционирование</p>
-                <h2 class="mt-2 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Йога для активных людей</h2>
-                <p class="mt-5 text-lg leading-relaxed text-[#5c655c]">
-                    Я собрала курс для тех, кто хочет чувствовать тело, а не «дожить до выходных». Без мистики и давления — с опорой на анатомию, дыхание и честную нагрузку. Здесь ты не соревнуешься — ты возвращаешься к себе.
-                </p>
-                <ul class="mt-10 space-y-4 text-[#2d312d]">
-                    <li class="flex gap-3 text-base"><span class="shrink-0 text-[#869274]">✓</span> Мягкая дисциплина: практика, которая укладывается в жизнь</li>
-                    <li class="flex gap-3 text-base"><span class="shrink-0 text-[#869274]">✓</span> Поддержка в тарифе «Сообщество» — чат в Telegram</li>
-                    <li class="flex gap-3 text-base"><span class="shrink-0 text-[#869274]">✓</span> В тарифе «Глубже» — персональная онлайн-тренировка и вводная сессия</li>
-                </ul>
+            <div class="order-1 space-y-0 lg:order-2">
+                <div data-pv-reveal class="pv-reveal pv-reveal--lift" style="--rv-delay: 0.08s">
+                    <p class="text-sm font-medium uppercase tracking-wider text-[#869274]">Позиционирование</p>
+                    <h2 class="mt-2 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Йога для активных людей</h2>
+                    <p class="mt-5 text-lg leading-relaxed text-[#5c655c]">
+                        Я собрала курс для тех, кто хочет чувствовать тело, а не «дожить до выходных». Без мистики и давления — с опорой на анатомию, дыхание и честную нагрузку. Здесь ты не соревнуешься — ты возвращаешься к себе.
+                    </p>
+                </div>
+                <div data-pv-reveal class="pv-reveal pv-reveal--lift mt-10" style="--rv-delay: 0.18s">
+                    <ul class="space-y-4 text-[#2d312d]">
+                        <li class="flex gap-3 text-base"><span class="shrink-0 text-[#869274]">✓</span> Мягкая дисциплина: практика, которая укладывается в жизнь</li>
+                        <li class="flex gap-3 text-base"><span class="shrink-0 text-[#869274]">✓</span> Поддержка в тарифе «Сообщество» — чат в Telegram</li>
+                        <li class="flex gap-3 text-base"><span class="shrink-0 text-[#869274]">✓</span> В тарифе «Глубже» — персональная онлайн-тренировка и вводная сессия</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>

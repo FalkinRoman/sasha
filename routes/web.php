@@ -37,9 +37,20 @@ Route::view('/personal-data', 'pages.personal-data')->name('pages.personal-data'
 Route::view('/terms', 'pages.terms')->name('pages.terms');
 
 Route::get('/referrals', function () {
-    return view('pages.referrals', [
-        'commissionPercent' => app(CoursePurchaseService::class)->referralCommissionPercent,
-    ]);
+    $purchaseService = app(CoursePurchaseService::class);
+    $commissionPercent = $purchaseService->referralCommissionPercent;
+    $minTariffRub = (int) (Tariff::query()->min('price_rub') ?? 0);
+    $maxTariffRub = (int) (Tariff::query()->max('price_rub') ?? 0);
+    $exampleMinBonusRub = (int) round($minTariffRub * $commissionPercent / 100);
+    $exampleMaxBonusRub = (int) round($maxTariffRub * $commissionPercent / 100);
+
+    return view('pages.referrals', compact(
+        'commissionPercent',
+        'minTariffRub',
+        'maxTariffRub',
+        'exampleMinBonusRub',
+        'exampleMaxBonusRub',
+    ));
 })->name('referrals.landing');
 
 Route::middleware('guest')->group(function () {
