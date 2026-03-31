@@ -16,7 +16,7 @@
         </div>
 
         <ul data-pv-reveal class="pv-reveal pv-reveal--fade mt-6 space-y-2 text-sm text-[#2d312d]" style="--rv-delay: 0.12s">
-            <li>• Все 8 видеоуроков</li>
+            <li>• Все 12 видеопрактик курса</li>
             @if ($tariff->includes_telegram)
                 <li>• Закрытый чат в Telegram</li>
             @endif
@@ -45,7 +45,7 @@
             @csrf
             <div>
                 <label for="promocode" class="block text-sm font-medium text-[#2d312d]">Промокод</label>
-                <input type="text" name="promocode" id="promocode" value="{{ old('promocode') }}" placeholder="Например YOGA20"
+                <input type="text" name="promocode" id="promocode" value="{{ old('promocode', request('promocode')) }}" placeholder="Например YOGA20"
                     class="mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm">
                 @error('promocode')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

@@ -37,10 +37,10 @@ class DatabaseSeeder extends Seeder
         Tariff::query()->insert([
             [
                 'slug' => 'base',
-                'name' => 'Поток',
-                'tagline' => 'Все уроки курса на срок доступа',
-                'description' => '8 структурированных занятий: от дыхания до полной практики. Доступ к видео на 30 дней.',
-                'price_rub' => 4990,
+                'name' => 'Эконом',
+                'tagline' => '10 тренировок в записи',
+                'description' => 'Полностью самостоятельное прохождение: все практики в записи, без чата и сопровождения.',
+                'price_rub' => 2900,
                 'duration_days' => 30,
                 'includes_telegram' => false,
                 'includes_bonus_materials' => false,
@@ -52,13 +52,13 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'slug' => 'community',
-                'name' => 'Сообщество',
-                'tagline' => 'Видео + закрытый чат',
-                'description' => 'То же самое, что «Поток», плюс поддержка в Telegram: чек-ины, ответы на вопросы, мотивация.',
-                'price_rub' => 6990,
+                'name' => 'PROSTO.Yoga',
+                'tagline' => 'Самый популярный формат',
+                'description' => 'Закрытый чат, напоминания, домашние задания, игровой формат, живая встреча с Сашей и бонусы.',
+                'price_rub' => 4500,
                 'duration_days' => 30,
                 'includes_telegram' => true,
-                'includes_bonus_materials' => false,
+                'includes_bonus_materials' => true,
                 'includes_personal_online' => false,
                 'bonus_personal_sessions' => 0,
                 'sort_order' => 2,
@@ -67,10 +67,10 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'slug' => 'intensive',
-                'name' => 'Глубже + личный разбор',
-                'tagline' => 'Видео + чат + персонально онлайн',
-                'description' => 'Расширенный доступ на 90 дней, Telegram, материалы курса, одна бесплатная вводная персональная сессия онлайн и одна индивидуальная онлайн-тренировка с разбором твоей техники.',
-                'price_rub' => 12990,
+                'name' => 'PROSTO.TOP',
+                'tagline' => 'Максимум поддержки',
+                'description' => 'Всё из PROSTO.Yoga плюс личный чат с Сашей, обратная связь по ДЗ, сессия 1:1 и разбор балансов.',
+                'price_rub' => 6900,
                 'duration_days' => 90,
                 'includes_telegram' => true,
                 'includes_bonus_materials' => true,
@@ -90,6 +90,17 @@ class DatabaseSeeder extends Seeder
             'expires_at' => now()->addMonths(6),
             'is_active' => true,
         ]);
+
+        PromoCode::query()->firstOrCreate(
+            ['code' => 'QUIZ10'],
+            [
+                'discount_percent' => 10,
+                'max_uses' => null,
+                'used_count' => 0,
+                'expires_at' => null,
+                'is_active' => true,
+            ]
+        );
 
         $lessons = [
             [

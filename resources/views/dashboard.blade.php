@@ -56,7 +56,7 @@
                 <div class="max-w-2xl">
                     <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#869274]">Кабинет</p>
                     <h1 class="mt-3 text-3xl font-semibold text-[#2d312d]">Твой путь</h1>
-                    <p class="mt-3 text-[#7a837a]">8 уроков · двигайся в своём темпе. Первый урок с превью можно открыть бесплатно после регистрации.</p>
+                    <p class="mt-3 text-[#7a837a]">12 практик · двигайся в своём темпе. Превью можно открыть бесплатно после регистрации.</p>
                     <a href="{{ route('tariffs.index') }}" class="pv-btn-olive mt-6 inline-flex px-6 py-2.5">Оформить полный доступ</a>
                 </div>
             </section>

@@ -97,6 +97,17 @@
             active:translate-y-0 active:duration-150;
     }
 
+    /* Лендинг: CTA (green + sand) */
+    .pv-cta-sun {
+        @apply bg-gradient-to-r from-[#7f906c] to-[#6c835a] text-[#fffffa]
+            transition-[transform,box-shadow] duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)];
+    }
+
+    .pv-cta-sun-secondary {
+        @apply bg-gradient-to-r from-[#eadfc9] to-[#dac7a5] text-[#2b2d2a]
+            transition-[transform,box-shadow] duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)];
+    }
+
     /* Строка урока: сдвиг вбок в тени — отличается от карточек */
     .pv-lesson-row {
         @apply flex gap-4 overflow-hidden rounded-2xl border border-[#cfd4c9] bg-[#fffffa] p-3 pr-4 shadow-[0_4px_20px_-12px_rgba(45,49,45,0.06)]

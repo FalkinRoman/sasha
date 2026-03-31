@@ -28,8 +28,10 @@
                 <div class="lg:col-span-2">
                     <p class="text-xs font-semibold uppercase tracking-[0.15em] text-[#869274]">Курс</p>
                     <ul class="mt-4 space-y-3 text-sm">
+                        <li><a href="{{ route('home') }}#results-30" class="pv-footer-link">Результаты</a></li>
                         <li><a href="{{ route('home') }}#preview" class="pv-footer-link">Превью</a></li>
-                        <li><a href="{{ route('home') }}#course" class="pv-footer-link">Программа</a></li>
+                        <li><a href="{{ route('home') }}#prosto-test" class="pv-footer-link">Тест</a></li>
+                        <li><a href="{{ route('home') }}#program" class="pv-footer-link">12 практик</a></li>
                         <li><a href="{{ route('home') }}#tariffs" class="pv-footer-link">Тарифы</a></li>
                         @auth
                             <li><a href="{{ route('dashboard') }}" class="pv-footer-link">Личный кабинет</a></li>

@@ -26,7 +26,7 @@
                     <p class="mt-8 text-2xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($tariff->price_rub, 0, ',', ' ') }} ₽</p>
                     <p class="mt-1 text-xs text-[#7a837a]">{{ $tariff->duration_days }} дней доступа</p>
                     <ul class="mt-4 space-y-1.5 text-xs text-[#2d312d]">
-                        <li>• Все 8 видеоуроков</li>
+                        <li>• Все 12 видеопрактик курса</li>
                         @if ($tariff->includes_telegram)
                             <li>• Telegram-сообщество</li>
                         @endif
