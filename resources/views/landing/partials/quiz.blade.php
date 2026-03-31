@@ -20,7 +20,7 @@
             role="region"
             aria-label="Квиз подбора тарифа"
             data-auth="{{ auth()->check() ? '1' : '0' }}"
-            data-promo="QUIZ10"
+            data-promo="QUIZ5"
             data-checkout-mid="{{ $checkoutMid }}"
             data-checkout-top="{{ $checkoutTop }}"
             data-register-url="{{ route('register') }}"
@@ -47,9 +47,9 @@
                 <div class="pv-quiz-step hidden" data-quiz-step="3">
                     <p class="text-sm font-semibold text-[#2d312d]">3. Сколько времени в неделю ты реально готова уделить практикам?</p>
                     <div class="mt-4 flex flex-col gap-2">
-                        <button type="button" class="pv-quiz-opt cursor-pointer rounded-xl border border-[#e2e4df] bg-[#fafaf8] px-4 py-3 text-left text-sm text-[#2d312d] transition hover:border-[#869274]/50" data-q3="1.5">1,5 часа</button>
-                        <button type="button" class="pv-quiz-opt cursor-pointer rounded-xl border border-[#e2e4df] bg-[#fafaf8] px-4 py-3 text-left text-sm text-[#2d312d] transition hover:border-[#869274]/50" data-q3="3">3 часа</button>
-                        <button type="button" class="pv-quiz-opt cursor-pointer rounded-xl border border-[#e2e4df] bg-[#fafaf8] px-4 py-3 text-left text-sm text-[#2d312d] transition hover:border-[#869274]/50" data-q3="4.5">4,5 часа</button>
+                        <button type="button" class="pv-quiz-opt cursor-pointer rounded-xl border border-[#e2e4df] bg-[#fafaf8] px-4 py-3 text-left text-sm text-[#2d312d] transition hover:border-[#869274]/50" data-q3="30m">30 минут</button>
+                        <button type="button" class="pv-quiz-opt cursor-pointer rounded-xl border border-[#e2e4df] bg-[#fafaf8] px-4 py-3 text-left text-sm text-[#2d312d] transition hover:border-[#869274]/50" data-q3="1h">1 час</button>
+                        <button type="button" class="pv-quiz-opt cursor-pointer rounded-xl border border-[#e2e4df] bg-[#fafaf8] px-4 py-3 text-left text-sm text-[#2d312d] transition hover:border-[#869274]/50" data-q3="1.5-2h">1,5–2 часа</button>
                     </div>
                 </div>
             </div>
@@ -60,9 +60,9 @@
                 <p id="pv-quiz-result-text" class="mt-3 text-center text-sm leading-relaxed text-[#5c655c]"></p>
                 <div class="mt-8 flex flex-col items-center gap-3">
                     <a id="pv-quiz-cta" href="#tariffs" class="pv-cta-sun inline-flex min-h-[52px] w-full max-w-md items-center justify-center rounded-full px-6 py-3.5 text-center text-sm font-bold uppercase tracking-[0.05em] shadow-md transition hover:-translate-y-0.5 sm:w-auto">
-                        Забронировать мой тариф со скидкой 10%
+                        Забронировать мой тариф со скидкой 5%
                     </a>
-                    <p class="text-center text-xs text-[#7a837a]">Промокод <span class="font-mono text-[#2d312d]">QUIZ10</span> подставится на оплате.</p>
+                    <p class="text-center text-xs text-[#7a837a]">Промокод <span class="font-mono text-[#2d312d]">QUIZ5</span> подставится на оплате.</p>
                 </div>
             </div>
         </div>

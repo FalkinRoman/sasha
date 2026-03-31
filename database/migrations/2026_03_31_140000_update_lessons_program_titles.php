@@ -1,110 +1,22 @@
 <?php
 
-namespace Database\Seeders;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-use App\Models\Lesson;
-use App\Models\PromoCode;
-use App\Models\Tariff;
-use App\Models\User;
-use Illuminate\Database\Seeder;
-
-class DatabaseSeeder extends Seeder
+return new class extends Migration
 {
-    public function run(): void
+    public function up(): void
     {
-        User::query()->where('email', 'test@example.com')->delete();
+        if (! Schema::hasTable('lessons')) {
+            return;
+        }
 
-        User::query()->updateOrCreate(
-            ['email' => 'admin@prostoyoga.ru'],
-            [
-                'name' => 'Администратор',
-                'password' => 'password',
-                'is_admin' => true,
-                'referral_code' => 'PROSTOADM',
-            ]
-        );
+        $demo = 'https://www.youtube.com/embed/jfKfPfyJRdk';
+        $now = now();
 
-        User::query()->updateOrCreate(
-            ['email' => 'user@prostoyoga.ru'],
-            [
-                'name' => 'Обычный пользователь',
-                'password' => 'password',
-                'is_admin' => false,
-                'referral_code' => 'PROSTOUSR',
-            ]
-        );
-
-        Tariff::query()->insert([
-            [
-                'slug' => 'base',
-                'name' => 'Эконом',
-                'tagline' => '10 тренировок в записи',
-                'description' => 'Полностью самостоятельное прохождение: все практики в записи, без чата и сопровождения.',
-                'price_rub' => 2900,
-                'duration_days' => 30,
-                'includes_telegram' => false,
-                'includes_bonus_materials' => false,
-                'includes_personal_online' => false,
-                'bonus_personal_sessions' => 0,
-                'sort_order' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'slug' => 'community',
-                'name' => 'PROSTO.Yoga',
-                'tagline' => 'Самый популярный формат',
-                'description' => 'Закрытый чат, напоминания, домашние задания, игровой формат, живая встреча с Сашей и бонусы.',
-                'price_rub' => 4900,
-                'duration_days' => 30,
-                'includes_telegram' => true,
-                'includes_bonus_materials' => true,
-                'includes_personal_online' => false,
-                'bonus_personal_sessions' => 0,
-                'sort_order' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'slug' => 'intensive',
-                'name' => 'PROSTO.TOP',
-                'tagline' => 'Максимум поддержки',
-                'description' => 'Всё из PROSTO.Yoga плюс личный чат с Сашей, обратная связь по ДЗ, сессия 1:1 и разбор балансов.',
-                'price_rub' => 6900,
-                'duration_days' => 60,
-                'includes_telegram' => true,
-                'includes_bonus_materials' => true,
-                'includes_personal_online' => true,
-                'bonus_personal_sessions' => 1,
-                'sort_order' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
-
-        PromoCode::query()->create([
-            'code' => 'YOGA20',
-            'discount_percent' => 20,
-            'max_uses' => 100,
-            'used_count' => 0,
-            'expires_at' => now()->addMonths(6),
-            'is_active' => true,
-        ]);
-
-        PromoCode::query()->firstOrCreate(
-            ['code' => 'QUIZ5'],
-            [
-                'discount_percent' => 5,
-                'max_uses' => null,
-                'used_count' => 0,
-                'expires_at' => null,
-                'is_active' => true,
-            ]
-        );
-
-        $lessons = [
-            [
-                'order_index' => 1,
+        $rows = [
+            1 => [
                 'slug' => 'praktika-probuzhdenie-aktivatsiya',
                 'title' => 'Практика для пробуждения и активации тела',
                 'subtitle' => null,
@@ -114,8 +26,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 130,
                 'is_preview_free' => true,
             ],
-            [
-                'order_index' => 2,
+            2 => [
                 'slug' => 'kompleks-osanka-dyhanie',
                 'title' => 'Комплекс на осанку и дыхательные техники',
                 'subtitle' => null,
@@ -125,8 +36,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 140,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 3,
+            3 => [
                 'slug' => 'nogi-gibkost',
                 'title' => 'Укрепляем ноги и работаем над их гибкостью',
                 'subtitle' => null,
@@ -136,8 +46,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 175,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 4,
+            4 => [
                 'slug' => 'probuzhdaemsya-dyshim',
                 'title' => 'Пробуждаемся и дышим',
                 'subtitle' => null,
@@ -147,8 +56,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 120,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 5,
+            5 => [
                 'slug' => 'taz-poyasnitsa',
                 'title' => 'Раскрываем тазобедренные суставы и разгружаем поясницу',
                 'subtitle' => null,
@@ -158,8 +66,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 155,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 6,
+            6 => [
                 'slug' => 'myshtsy-zhivota-ploskiy',
                 'title' => 'Работаем с мышцами живота — «Плоский живот»',
                 'subtitle' => null,
@@ -169,8 +76,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 190,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 7,
+            7 => [
                 'slug' => 'prodolnye-shpagaty',
                 'title' => 'Идём в направление продольных шпагатов',
                 'subtitle' => null,
@@ -180,8 +86,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 200,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 8,
+            8 => [
                 'slug' => 'ruki-grudnoy-otdel',
                 'title' => 'Укрепляем руки и раскрываем грудной отдел',
                 'subtitle' => null,
@@ -191,8 +96,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 165,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 9,
+            9 => [
                 'slug' => 'yagoditsy-poperechnyy-shpagat',
                 'title' => 'Практика на ягодицы + идём в сторону к поперечному шпагату',
                 'subtitle' => null,
@@ -202,8 +106,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 210,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 10,
+            10 => [
                 'slug' => 'zhivaya-onlayn-prodolnye',
                 'title' => 'Живая онлайн (практика на всё тело + продольные шпагаты)',
                 'subtitle' => null,
@@ -213,8 +116,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 260,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 11,
+            11 => [
                 'slug' => 'meditatsiya-uslysh-sebya',
                 'title' => 'Медитация «услышь себя»',
                 'subtitle' => null,
@@ -224,8 +126,7 @@ class DatabaseSeeder extends Seeder
                 'calories_estimate' => 60,
                 'is_preview_free' => false,
             ],
-            [
-                'order_index' => 12,
+            12 => [
                 'slug' => 'zhivaya-onlayn-dinamika-taz',
                 'title' => 'Живая онлайн (динамичная практика на всё тело + работа с тазобедренными суставами)',
                 'subtitle' => null,
@@ -237,14 +138,29 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        $demo = 'https://www.youtube.com/embed/jfKfPfyJRdk';
+        foreach ($rows as $orderIndex => $fields) {
+            $existing = DB::table('lessons')
+                ->where('course_slug', 'modern-yoga')
+                ->where('order_index', $orderIndex)
+                ->first();
 
-        foreach ($lessons as $row) {
-            Lesson::query()->create([
-                ...$row,
-                'course_slug' => 'modern-yoga',
-                'video_url' => $demo,
-            ]);
+            $payload = array_merge($fields, ['updated_at' => $now]);
+
+            if ($existing) {
+                DB::table('lessons')->where('id', $existing->id)->update($payload);
+            } else {
+                DB::table('lessons')->insert(array_merge($payload, [
+                    'course_slug' => 'modern-yoga',
+                    'order_index' => $orderIndex,
+                    'video_url' => $demo,
+                    'created_at' => $now,
+                ]));
+            }
         }
     }
-}
+
+    public function down(): void
+    {
+        // откат текстов не делаем — видео и слаги могли уже использоваться
+    }
+};

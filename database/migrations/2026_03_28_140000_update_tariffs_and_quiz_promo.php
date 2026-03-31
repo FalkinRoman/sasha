@@ -28,7 +28,7 @@ return new class extends Migration
                 'name' => 'PROSTO.Yoga',
                 'tagline' => 'Самый популярный формат',
                 'description' => 'Закрытый чат, напоминания, домашние задания, игровой формат, живая встреча с Сашей и бонусы.',
-                'price_rub' => 4500,
+                'price_rub' => 4900,
                 'duration_days' => 30,
                 'includes_telegram' => true,
                 'includes_bonus_materials' => true,

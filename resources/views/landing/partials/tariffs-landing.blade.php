@@ -60,7 +60,7 @@
                         <p class="mt-1 text-sm font-medium text-[#869274]">{{ $tariff->tagline }}</p>
                     @endif
                     <p class="mt-4 flex-1 text-sm leading-relaxed text-[#5c655c]">{{ $tariff->description }}</p>
-                    <p class="mt-8 text-3xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($tariff->price_rub, 0, ',', ' ') }} ₽</p>
+                    <p class="mt-8 whitespace-nowrap text-3xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($tariff->effectivePriceRub(), 0, ',', ' ') }} ₽</p>
                     <p class="mt-1 text-xs text-[#7a837a]">Доступ: {{ $tariff->duration_days }} дней</p>
                     <ul class="mt-6 space-y-2 text-sm text-[#2d312d]">
                         @foreach ($c['lines'] as $line)
@@ -74,7 +74,7 @@
                             <a href="{{ route('register') }}" class="pv-btn-olive py-3.5">Регистрация и оплата</a>
                         @endauth
                         <a
-                            href="{{ auth()->check() ? route('checkout.show', $tariff).'?promocode=QUIZ10' : route('register') }}"
+                            href="{{ auth()->check() ? route('checkout.show', $tariff).'?promocode=QUIZ5' : route('register') }}"
                             class="text-center text-sm font-semibold text-[#869274] underline decoration-[#869274]/40 underline-offset-4 transition hover:text-[#2d312d]"
                         >
                             Лучшие условия 24 ч — уточнить у менеджера

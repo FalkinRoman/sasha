@@ -56,7 +56,7 @@
                         <h3 class="mt-2 text-xl font-semibold text-[#2d312d] md:text-2xl">«Новая Я»</h3>
                         <ul class="mt-5 space-y-3 text-[15px] leading-relaxed text-[#5c655c]">
                             <li class="flex gap-3"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#869274]"></span> Ровная осанка и уверенная походка</li>
-                            <li class="flex gap-3"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#869274]"></span> Круглые ягодицы + плоский живот (доп. практика)</li>
+                            <li class="flex gap-3"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#869274]"></span> Круглые ягодицы и плоский живот (доп. тренировка PROSTO.Yoga)</li>
                             <li class="flex gap-3"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#869274]"></span> Видимые шпагаты и балансы для сторис</li>
                             <li class="flex gap-3"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#869274]"></span> Лёгкость в теле и «похудела в лице и в настроении»</li>
                             <li class="flex gap-3"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#869274]"></span> Заряженность с утра до вечера и чувство внутренней опоры</li>

@@ -27,4 +27,32 @@ class Tariff extends Model
     {
         return $this->hasMany(Purchase::class);
     }
+
+    /** Цена для отображения и оплаты: из config/pricing.php или из БД. */
+    public function effectivePriceRub(): int
+    {
+        $map = config('pricing.tariffs', []);
+        if (is_array($map) && array_key_exists($this->slug, $map) && is_numeric($map[$this->slug])) {
+            return (int) $map[$this->slug];
+        }
+
+        return (int) $this->price_rub;
+    }
+
+    /** Мин/макс цен по каноническому конфигу или по БД. */
+    public static function displayPriceRangeRub(): array
+    {
+        $map = config('pricing.tariffs', []);
+        if (is_array($map) && $map !== []) {
+            $vals = array_values(array_filter($map, fn ($v) => is_numeric($v)));
+            if ($vals !== []) {
+                return [min($vals), max($vals)];
+            }
+        }
+
+        return [
+            (int) static::query()->min('price_rub'),
+            (int) static::query()->max('price_rub'),
+        ];
+    }
 }

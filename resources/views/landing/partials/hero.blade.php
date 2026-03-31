@@ -2,10 +2,10 @@
 <section class="relative isolate w-full overflow-hidden border-b border-[#ecece8] bg-[#1a1d1a]">
     <picture>
         <source media="(max-width: 767px)" srcset="{{ asset('images/figma/mobile.webp') }}">
-        <img src="{{ asset('images/figma/decstop.webp') }}" alt="" class="absolute inset-0 z-0 h-full min-h-[560px] w-full object-cover object-center opacity-95 md:min-h-[640px]" width="1920" height="1080">
+        <img src="{{ asset('images/figma/decstop.webp') }}" alt="" class="absolute inset-0 z-0 h-full min-h-[560px] w-full object-cover object-center opacity-100 md:min-h-[640px]" width="1920" height="1080">
     </picture>
-    <div class="absolute inset-0 z-[1] bg-gradient-to-r from-[#1a1d1a]/94 via-[#2a2f28]/72 to-[#1a1d1a]/25"></div>
-    <div class="absolute inset-0 z-[1] bg-gradient-to-t from-[#141614]/90 via-transparent to-[#2d312d]/35"></div>
+    <div class="absolute inset-0 z-[1] bg-gradient-to-r from-[#1a1d1a]/88 via-[#2a2f28]/64 to-[#1a1d1a]/22"></div>
+    <div class="absolute inset-0 z-[1] bg-gradient-to-t from-[#141614]/72 via-transparent to-[#2d312d]/32"></div>
     <div class="relative z-10 mx-auto flex min-h-[min(92vh,900px)] w-full max-w-[1440px] flex-col justify-end px-5 pb-14 pt-28 sm:px-8 md:justify-center md:pb-20 md:pt-32 lg:px-12">
         <div class="max-w-[42rem]">
             <p class="pv-soft-in text-[11px] font-semibold uppercase tracking-[0.38em] text-[#d4e0c8] drop-shadow-md">PROSTO.YOGA</p>

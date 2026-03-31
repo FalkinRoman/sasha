@@ -312,7 +312,7 @@ function initProstoQuiz() {
         return;
     }
 
-    const promo = root.dataset.promo || 'QUIZ10';
+    const promo = root.dataset.promo || 'QUIZ5';
     const auth = root.dataset.auth === '1';
     const registerUrl = root.dataset.registerUrl || '/register';
     const urlMid = root.dataset.checkoutMid || '#tariffs';
@@ -341,8 +341,8 @@ function initProstoQuiz() {
                 const useTop = q2 === 'both';
                 titleEl.textContent = useTop ? 'PROSTO.TOP' : 'PROSTO.Yoga';
                 textEl.textContent = useTop
-                    ? 'Тебе откликается максимум поддержки: личный чат, разбор ДЗ и сессия 1:1. Забирай скидку 10% на оплату.'
-                    : 'Тебе подходит формат с чатом, ведением и практикой без перегруза. Скидка 10% ждёт на шаге оплаты.';
+                    ? 'Тебе откликается максимум поддержки: личный чат, разбор ДЗ и сессия 1:1. Забирай скидку 5% на оплату.'
+                    : 'Тебе подходит формат с чатом, ведением и практикой без перегруза. Скидка 5% ждёт на шаге оплаты.';
                 const sep = (auth ? urlMid : registerUrl).includes('?') ? '&' : '?';
                 cta.href = auth
                     ? `${useTop ? urlTop : urlMid}${sep}promocode=${encodeURIComponent(promo)}`

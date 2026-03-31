@@ -23,7 +23,7 @@
                     <h2 class="text-lg font-semibold text-[#2d312d]">{{ $tariff->name }}</h2>
                     <p class="mt-1 text-xs font-medium text-[#869274]">{{ $tariff->tagline }}</p>
                     <p class="mt-3 flex-1 text-sm leading-relaxed text-[#5c655c]">{{ $tariff->description }}</p>
-                    <p class="mt-8 text-2xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($tariff->price_rub, 0, ',', ' ') }} ₽</p>
+                    <p class="mt-8 whitespace-nowrap text-2xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($tariff->effectivePriceRub(), 0, ',', ' ') }} ₽</p>
                     <p class="mt-1 text-xs text-[#7a837a]">{{ $tariff->duration_days }} дней доступа</p>
                     <ul class="mt-4 space-y-1.5 text-xs text-[#2d312d]">
                         <li>• Все 12 видеопрактик курса</li>

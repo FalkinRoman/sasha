@@ -39,8 +39,7 @@ Route::view('/terms', 'pages.terms')->name('pages.terms');
 Route::get('/referrals', function () {
     $purchaseService = app(CoursePurchaseService::class);
     $commissionPercent = $purchaseService->referralCommissionPercent;
-    $minTariffRub = (int) (Tariff::query()->min('price_rub') ?? 0);
-    $maxTariffRub = (int) (Tariff::query()->max('price_rub') ?? 0);
+    [$minTariffRub, $maxTariffRub] = Tariff::displayPriceRangeRub();
     $exampleMinBonusRub = (int) round($minTariffRub * $commissionPercent / 100);
     $exampleMaxBonusRub = (int) round($maxTariffRub * $commissionPercent / 100);
 

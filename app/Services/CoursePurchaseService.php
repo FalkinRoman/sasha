@@ -20,7 +20,7 @@ class CoursePurchaseService
      */
     public function calculatePrices(Tariff $tariff, ?string $promoCodeInput): array
     {
-        $base = $tariff->price_rub;
+        $base = $tariff->effectivePriceRub();
         $discount = 0;
         $promo = null;
 

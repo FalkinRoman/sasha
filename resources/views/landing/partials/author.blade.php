@@ -4,7 +4,7 @@
         <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
             <div>
                 <div data-pv-reveal class="pv-reveal pv-reveal--lift overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(45,49,45,0.12)] ring-1 ring-[#ecece8]">
-                    <img src="{{ asset('images/figma/trainer.png') }}" alt="Александра Вихорева" class="aspect-[4/5] w-full object-cover object-[center_20%] md:aspect-[3/4]" loading="lazy">
+                    <img src="{{ asset('images/figma/yoga-second.png') }}" alt="Александра Вихорева" class="aspect-[4/5] w-full object-cover object-[center_20%] md:aspect-[3/4]" loading="lazy">
                 </div>
             </div>
             <div>
@@ -14,7 +14,7 @@
                 </div>
                 <ul data-pv-reveal class="pv-reveal pv-reveal--right mt-8 space-y-3 text-[#5c655c]" style="--rv-delay: 0.06s">
                     <li class="flex gap-2"><span class="text-[#869274]">·</span> 12 лет групповой и персональной работы</li>
-                    <li class="flex gap-2"><span class="text-[#869274]">·</span> 5 лет — тренер: боди памп, степ, сайкл, функционал и круговые тренировки на всё тело</li>
+                    <li class="flex gap-2"><span class="text-[#869274]">·</span> 5 лет — тренер: Body Pump, степ, сайкл, функционал и круговые тренировки на всё тело</li>
                     <li class="flex gap-2"><span class="text-[#869274]">·</span> Годовое профессиональное обучение в школе «Прана» (Москва)</li>
                     <li class="flex gap-2"><span class="text-[#869274]">·</span> Учителя: Дмитрий Демин, Глеб Мазаев, Саша Титов, Игорь Пантюшев</li>
                     <li class="flex gap-2"><span class="text-[#869274]">·</span> Сертифицированный тренер Les Mills</li>
@@ -31,11 +31,11 @@
                     </span>
                     <span class="inline-flex items-center gap-1.5 rounded-full border border-[#cfd4c9] bg-[#f6f8f1] px-3 py-1 text-xs font-medium text-[#4a524a]">
                         <img src="{{ asset('images/figma/wc.png') }}" alt="" class="h-5 w-5 object-contain opacity-90" loading="lazy">
-                        <span>WorldClass</span>
+                        <span>World Class</span>
                     </span>
                 </div>
                 <p data-pv-reveal class="pv-reveal pv-reveal--right mt-8 text-lg leading-relaxed text-[#2d312d]" style="--rv-delay: 0.12s">
-                    Мою йогу смотрят на IVI, Okko и WorldClass. Но самое важное — я научилась снимать страх и делать так, чтобы даже новичок через неделю сказал: «Как круто, что я это могу!».
+                    Мою йогу смотрят на IVI, Okko и World Class. Но самое важное — я научилась снимать страх и делать так, чтобы даже новичок через неделю сказал: «Как круто, что я это могу!».
                 </p>
             </div>
         </div>
@@ -46,7 +46,7 @@
                 @foreach ([
                     ['yoga-main3.png', 'Зал: поток и техника'],
                     ['yoga-first.png', 'Кемп: энергия группы'],
-                    ['yoga-second.png', 'Дом: твой ритм'],
+                    ['trainer.png', 'Дом: твой ритм'],
                     ['yoga-main2.png', 'Разбор поз'],
                     ['yoga-first.png', 'Практика без давления'],
                     ['yoga-main3.png', 'Улыбка после сессии'],

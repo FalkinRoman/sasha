@@ -11,7 +11,7 @@
             <p class="text-[#7a837a]">{{ $tariff->description }}</p>
         </div>
         <div data-pv-reveal class="pv-reveal pv-reveal--up mt-6" style="--rv-delay: 0.1s">
-            <p class="text-3xl font-semibold">{{ number_format($tariff->price_rub, 0, ',', ' ') }} ₽</p>
+            <p class="whitespace-nowrap text-3xl font-semibold">{{ number_format($tariff->effectivePriceRub(), 0, ',', ' ') }} ₽</p>
             <p class="text-sm text-[#7a837a]">Доступ на {{ $tariff->duration_days }} дней</p>
         </div>
 

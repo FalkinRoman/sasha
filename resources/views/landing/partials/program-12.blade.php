@@ -1,17 +1,17 @@
 @php
     $practices = [
-        ['n' => '01', 't' => 'Перезапуск тела', 'd' => 'Дыхание, осанка и мягкий вход без перегруза.'],
-        ['n' => '02', 't' => 'Анти-офис: шея и плечи', 'd' => 'Снимаем зажимы после рабочего дня.'],
-        ['n' => '03', 't' => 'Спина и мобильность', 'd' => 'Скрутки и вытяжение для лёгкости в теле.'],
-        ['n' => '04', 't' => 'Ноги и устойчивость', 'd' => 'Опора, баланс и уверенность в стойках.'],
-        ['n' => '05', 't' => 'Таз и раскрытие бёдер', 'd' => 'Комфортная гибкость без боли и рывков.'],
-        ['n' => '06', 't' => 'Кор и центр', 'd' => 'Стабилизация корпуса и контроль движений.'],
-        ['n' => '07', 't' => 'Сила + пластика', 'd' => 'Тонус без ощущения “убитой” тренировки.'],
-        ['n' => '08', 't' => 'Поток на выносливость', 'd' => 'Связки в ритме для энергии и формы.'],
-        ['n' => '09', 't' => 'Балансы на руках: база', 'd' => 'Пошаговая техника простым языком.'],
-        ['n' => '10', 't' => 'Гибкость и вытяжение', 'd' => 'Растяжка, которая реально работает в жизни.'],
-        ['n' => '11', 't' => 'Восстановление и антистресс', 'd' => 'Мягкая практика для нервной системы и сна.'],
-        ['n' => '12', 't' => 'Финальный flow', 'd' => 'Собираем всё в цельную практику “под тебя”.'],
+        ['n' => '01', 't' => 'Практика для пробуждения и активации тела'],
+        ['n' => '02', 't' => 'Комплекс на осанку и дыхательные техники'],
+        ['n' => '03', 't' => 'Укрепляем ноги и работаем над их гибкостью'],
+        ['n' => '04', 't' => 'Пробуждаемся и дышим'],
+        ['n' => '05', 't' => 'Раскрываем тазобедренные суставы и разгружаем поясницу'],
+        ['n' => '06', 't' => 'Работаем с мышцами живота — «Плоский живот»'],
+        ['n' => '07', 't' => 'Идём в направление продольных шпагатов'],
+        ['n' => '08', 't' => 'Укрепляем руки и раскрываем грудной отдел'],
+        ['n' => '09', 't' => 'Практика на ягодицы + идём в сторону к поперечному шпагату'],
+        ['n' => '10', 't' => 'Живая онлайн (практика на всё тело + продольные шпагаты)'],
+        ['n' => '11', 't' => 'Медитация «услышь себя»'],
+        ['n' => '12', 't' => 'Живая онлайн (динамичная практика на всё тело + работа с тазобедренными суставами)'],
     ];
     $previewPractices = array_slice($practices, 0, 4);
     $restPractices = array_slice($practices, 4);
@@ -32,8 +32,7 @@
                     style="--rv-delay: {{ 0.03 + $loop->index * 0.025 }}s"
                 >
                     <span class="text-2xl font-light tabular-nums text-[#869274]/75">{{ $p['n'] }}</span>
-                    <h3 class="mt-2 text-lg font-semibold text-[#2d312d]">{{ $p['t'] }}</h3>
-                    <p class="mt-2 text-sm leading-relaxed text-[#5c655c]">{{ $p['d'] }}</p>
+                    <h3 class="mt-2 text-lg font-semibold leading-snug text-[#2d312d]">{{ $p['t'] }}</h3>
                 </div>
             @endforeach
         </div>
@@ -50,19 +49,18 @@
                 </svg>
             </summary>
             <div class="mt-6 border-t border-[#edf0e8] pt-6">
-                <p class="mx-auto max-w-3xl text-center text-sm leading-relaxed text-[#5c655c] md:text-base">Практики собраны по логике: от базы к тонусу, от тонуса к контролю и устойчивому результату.</p>
+                <p class="mx-auto max-w-3xl text-center text-sm leading-relaxed text-[#5c655c] md:text-base">От активации и осанки — к шпагатам, ягодицам и живым эфирам; финал — медитация и динамика на всё тело.</p>
                 <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     @foreach ($restPractices as $p)
                         <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm">
                             <span class="text-2xl font-light tabular-nums text-[#869274]/75">{{ $p['n'] }}</span>
-                            <h3 class="mt-2 text-lg font-semibold text-[#2d312d]">{{ $p['t'] }}</h3>
-                            <p class="mt-2 text-sm leading-relaxed text-[#5c655c]">{{ $p['d'] }}</p>
+                            <h3 class="mt-2 text-lg font-semibold leading-snug text-[#2d312d]">{{ $p['t'] }}</h3>
                         </div>
                     @endforeach
                 </div>
                 <div class="mx-auto mt-10 grid max-w-4xl gap-4 md:grid-cols-2">
-                    <p class="rounded-2xl border border-[#869274]/30 bg-[#f0f4ea] px-6 py-5 text-center text-sm font-medium text-[#3d453d] md:text-base">+ Доп. практика на круглые ягодицы и плоский живот</p>
-                    <p class="rounded-2xl border border-[#869274]/30 bg-[#f0f4ea] px-6 py-5 text-center text-sm font-medium text-[#3d453d] md:text-base">+ Видео-разбор балансов на руках простым языком</p>
+                    <p class="rounded-2xl border border-[#869274]/30 bg-[#f0f4ea] px-6 py-5 text-center text-sm font-medium text-[#3d453d] md:text-base">+ Доп. тренировка (PROSTO.Yoga): круглые ягодицы и плоский живот</p>
+                    <p class="rounded-2xl border border-[#869274]/30 bg-[#f0f4ea] px-6 py-5 text-center text-sm font-medium text-[#3d453d] md:text-base">+ Доп. тренировка (PROSTO.TOP): разбираем некоторые балансы на руках из йоги</p>
                 </div>
             </div>
         </details>
