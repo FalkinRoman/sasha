@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
                 'tagline' => 'Максимум поддержки',
                 'description' => 'Всё из PROSTO.Yoga плюс личный чат с Сашей, обратная связь по ДЗ, сессия 1:1 и разбор балансов.',
                 'price_rub' => 6900,
-                'duration_days' => 90,
+                'duration_days' => 60,
                 'includes_telegram' => true,
                 'includes_bonus_materials' => true,
                 'includes_personal_online' => true,

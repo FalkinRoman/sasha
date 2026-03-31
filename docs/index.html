@@ -15,7 +15,7 @@
 <div id="pv-splash" class="pv-splash fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#f5f6f3]" role="presentation" aria-hidden="true">
     <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_52%_at_50%_48%,rgba(134,146,116,0.11),transparent_60%)]"></div>
     <div class="relative flex flex-col items-center px-8">
-        <svg class="pv-splash__svg h-[min(36vh,240px)] w-auto max-w-[min(76vw,280px)] text-[#7d8b6e]" viewBox="0 0 120 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg class="pv-splash__svg h-[min(28vh,180px)] w-auto max-w-[min(64vw,210px)] text-[#7d8b6e]" viewBox="0 0 120 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path data-splash-draw d="M60 62 Q48 38 60 16 Q72 38 60 62" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
             <path data-splash-draw d="M60 66 Q48 90 60 112 Q72 90 60 66" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
             <path data-splash-draw d="M58 64 Q32 52 24 64 Q32 76 58 64" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
@@ -311,28 +311,45 @@
 
 <section id="program" class="scroll-mt-24 w-full bg-[#f9faf6] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-3xl text-center">
-            <h2 class="text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">12 рабочих практик</h2>
-            <p class="mt-4 text-lg text-[#5c655c]">График 3 раза в неделю. Никакого хаоса.</p>
+        <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto mt-12 max-w-3xl text-center" style="--rv-delay: 0.08s">
+            <h2 class="text-2xl font-semibold tracking-tight text-[#2d312d] md:text-3xl">12 рабочих практик</h2>
+            <p class="mt-3 text-sm leading-relaxed text-[#5c655c] md:text-base">График 3 раза в неделю. Никакого хаоса. Смотри первые 4, остальные подгрузи ниже.</p>
         </div>
-        <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.03s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">01</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Старт тела</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Дыхание, осанка, мягкий вход в практику.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.055s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">02</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Позвоночник и скрутки</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Мобильность без перегруза.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.08s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">03</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Ноги и устойчивость</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Стоячие позы и баланс.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.105s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">04</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Бёдра и раскрытие</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Гибкость в комфортной амплитуде.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.13s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">05</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Плечи и шея</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Снимаем «офисный» блок.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.155s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">06</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Кор и центр</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Стабильность и контроль.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.18s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">07</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Сила без грубости</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Плавное наращивание нагрузки.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.205s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">08</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Гибкость и шпагаты</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Работа к балансам и растяжке.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.23s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">09</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Балансы</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Фокус и выравнивание.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.255s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">10</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Интенсивный поток</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Связка движений в темпе.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.28s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">11</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Восстановление</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Мягкое закрытие недели.</p></div>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.305s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">12</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Финал: твоя практика</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Цельный поток из всего курса.</p></div>
+        <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.03s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">01</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Перезапуск тела</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Дыхание, осанка и мягкий вход без перегруза.</p></div>
+            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.055s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">02</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Анти-офис: шея и плечи</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Снимаем зажимы после рабочего дня.</p></div>
+            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.08s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">03</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Спина и мобильность</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Скрутки и вытяжение для лёгкости в теле.</p></div>
+            <div data-pv-reveal class="pv-reveal pv-reveal--up rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm" style="--rv-delay: 0.105s"><span class="text-2xl font-light tabular-nums text-[#869274]/75">04</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Ноги и устойчивость</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Опора, баланс и уверенность в стойках.</p></div>
         </div>
-        <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto mt-12 max-w-2xl rounded-2xl border border-[#869274]/30 bg-[#f0f4ea] px-6 py-5 text-center text-sm text-[#3d453d] md:text-base" style="--rv-delay: 0.1s">
-            <p class="font-medium">+ Доп. практика на круглые ягодицы и плоский живот</p>
-            <p class="mt-2 text-[#5c655c]">+ Видео-разбор балансов на руках простым языком</p>
-        </div>
+        <details data-pv-reveal class="group pv-reveal pv-reveal--fade mx-auto mt-10 max-w-6xl rounded-2xl border border-[#dfe5d8] bg-[#fffffa] p-5 open:shadow-sm md:p-6" style="--rv-delay: 0.12s">
+            <summary class="flex cursor-pointer list-none items-center justify-center gap-2 text-center text-sm font-semibold uppercase tracking-[0.08em] text-[#869274] marker:content-none">
+                <span class="group-open:hidden">Показать остальные 8 практик и бонусы</span>
+                <span class="hidden group-open:inline">Скрыть дополнительные практики</span>
+                <svg class="h-4 w-4 shrink-0 group-open:hidden" style="width:16px;height:16px;flex:0 0 16px" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.173l3.71-3.944a.75.75 0 111.08 1.04l-4.25 4.514a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+                </svg>
+                <svg class="hidden h-4 w-4 shrink-0 group-open:inline" style="width:16px;height:16px;flex:0 0 16px" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 8.827l-3.71 3.944a.75.75 0 11-1.08-1.04l4.25-4.514a.75.75 0 011.08 0l4.25 4.514a.75.75 0 01-.02 1.06z" clip-rule="evenodd"/>
+                </svg>
+            </summary>
+            <div class="mt-6 border-t border-[#edf0e8] pt-6">
+                <p class="mx-auto max-w-3xl text-center text-sm leading-relaxed text-[#5c655c] md:text-base">Практики собраны по логике: от базы к тонусу, от тонуса к контролю и устойчивому результату.</p>
+                <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm"><span class="text-2xl font-light tabular-nums text-[#869274]/75">05</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Таз и раскрытие бёдер</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Комфортная гибкость без боли и рывков.</p></div>
+                    <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm"><span class="text-2xl font-light tabular-nums text-[#869274]/75">06</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Кор и центр</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Стабилизация корпуса и контроль движений.</p></div>
+                    <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm"><span class="text-2xl font-light tabular-nums text-[#869274]/75">07</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Сила + пластика</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Тонус без ощущения “убитой” тренировки.</p></div>
+                    <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm"><span class="text-2xl font-light tabular-nums text-[#869274]/75">08</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Поток на выносливость</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Связки в ритме для энергии и формы.</p></div>
+                    <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm"><span class="text-2xl font-light tabular-nums text-[#869274]/75">09</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Балансы на руках: база</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Пошаговая техника простым языком.</p></div>
+                    <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm"><span class="text-2xl font-light tabular-nums text-[#869274]/75">10</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Гибкость и вытяжение</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Растяжка, которая реально работает в жизни.</p></div>
+                    <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm"><span class="text-2xl font-light tabular-nums text-[#869274]/75">11</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Восстановление и антистресс</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Мягкая практика для нервной системы и сна.</p></div>
+                    <div class="rounded-2xl border border-[#e2e4df] bg-[#fffffa] p-6 shadow-sm"><span class="text-2xl font-light tabular-nums text-[#869274]/75">12</span><h3 class="mt-2 text-lg font-semibold text-[#2d312d]">Финальный flow</h3><p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Собираем всё в цельную практику “под тебя”.</p></div>
+                </div>
+                <div class="mx-auto mt-10 grid max-w-4xl gap-4 md:grid-cols-2">
+                    <p class="rounded-2xl border border-[#869274]/30 bg-[#f0f4ea] px-6 py-5 text-center text-sm font-medium text-[#3d453d] md:text-base">+ Доп. практика на круглые ягодицы и плоский живот</p>
+                    <p class="rounded-2xl border border-[#869274]/30 bg-[#f0f4ea] px-6 py-5 text-center text-sm font-medium text-[#3d453d] md:text-base">+ Видео-разбор балансов на руках простым языком</p>
+                </div>
+            </div>
+        </details>
     </div>
 </section>
 
@@ -396,7 +413,7 @@
                 <p class="mt-1 text-sm font-medium text-[#869274]">Максимум поддержки</p>
                 <p class="mt-4 flex-1 text-sm leading-relaxed text-[#5c655c]">Всё из PROSTO.Yoga плюс личный чат с Сашей, обратная связь по ДЗ, сессия 1:1 и разбор балансов.</p>
                 <p class="mt-8 text-3xl font-semibold tabular-nums text-[#2d312d]">6 900 ₽</p>
-                <p class="mt-1 text-xs text-[#7a837a]">Доступ: 90 дней</p>
+                <p class="mt-1 text-xs text-[#7a837a]">Доступ: 60 дней</p>
                 <ul class="mt-6 space-y-2 text-sm text-[#2d312d]">
                     <li class="flex gap-2"><span class="text-[#869274]">•</span> Всё из тарифа PROSTO.Yoga</li>
                     <li class="flex gap-2"><span class="text-[#869274]">•</span> Личный чат с Сашей</li>
@@ -481,9 +498,9 @@
                 <p class="text-lg font-semibold tracking-tight text-white">Prosto.<span class="text-[#a4b092]">Yoga</span></p>
                 <p class="mt-4 max-w-sm text-sm leading-relaxed text-[#9aa396]">Онлайн-практика для города: дыхание, осанка, движение без давления. Живи в теле — в своём темпе.</p>
                 <div class="mt-8 flex flex-wrap items-center gap-3">
-                    <a href="https://t.me/prostoyoga" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Telegram" aria-label="Telegram"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></a>
-                    <a href="https://instagram.com/prostoyoga" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Instagram" aria-label="Instagram"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg></a>
-                    <a href="https://threads.net/@prostoyoga" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Threads" aria-label="Threads"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></a>
+                    <a href="https://t.me/sasha_vikh" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Telegram" aria-label="Telegram"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></a>
+                    <a href="https://www.instagram.com/sashavikh?igsh=MW1tMjh2cmJwZWJveg==" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Instagram" aria-label="Instagram"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg></a>
+                    <a href="https://www.threads.com/@sashavikh" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Threads" aria-label="Threads"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></a>
                     <a href="https://youtube.com/@prostoyoga" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="YouTube" aria-label="YouTube"><svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
                 </div>
             </div>
@@ -520,8 +537,9 @@
             </div>
         </div>
         <div class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-[#6b7268] md:flex-row">
-            <p>© 2026 Prosto.Yoga. Все права защищены.</p>
+            <p>© 2026 Prosto Yoga. Все права защищены.</p>
             <p class="text-center md:text-right">ИП / самозанятость — реквизиты по запросу на <a href="mailto:hello@prostoyoga.ru" class="text-[#8a9488] underline-offset-2 hover:text-[#c5d4b8]">hello@prostoyoga.ru</a></p>
+            <p class="text-center md:text-right">Сайт сделан мной: <a href="https://t.me/falroman" target="_blank" rel="noopener noreferrer" class="text-[#8a9488] underline-offset-2 hover:text-[#c5d4b8]">@falroman</a></p>
         </div>
     </div>
 </footer>

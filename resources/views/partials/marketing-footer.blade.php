@@ -7,13 +7,13 @@
                         Онлайн-практика для города: дыхание, осанка, движение без давления. Живи в теле — в своём темпе.
                     </p>
                     <div class="mt-8 flex flex-wrap items-center gap-3">
-                        <a href="https://t.me/prostoyoga" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Telegram" aria-label="Telegram">
+                        <a href="https://t.me/sasha_vikh" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Telegram" aria-label="Telegram">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                         </a>
-                        <a href="https://instagram.com/prostoyoga" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Instagram" aria-label="Instagram">
+                        <a href="https://www.instagram.com/sashavikh?igsh=MW1tMjh2cmJwZWJveg==" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Instagram" aria-label="Instagram">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg>
                         </a>
-                        <a href="https://threads.net/@prostoyoga" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Threads" aria-label="Threads">
+                        <a href="https://www.threads.com/@sashavikh" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Threads" aria-label="Threads">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
                                 <circle cx="12" cy="12" r="4"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>
@@ -65,8 +65,9 @@
             </div>
 
         <div class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-[#6b7268] md:flex-row">
-            <p>© {{ date('Y') }} Prosto.Yoga. Все права защищены.</p>
+            <p>© 2026 Prosto Yoga. Все права защищены.</p>
             <p class="text-center md:text-right">ИП / самозанятость — реквизиты по запросу на <a href="mailto:hello@prostoyoga.ru" class="text-[#8a9488] underline-offset-2 hover:text-[#c5d4b8]">hello@prostoyoga.ru</a></p>
+            <p class="text-center md:text-right">Сайт сделан мной: <a href="https://t.me/falroman" target="_blank" rel="noopener noreferrer" class="text-[#8a9488] underline-offset-2 hover:text-[#c5d4b8]">@falroman</a></p>
         </div>
     </div>
 </footer>

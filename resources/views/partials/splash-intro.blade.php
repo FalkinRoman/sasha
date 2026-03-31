@@ -8,7 +8,7 @@
     <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_52%_at_50%_48%,rgba(134,146,116,0.11),transparent_60%)]"></div>
     <div class="relative flex flex-col items-center px-8">
         <svg
-            class="pv-splash__svg h-[min(36vh,240px)] w-auto max-w-[min(76vw,280px)] text-[#7d8b6e]"
+            class="pv-splash__svg h-[min(28vh,180px)] w-auto max-w-[min(64vw,210px)] text-[#7d8b6e]"
             viewBox="0 0 120 128"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
