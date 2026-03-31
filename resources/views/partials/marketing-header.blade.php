@@ -1,7 +1,7 @@
 <header class="sticky top-0 z-40 w-full border-b border-[#ecece8]/80 bg-[#fffffa]/90 backdrop-blur-md">
     <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12">
         <a href="{{ route('home') }}" class="text-lg font-semibold tracking-tight text-[#2d312d] md:text-xl">
-            Prosto<span class="text-[#869274]">Yoga</span>
+            Prosto.<span class="text-[#869274]">Yoga</span>
         </a>
         <nav class="hidden items-center gap-6 text-sm font-medium text-[#7a837a] md:flex lg:gap-8">
             <a href="{{ route('home') }}#results-30" class="pv-nav-marketing">Результаты</a>

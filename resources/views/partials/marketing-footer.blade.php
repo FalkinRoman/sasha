@@ -2,7 +2,7 @@
     <div class="mx-auto max-w-[1440px] px-5 py-16 sm:px-8 lg:px-12">
         <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
                 <div class="lg:col-span-4">
-                    <p class="text-lg font-semibold tracking-tight text-white">Prosto<span class="text-[#a4b092]">Yoga</span></p>
+                    <p class="text-lg font-semibold tracking-tight text-white">Prosto.<span class="text-[#a4b092]">Yoga</span></p>
                     <p class="mt-4 max-w-sm text-sm leading-relaxed text-[#9aa396]">
                         Онлайн-практика для города: дыхание, осанка, движение без давления. Живи в теле — в своём темпе.
                     </p>
@@ -65,7 +65,7 @@
             </div>
 
         <div class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-[#6b7268] md:flex-row">
-            <p>© {{ date('Y') }} ProstoYoga. Все права защищены.</p>
+            <p>© {{ date('Y') }} Prosto.Yoga. Все права защищены.</p>
             <p class="text-center md:text-right">ИП / самозанятость — реквизиты по запросу на <a href="mailto:hello@prostoyoga.ru" class="text-[#8a9488] underline-offset-2 hover:text-[#c5d4b8]">hello@prostoyoga.ru</a></p>
         </div>
     </div>

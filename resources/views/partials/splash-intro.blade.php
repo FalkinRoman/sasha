@@ -50,7 +50,7 @@
             <circle data-splash-draw cx="60" cy="64" r="5.5" stroke="currentColor" stroke-width="1.65" />
         </svg>
         <p class="pv-splash__wordmark mt-8 text-center text-[10px] font-semibold uppercase tracking-[0.48em] text-[#7a837a] opacity-0">
-            Prosto<span class="text-[#869274]">Yoga</span>
+            Prosto.<span class="text-[#869274]">Yoga</span>
         </p>
     </div>
 </div>

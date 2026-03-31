@@ -2,12 +2,9 @@
 <section id="author" class="scroll-mt-24 w-full border-t border-[#ecece8] bg-[#fffffa] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
-            <div class="space-y-6">
+            <div>
                 <div data-pv-reveal class="pv-reveal pv-reveal--lift overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(45,49,45,0.12)] ring-1 ring-[#ecece8]">
-                    <img src="{{ asset('images/figma/yoga-main2.png') }}" alt="Александра Вихорева" class="aspect-[4/5] w-full object-cover object-[center_20%] md:aspect-[3/4]" loading="lazy">
-                </div>
-                <div data-pv-reveal class="pv-reveal pv-reveal--fade overflow-hidden rounded-2xl shadow-md ring-1 ring-[#ecece8]" style="--rv-delay: 0.06s">
-                    <img src="{{ asset('images/figma/yoga-second.png') }}" alt="" class="aspect-video w-full object-cover" loading="lazy">
+                    <img src="{{ asset('images/figma/trainer.png') }}" alt="Александра Вихорева" class="aspect-[4/5] w-full object-cover object-[center_20%] md:aspect-[3/4]" loading="lazy">
                 </div>
             </div>
             <div>
@@ -24,17 +21,26 @@
                     <li class="flex gap-2"><span class="text-[#869274]">·</span> Глубокое знание анатомии и физиологии</li>
                 </ul>
                 <div data-pv-reveal class="pv-reveal pv-reveal--right mt-8 flex flex-wrap gap-2" style="--rv-delay: 0.1s">
-                    <span class="rounded-full border border-[#cfd4c9] bg-[#f6f8f1] px-3 py-1 text-xs font-medium text-[#4a524a]">IVI</span>
-                    <span class="rounded-full border border-[#cfd4c9] bg-[#f6f8f1] px-3 py-1 text-xs font-medium text-[#4a524a]">Okko</span>
-                    <span class="rounded-full border border-[#cfd4c9] bg-[#f6f8f1] px-3 py-1 text-xs font-medium text-[#4a524a]">Fitmost</span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-[#cfd4c9] bg-[#f6f8f1] px-3 py-1 text-xs font-medium text-[#4a524a]">
+                        <img src="{{ asset('images/figma/ivi.svg') }}" alt="" class="h-5 w-5 object-contain opacity-90" loading="lazy">
+                        <span>IVI</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-[#cfd4c9] bg-[#f6f8f1] px-3 py-1 text-xs font-medium text-[#4a524a]">
+                        <img src="{{ asset('images/figma/okko.png') }}" alt="" class="h-6 w-6 object-contain opacity-90" loading="lazy">
+                        <span>Okko</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-[#cfd4c9] bg-[#f6f8f1] px-3 py-1 text-xs font-medium text-[#4a524a]">
+                        <img src="{{ asset('images/figma/wc.png') }}" alt="" class="h-5 w-5 object-contain opacity-90" loading="lazy">
+                        <span>WorldClass</span>
+                    </span>
                 </div>
                 <p data-pv-reveal class="pv-reveal pv-reveal--right mt-8 text-lg leading-relaxed text-[#2d312d]" style="--rv-delay: 0.12s">
-                    Мою йогу смотрят на IVI, Okko и Fitmost. Но самое важное — я научилась снимать страх и делать так, чтобы даже новичок через неделю сказал: «Как круто, что я это могу!».
+                    Мою йогу смотрят на IVI, Okko и WorldClass. Но самое важное — я научилась снимать страх и делать так, чтобы даже новичок через неделю сказал: «Как круто, что я это могу!».
                 </p>
             </div>
         </div>
 
-        <div data-pv-reveal class="pv-reveal pv-reveal--fade mt-16 md:mt-20" style="--rv-delay: 0.08s">
+        <div data-pv-reveal class="pv-reveal pv-reveal--fade mt-10 md:mt-12" style="--rv-delay: 0.08s">
             <p class="text-center text-sm font-medium text-[#2d312d]">Из зала, кемпа, дома</p>
             <div class="pv-author-strip mt-6 flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:gap-5 [&::-webkit-scrollbar]:hidden">
                 @foreach ([
