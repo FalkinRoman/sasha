@@ -68,7 +68,7 @@
                 <h2 class="text-lg font-semibold text-white">Поддержка</h2>
                 <p class="mt-3 text-sm text-white/85">Вопросы по доступу, оплате и технике — напиши на почту или в Telegram (ответ в рабочие часы).</p>
                 <a href="{{ route('pages.support') }}" class="mt-4 inline-block text-sm font-medium text-[#c5d4a8] underline underline-offset-2 hover:text-white">Страница поддержки</a>
-                <a href="mailto:support@prostoyoga.ru" class="mt-2 inline-block text-sm text-white/80 hover:text-white">support@prostoyoga.ru</a>
+                <a href="mailto:{{ $contactEmail }}" class="mt-2 inline-block text-sm text-white/80 hover:text-white">{{ $contactEmail }}</a>
                 <p class="mt-4 text-xs text-white/60">Демо-проект: реальные платежи не подключены.</p>
             </div>
         </div>

@@ -49,7 +49,6 @@ class LessonController extends Controller
         $data['body'] = null;
         $data['calories_estimate'] = null;
         $data['is_preview_free'] = $request->boolean('is_preview_free');
-        $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('video_file')) {
             $data['video_path'] = $request->file('video_file')->store('lessons', 'public');
@@ -194,7 +193,6 @@ class LessonController extends Controller
 
         $data = $request->validate($rules);
         $data['is_preview_free'] = $request->boolean('is_preview_free');
-        $data['is_active'] = $request->boolean('is_active');
 
         return $data;
     }

@@ -201,6 +201,59 @@ function initCabinetMobileNav() {
 }
 
 /**
+ * Админка: бургер, выезд сайдбара, закрытие по фону и Escape.
+ */
+function initAdminMobileNav() {
+    const burger = document.getElementById('pv-admin-burger');
+    const aside = document.getElementById('pv-admin-aside');
+    const backdrop = document.getElementById('pv-admin-backdrop');
+    if (!burger || !aside || !backdrop) {
+        return;
+    }
+
+    const open = () => {
+        aside.classList.add('pv-admin-mobile-nav-open');
+        backdrop.classList.add('pv-admin-mobile-nav-open');
+        burger.setAttribute('aria-expanded', 'true');
+        burger.setAttribute('aria-label', 'Закрыть меню');
+        document.body.classList.add('overflow-hidden');
+    };
+
+    const close = () => {
+        aside.classList.remove('pv-admin-mobile-nav-open');
+        backdrop.classList.remove('pv-admin-mobile-nav-open');
+        burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Открыть меню');
+        document.body.classList.remove('overflow-hidden');
+    };
+
+    burger.addEventListener('click', () => {
+        const isOpen = burger.getAttribute('aria-expanded') === 'true';
+        if (isOpen) {
+            close();
+        } else {
+            open();
+        }
+    });
+
+    backdrop.addEventListener('click', close);
+
+    aside.querySelectorAll('a').forEach((a) => {
+        a.addEventListener('click', () => {
+            if (window.matchMedia('(max-width: 767px)').matches) {
+                close();
+            }
+        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
+            close();
+        }
+    });
+}
+
+/**
  * Лендинг: бургер-меню на мобиле (header marketing).
  */
 function initMarketingMobileNav() {
@@ -357,6 +410,7 @@ function initProstoQuiz() {
 document.addEventListener('DOMContentLoaded', () => {
     initSplashIntro();
     initCabinetMobileNav();
+    initAdminMobileNav();
     initMarketingMobileNav();
     initProstoScrollReveal();
     initYouTubePoster();

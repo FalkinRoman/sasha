@@ -15,7 +15,7 @@
                 <h2 class="mt-10 text-xl font-semibold text-[#2d312d]">3. Ограничение ответственности</h2>
                 <p>Практика — на свой страх и риск; при заболеваниях проконсультируйтесь с врачом. Мы не гарантируем конкретный результат.</p>
                 <h2 class="mt-10 text-xl font-semibold text-[#2d312d]">4. Возврат</h2>
-                <p>Условия возврата регулируются законодательством РФ и договором с платёжным агрегатором. Запросы на <a href="mailto:support@prostoyoga.ru" class="text-[#869274] underline underline-offset-2 hover:text-[#2d312d]">support@prostoyoga.ru</a>.</p>
+                <p>Условия возврата регулируются законодательством РФ и договором с платёжным агрегатором. Запросы на <a href="mailto:{{ $contactEmail }}" class="text-[#869274] underline underline-offset-2 hover:text-[#2d312d]">{{ $contactEmail }}</a>.</p>
             </div>
         </div>
     </article>

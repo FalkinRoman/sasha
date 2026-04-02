@@ -14,8 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         User::query()->where('email', 'test@example.com')->delete();
 
+        User::query()->where('email', 'admin@prostoyoga.ru')->delete();
+
         User::query()->updateOrCreate(
-            ['email' => 'admin@prostoyoga.ru'],
+            ['email' => 'prostoyoga@mail.ru'],
             [
                 'name' => 'Администратор',
                 'password' => 'password',
@@ -47,53 +49,54 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        Tariff::query()->insert([
+        foreach (
             [
-                'slug' => 'base',
-                'name' => 'Эконом',
-                'tagline' => '10 тренировок в записи',
-                'description' => 'Полностью самостоятельное прохождение: все практики в записи, без чата и сопровождения.',
-                'price_rub' => 2900,
-                'duration_days' => 30,
-                'includes_telegram' => false,
-                'includes_bonus_materials' => false,
-                'includes_personal_online' => false,
-                'bonus_personal_sessions' => 0,
-                'sort_order' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'slug' => 'community',
-                'name' => 'PROSTO.Yoga',
-                'tagline' => 'Самый популярный формат',
-                'description' => 'Закрытый чат, напоминания, домашние задания, игровой формат, живая встреча с Сашей и бонусы.',
-                'price_rub' => 4900,
-                'duration_days' => 30,
-                'includes_telegram' => true,
-                'includes_bonus_materials' => true,
-                'includes_personal_online' => false,
-                'bonus_personal_sessions' => 0,
-                'sort_order' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'slug' => 'intensive',
-                'name' => 'PROSTO.TOP',
-                'tagline' => 'Максимум поддержки',
-                'description' => 'Всё из PROSTO.Yoga плюс личный чат с Сашей, обратная связь по ДЗ, сессия 1:1 и разбор балансов.',
-                'price_rub' => 6900,
-                'duration_days' => 60,
-                'includes_telegram' => true,
-                'includes_bonus_materials' => true,
-                'includes_personal_online' => true,
-                'bonus_personal_sessions' => 1,
-                'sort_order' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+                [
+                    'slug' => 'base',
+                    'name' => 'Эконом',
+                    'tagline' => '10 тренировок в записи',
+                    'description' => 'Полностью самостоятельное прохождение: все практики в записи, без чата и сопровождения.',
+                    'price_rub' => 2900,
+                    'duration_days' => 30,
+                    'includes_telegram' => false,
+                    'includes_bonus_materials' => false,
+                    'includes_personal_online' => false,
+                    'bonus_personal_sessions' => 0,
+                    'sort_order' => 1,
+                ],
+                [
+                    'slug' => 'community',
+                    'name' => 'PROSTO.Yoga',
+                    'tagline' => 'Самый популярный формат',
+                    'description' => 'Закрытый чат, напоминания, домашние задания, игровой формат, живая встреча с Сашей и бонусы.',
+                    'price_rub' => 4900,
+                    'duration_days' => 30,
+                    'includes_telegram' => true,
+                    'includes_bonus_materials' => true,
+                    'includes_personal_online' => false,
+                    'bonus_personal_sessions' => 0,
+                    'sort_order' => 2,
+                ],
+                [
+                    'slug' => 'intensive',
+                    'name' => 'PROSTO.TOP',
+                    'tagline' => 'Максимум поддержки',
+                    'description' => 'Всё из PROSTO.Yoga плюс личный чат с Сашей, обратная связь по ДЗ, сессия 1:1 и разбор балансов.',
+                    'price_rub' => 6900,
+                    'duration_days' => 60,
+                    'includes_telegram' => true,
+                    'includes_bonus_materials' => true,
+                    'includes_personal_online' => true,
+                    'bonus_personal_sessions' => 1,
+                    'sort_order' => 3,
+                ],
+            ] as $tariffRow
+        ) {
+            Tariff::query()->updateOrCreate(
+                ['slug' => $tariffRow['slug']],
+                $tariffRow
+            );
+        }
 
         PromoCode::query()->updateOrCreate(
             ['code' => 'PRESALE20'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lesson;
+use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -21,6 +22,7 @@ class LessonController extends Controller
         return view('lessons.show', [
             'lesson' => $lesson,
             'purchase' => $user->activePurchase(),
+            'cabinetPresaleMode' => SiteSetting::cabinetPresaleMode(),
         ]);
     }
 }

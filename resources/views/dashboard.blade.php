@@ -20,10 +20,11 @@
                         <div class="min-w-0 flex-1 pr-0 lg:pr-4">
                             <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#869274]">Администратор</p>
                             <h1 class="mt-3 text-2xl font-semibold tracking-tight text-[#2d312d] sm:text-3xl">Панель управления</h1>
-                            <p class="mt-4 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Карточка «Твой путь» для участников здесь скрыта. Ниже — тот же список уроков с превью; открой урок, чтобы проверить видео. Редактирование — в админке.</p>
+                            <p class="mt-4 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Карточка «Твой путь» для участников здесь скрыта. Ниже — тот же список уроков с превью; открой урок, чтобы проверить видео. Редактирование — в админке. Режим предпродажи / запуска курса — в разделе «Настройки».</p>
                         </div>
                         <div class="flex shrink-0 flex-wrap gap-3 pt-1 lg:max-w-md lg:justify-end lg:pt-1">
                             <a href="{{ route('admin.dashboard') }}" class="pv-btn-dark inline-flex px-6 py-2.5 text-sm font-semibold">Админка · обзор</a>
+                            <a href="{{ route('admin.settings.edit') }}" class="inline-flex items-center rounded-full border border-[#cfd4c9] bg-white/80 px-6 py-2.5 text-sm font-medium text-[#2d312d] transition hover:border-[#869274]/50 hover:bg-[#fffffa]">Настройки</a>
                             <a href="{{ route('admin.lessons.index') }}" class="inline-flex items-center rounded-full border border-[#cfd4c9] bg-white/80 px-6 py-2.5 text-sm font-medium text-[#2d312d] transition hover:border-[#869274]/50 hover:bg-[#fffffa]">Уроки и видео</a>
                             <a href="{{ route('admin.purchases.index') }}" class="inline-flex items-center rounded-full border border-[#cfd4c9] bg-white/80 px-6 py-2.5 text-sm font-medium text-[#2d312d] transition hover:border-[#869274]/50 hover:bg-[#fffffa]">Оплаты</a>
                         </div>
@@ -35,7 +36,7 @@
                 <section class="mb-8 overflow-hidden rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50 to-[#fffffa] p-5 shadow-[0_6px_32px_-18px_rgba(45,49,45,0.08)] sm:p-6" aria-label="Ожидание оплаты">
                     <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800/90">Предпродажа · заявка принята</p>
                     <h2 class="mt-2 text-xl font-semibold text-[#2d312d]">Ждём оплату по тарифу «{{ $pendingPurchase->tariff->name }}»</h2>
-                    <p class="mt-3 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Сумма к переводу: <span class="font-semibold tabular-nums text-[#2d312d]">{{ number_format($pendingPurchase->price_rub, 0, ',', ' ') }} ₽</span>@if ($pendingPurchase->discount_rub > 0) <span class="text-[#869274]">(скидка уже учтена)</span>@endif. Реквизиты и комментарий к платежу пришлём отдельным письмом или в чат поддержки. После поступления средств команда подтвердит оплату — доступ откроется автоматически.</p>
+                    <p class="mt-3 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Сумма к переводу: <span class="font-semibold tabular-nums text-[#2d312d]">{{ number_format($pendingPurchase->price_rub, 0, ',', ' ') }} ₽</span>@if ($pendingPurchase->discount_rub > 0) <span class="text-[#869274]">(скидка уже учтена)</span>@endif. Реквизиты и комментарий к платежу — отдельным письмом или на <a href="mailto:{{ $contactEmail }}" class="font-medium text-[#869274] underline underline-offset-2 hover:text-[#2d312d]">{{ $contactEmail }}</a>. После поступления средств команда подтвердит оплату — доступ откроется автоматически.</p>
                     <p class="mt-3 text-xs text-[#7a837a]">Обычно подтверждение в течение 1 рабочего дня.</p>
                 </section>
             @endif
@@ -56,7 +57,13 @@
                                 Курс оплачен · полный доступ
                             </span>
                         </div>
-                        <p class="mt-4 max-w-2xl text-[#5c655c] leading-relaxed">12 практик в своём темпе. Видео открываются по мере публикации — следи за плашками «Скоро» и «Доступно».</p>
+                        <p class="mt-4 max-w-2xl text-[#5c655c] leading-relaxed">
+                            @if ($cabinetPresaleMode ?? false)
+                                12 практик в своём темпе. На этапе предпродажи видео выходят по мере готовности — следи за плашками «Скоро» и «Готовится».
+                            @else
+                                12 практик в своём темпе. Уроки открываются по тарифу; новые видео — по дате публикации (плашки «Скоро» / «Видео»).
+                            @endif
+                        </p>
                     </div>
                     <div class="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:px-8 sm:py-6">
                         <dl class="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 sm:gap-8">
@@ -69,6 +76,8 @@
                                 <dd class="mt-1 text-lg font-semibold text-[#2d312d]">
                                     @if ($purchase->expires_at)
                                         {{ $purchase->expires_at->toRussianLongDate() }}
+                                    @elseif ($cabinetPresaleMode ?? false)
+                                        после запуска — {{ $purchase->tariff->duration_days }} дн.
                                     @else
                                         без срока
                                     @endif
@@ -89,8 +98,14 @@
                     <div class="max-w-2xl">
                         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#869274]">Кабинет</p>
                         <h1 class="mt-3 text-3xl font-semibold text-[#2d312d]">Твой путь</h1>
-                        <p class="mt-3 text-[#7a837a]">12 практик · предпродажа со скидкой. Первое превью открыто после регистрации; полный доступ — после оплаты (пока переводом, онлайн-касса подключается).</p>
-                        <a href="{{ route('tariffs.index') }}" class="pv-btn-olive mt-6 inline-flex px-6 py-2.5">Тарифы и предпродажа</a>
+                        <p class="mt-3 text-[#7a837a]">
+                            @if ($cabinetPresaleMode ?? false)
+                                12 практик · предпродажа со скидкой. Первое превью открыто после регистрации; полный доступ — после оплаты (пока переводом, онлайн-касса подключается).
+                            @else
+                                12 практик. Первое превью — после регистрации; остальные уроки — по выбранному тарифу после оплаты.
+                            @endif
+                        </p>
+                        <a href="{{ route('tariffs.index') }}" class="pv-btn-olive mt-6 inline-flex px-6 py-2.5">{{ ($cabinetPresaleMode ?? false) ? 'Тарифы и предпродажа' : 'Тарифы' }}</a>
                     </div>
                 </section>
             @endif
@@ -110,10 +125,16 @@
             @foreach ($lessons as $lesson)
                 @php
                     $open = $lesson->userCanOpen($user);
-                    $released = $lesson->isMediaReleased();
+                    $released = $lesson->mediaAvailableForUser($user);
                     $thumb = $lesson->posterPublicUrl() ?? $lessonThumbFallback;
-                    $preparing = ! $lesson->is_active;
-                    $showSoonOnThumb = $open && ! $released && ! $lesson->is_preview_free;
+                    $presale = (bool) ($cabinetPresaleMode ?? false);
+                    $preparing = $presale && ! $lesson->is_preview_free;
+                    /* «Скоро» / «Готовится» / затемнение — только в предпродажу; при запуске проекта список без этого */
+                    $showSoonOnThumb = $presale && $open && ! $released && ! $lesson->is_preview_free;
+                    $thumbUnreleasedDim = $presale && ! $released && $open;
+                    /* Запущенный проект: платные открытые уроки в списке сразу «Видео»; превью + релиз — тоже «Видео» рядом с «Бесплатно» */
+                    $showVideoBadge = $open && ($released || ! $presale) && (! $lesson->is_preview_free || $released);
+                    $showPreparingBadge = $presale && $open && ! $lesson->is_preview_free && ! $released;
                 @endphp
                 <a
                     href="{{ $open ? route('lessons.show', $lesson) : route('checkout.show', 'base') }}"
@@ -126,7 +147,7 @@
                                     <img
                                         src="{{ $thumb }}"
                                         alt=""
-                                        class="h-full w-full object-cover object-center transition-[filter,opacity] duration-500 {{ ! $released && $open ? 'opacity-90 saturate-[0.92]' : '' }} group-hover:brightness-[0.97]"
+                                        class="h-full w-full object-cover object-center transition-[filter,opacity] duration-500 {{ $thumbUnreleasedDim ? 'opacity-90 saturate-[0.92]' : '' }} group-hover:brightness-[0.97]"
                                         loading="lazy"
                                         width="320"
                                         height="180"
@@ -145,7 +166,7 @@
                                 <img
                                     src="{{ $thumb }}"
                                     alt=""
-                                    class="h-full w-full object-cover object-center transition-[filter,opacity] duration-500 {{ ! $released && $open ? 'opacity-90 saturate-[0.92]' : '' }} group-hover:brightness-[0.97]"
+                                    class="h-full w-full object-cover object-center transition-[filter,opacity] duration-500 {{ $thumbUnreleasedDim ? 'opacity-90 saturate-[0.92]' : '' }} group-hover:brightness-[0.97]"
                                     loading="lazy"
                                     width="320"
                                     height="180"
@@ -175,9 +196,9 @@
                             @endif
                             @if (! $open)
                                 <span class="rounded-full bg-[#f0f0f0] px-2 py-0.5 text-[10px] text-[#7a837a]">По подписке</span>
-                            @elseif ($released)
+                            @elseif ($showVideoBadge)
                                 <span class="rounded-full bg-[#e8f0e0] px-2 py-0.5 text-[10px] font-medium text-[#4a6b3a]">Видео</span>
-                            @elseif (! $lesson->is_preview_free)
+                            @elseif ($showPreparingBadge)
                                 <span class="pv-lesson-ready-badge pv-lesson-ready-badge--default shrink-0">Готовится</span>
                             @endif
                         </div>

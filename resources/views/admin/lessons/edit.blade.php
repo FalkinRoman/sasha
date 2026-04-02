@@ -82,18 +82,6 @@
             <input type="datetime-local" name="released_at" value="{{ old('released_at', $lesson->released_at?->format('Y-m-d\TH:i')) }}" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white">
             <p class="mt-1 text-xs text-white/45">Пусто = «ещё не опубликовано». Ученик увидит плеер только если дата в прошлом и есть видео (файл или URL).</p>
         </div>
-        <div class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-            <div class="flex cursor-pointer items-center justify-between gap-4">
-                <label for="lesson_is_active" class="min-w-0 cursor-pointer">
-                    <span class="block text-sm font-medium text-white/90">Урок опубликован</span>
-                    <span class="mt-1 block text-xs leading-snug text-white/45">Выключи — карточка у всех в кабинете в режиме «готовится»: превью и текст притушены, плашки «Скоро» и «Готовится» — оливковые. Урок остаётся в списке из 12, открывается как раньше (видео — по дате релиза и файлу).</span>
-                </label>
-                <label for="lesson_is_active" class="relative inline-flex h-8 w-[3.25rem] shrink-0 cursor-pointer items-center rounded-full bg-white/15 transition-colors duration-200 has-[:checked]:bg-[#869274]">
-                    <input id="lesson_is_active" type="checkbox" name="is_active" value="1" @checked(old('is_active', $lesson->is_active)) class="peer sr-only">
-                    <span class="pointer-events-none absolute left-1 top-1 h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] peer-checked:translate-x-[1.35rem]" aria-hidden="true"></span>
-                </label>
-            </div>
-        </div>
         <label class="flex items-center gap-2 text-sm text-white/80">
             <input type="checkbox" name="is_preview_free" value="1" @checked(old('is_preview_free', $lesson->is_preview_free)) class="rounded border-white/20">
             Бесплатное превью

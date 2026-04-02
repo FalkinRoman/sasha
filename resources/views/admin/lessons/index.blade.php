@@ -21,7 +21,6 @@
                     <th class="px-4 py-3">Видео</th>
                     <th class="px-4 py-3">Релиз</th>
                     <th class="px-4 py-3">Превью</th>
-                    <th class="px-4 py-3">Статус</th>
                     <th class="px-4 py-3"></th>
                 </tr>
             </thead>
@@ -51,13 +50,6 @@
                             @endif
                         </td>
                         <td class="px-4 py-3">{{ $lesson->is_preview_free ? 'да' : '—' }}</td>
-                        <td class="px-4 py-3 text-xs">
-                            @if ($lesson->is_active)
-                                <span class="text-emerald-400/90">Опубликован</span>
-                            @else
-                                <span class="text-amber-200/80">Готовится</span>
-                            @endif
-                        </td>
                         <td class="px-4 py-3 whitespace-nowrap">
                             <a href="{{ route('admin.lessons.edit', $lesson) }}" class="text-[#869274] hover:underline">Изменить</a>
                             <form action="{{ route('admin.lessons.destroy', $lesson) }}" method="post" class="ml-3 inline" onsubmit="return confirm('Удалить урок?');">

@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                     <td style="padding:0 28px 28px 28px;">
-                        <p style="margin:0;font-size:13px;line-height:1.5;color:#7a837a;">Если это не ты регистрировалась на prostoyoga.ru — просто проигнорируй письмо.</p>
+                        <p style="margin:0;font-size:13px;line-height:1.5;color:#7a837a;">Если это не ты регистрировалась на prostoyoga.ru — просто проигнорируй письмо. Вопросы: {{ config('prostoy.contact_email') }}</p>
                     </td>
                 </tr>
                 <tr>

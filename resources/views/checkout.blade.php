@@ -26,7 +26,13 @@
         @else
             <div data-pv-reveal class="pv-reveal pv-reveal--up mt-6" style="--rv-delay: 0.1s">
                 <p class="whitespace-nowrap text-3xl font-semibold tabular-nums">{{ number_format($calc['final'], 0, ',', ' ') }} ₽</p>
-                <p class="text-sm text-[#7a837a]">Доступ на {{ $tariff->duration_days }} дней</p>
+                <p class="text-sm text-[#7a837a]">
+                    @if ($presaleMode ?? false)
+                        {{ $tariff->duration_days }} дней доступа (отсчёт — после запуска курса)
+                    @else
+                        Доступ на {{ $tariff->duration_days }} дней
+                    @endif
+                </p>
             </div>
         @endif
 
@@ -66,6 +72,24 @@
 
         <form action="{{ route('checkout.store', $tariff) }}" method="post" class="mt-10 space-y-6">
             @csrf
+            <div>
+                <label for="phone" class="block text-sm font-medium text-[#2d312d]">Телефон <span class="font-normal text-[#7a837a]">(обязательно)</span></label>
+                <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    value="{{ old('phone', auth()->user()->phone) }}"
+                    required
+                    autocomplete="tel"
+                    inputmode="tel"
+                    placeholder="+7 900 000-00-00"
+                    class="mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm"
+                >
+                @error('phone')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p class="mt-1.5 text-xs text-[#7a837a]">Нужен для связи по оплате и доступу к курсу.</p>
+            </div>
             <div>
                 <label for="promocode" class="block text-sm font-medium text-[#2d312d]">Промокод</label>
                 <input type="text" name="promocode" id="promocode" value="{{ old('promocode', request('promocode', session('checkout_promo'))) }}" placeholder="Оставь пустым — применится предпродажная скидка, если активна"

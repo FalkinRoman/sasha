@@ -61,7 +61,7 @@
                         <li><a href="{{ route('pages.support') }}" class="pv-footer-link">Поддержка</a></li>
                     </ul>
                     <p class="mt-6 text-xs leading-relaxed text-[#7a837a]">
-                        <a href="mailto:hello@prostoyoga.ru" class="text-[#c5d4b8] transition duration-500 hover:text-white">hello@prostoyoga.ru</a><br>
+                        <a href="mailto:{{ $contactEmail }}" class="pv-footer-link break-all">{{ $contactEmail }}</a><br>
                         <span class="mt-1 block">Ответ в течение 1–2 рабочих дней</span>
                     </p>
                 </div>
@@ -69,7 +69,7 @@
 
         <div class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-[#6b7268] md:flex-row">
             <p>© 2026 Prosto Yoga. Все права защищены.</p>
-            <p class="text-center md:text-right">ИП / самозанятость — реквизиты по запросу на <a href="mailto:hello@prostoyoga.ru" class="text-[#8a9488] underline-offset-2 hover:text-[#c5d4b8]">hello@prostoyoga.ru</a></p>
+            <p class="text-center md:text-right">ИП / самозанятость — реквизиты по запросу на <a href="mailto:{{ $contactEmail }}" class="pv-footer-link break-all">{{ $contactEmail }}</a></p>
             <p class="text-center md:text-right">Сайт сделан мной: <a href="https://t.me/falroman" target="_blank" rel="noopener noreferrer" class="text-[#8a9488] underline-offset-2 hover:text-[#c5d4b8]">@falroman</a></p>
         </div>
     </div>

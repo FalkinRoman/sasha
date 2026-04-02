@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,7 +22,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Carbon::setLocale(config('app.locale'));
+        /* Сообщения валидации / auth из lang/ru — без этого при отсутствии файлов был бы английский из фреймворка */
+        App::setLocale('ru');
+
+        Carbon::setLocale('ru');
+
+        /* После config:cache без пересборки ключа contact_email бывает null — пустые mailto в футере */
+        $contact = config('prostoy.contact_email');
+        View::share('contactEmail', is_string($contact) && $contact !== '' ? $contact : 'prostoyoga@mail.ru');
 
         /** Не зависит от intl / локали PHP — всегда русские названия месяцев */
         Carbon::macro('toRussianLongDate', function (): string {

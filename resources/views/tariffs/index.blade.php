@@ -9,7 +9,7 @@
         </div>
         <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-3 max-w-2xl text-[#7a837a]" style="--rv-delay: 0.08s">
             @if ($presaleMode ?? false)
-                Предпродажа: скидка уже учтена в цене ниже. После подтверждения оплаты откроется доступ на срок тарифа; видео появляются по мере публикации.
+                Предпродажа: скидка уже учтена в цене ниже. Срок доступа по тарифу начнётся после переключения проекта в режим «запущен» в кабинете администратора; видео — по мере публикации.
             @else
                 Выбери формат доступа. После оплаты уроки открываются в кабинете на срок тарифа.
             @endif
@@ -37,7 +37,13 @@
                     @else
                         <p class="mt-8 whitespace-nowrap text-2xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($tariff->effectivePriceRub(), 0, ',', ' ') }} ₽</p>
                     @endif
-                    <p class="mt-1 text-xs text-[#7a837a]">{{ $tariff->duration_days }} дней доступа</p>
+                    <p class="mt-1 text-xs text-[#7a837a]">
+                        @if ($presaleMode ?? false)
+                            {{ $tariff->duration_days }} дней доступа (отсчёт — после запуска курса)
+                        @else
+                            {{ $tariff->duration_days }} дней доступа
+                        @endif
+                    </p>
                     <ul class="mt-4 space-y-1.5 text-xs text-[#2d312d]">
                         <li>• Все 12 видеопрактик курса</li>
                         @if ($tariff->includes_telegram)

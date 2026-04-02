@@ -49,6 +49,21 @@
     pointer-events: auto;
 }
 
+/* Админка, мобилка: JS вешает класс — transform/opacity не зависят от purge Tailwind */
+#pv-admin-backdrop.pv-admin-mobile-nav-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Tailwind v4: -translate-x-full задаёт свойство `translate`, не `transform` */
+@media (max-width: 767px) {
+    #pv-admin-aside.pv-admin-mobile-nav-open {
+        --tw-translate-x: 0 !important;
+        --tw-translate-y: 0 !important;
+        translate: 0 0 !important;
+    }
+}
+
 /*
  * ProstoYoga motion: очень мягкие кривые (как йога-выдох), длиннее duration, меньше сдвиг.
  */
@@ -126,7 +141,7 @@
         box-shadow: 0 8px 30px -16px rgba(45, 49, 45, 0.08);
     }
 
-    /* Режим «готовится» (is_active = false): тушим только превью и блок с заголовком/описанием; плашки те же, что у опубликованной карточки */
+    /* Режим предпродажи (глобально): тушим превью и текст у не-превью уроков; плашки «Скоро» / «Готовится» как у активной темы */
     .pv-lesson-row--preparing .pv-lesson-row__dim-media {
         opacity: 0.52;
         filter: saturate(0.62) contrast(0.95);
@@ -215,13 +230,32 @@
         @apply relative overflow-hidden rounded-2xl bg-[#eef0ea] shadow-[0_12px_40px_-22px_rgba(45,49,45,0.14)];
     }
 
+    /* Регистрация: длинная форма — сверху, с запасом под «На главную» и safe area */
+    .pv-auth-page-register {
+        @apply min-h-screen min-h-[100dvh] bg-gradient-to-b from-[#eef0ea] via-[#fafaf8] to-[#f4f6f0] px-5 pb-20 pt-[max(1.75rem,calc(1rem+env(safe-area-inset-top,0px)))] sm:px-6 sm:pb-24 sm:pt-[max(2.25rem,calc(1.25rem+env(safe-area-inset-top,0px)))];
+    }
+
+    /* Вход / восстановление: короткий блок — по центру экрана */
+    .pv-auth-page-centered {
+        @apply flex min-h-screen min-h-[100dvh] flex-col bg-gradient-to-b from-[#eef0ea] via-[#fafaf8] to-[#f4f6f0] px-5 sm:px-6;
+    }
+
+    .pv-auth-page-centered__inner {
+        @apply flex w-full flex-1 flex-col justify-center py-6 pt-[max(1.25rem,calc(0.75rem+env(safe-area-inset-top,0px)))] pb-[max(1.25rem,env(safe-area-inset-bottom,0px))] sm:py-10 sm:pt-[max(1.5rem,calc(1rem+env(safe-area-inset-top,0px)))] sm:pb-[max(1.5rem,env(safe-area-inset-bottom,0px))];
+    }
+
+    /* Чуть выше «математического» центра — визуально комфортнее */
+    .pv-auth-page-centered__content {
+        @apply mx-auto w-full max-w-[420px] -translate-y-3 sm:-translate-y-5 md:-translate-y-6;
+    }
+
     /* Вход / регистрация: одна сетка, без «пляшущих» инпутов */
     .pv-auth-card {
         @apply rounded-2xl bg-white p-6 shadow-[0_4px_32px_-8px_rgba(26,29,26,0.12)] ring-1 ring-[#2d312d]/[0.06] sm:p-8;
     }
 
     .pv-auth-form {
-        @apply flex min-w-0 flex-col gap-5;
+        @apply flex min-w-0 flex-col gap-4;
     }
 
     .pv-auth-field {

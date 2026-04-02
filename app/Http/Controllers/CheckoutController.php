@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Purchase;
+use App\Models\SiteSetting;
 use App\Models\Tariff;
 use App\Services\CoursePurchaseService;
+use App\Services\TelegramLeadNotifierService;
 use App\Services\YooKassaPaymentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class CheckoutController extends Controller
@@ -27,31 +30,43 @@ class CheckoutController extends Controller
             'yookassaConfigured' => $this->yooKassa->isConfigured(),
             'priceCalc' => $this->purchaseService->calculatePrices($tariff, $promo),
             'presaleManual' => (bool) config('prostoy.presale_manual_payment'),
-            'presaleMode' => (bool) config('prostoy.presale_mode'),
+            'presaleMode' => SiteSetting::cabinetPresaleMode(),
         ]);
     }
 
-    public function store(Request $request, Tariff $tariff): RedirectResponse
+    public function store(Request $request, Tariff $tariff, TelegramLeadNotifierService $telegram): RedirectResponse
     {
         $request->validate([
             'promocode' => ['nullable', 'string', 'max:32'],
+            'phone' => ['required', 'string', 'max:40'],
         ]);
 
+        $digits = preg_replace('/\D/', '', $request->string('phone')->toString()) ?? '';
+        if (strlen($digits) < 10) {
+            throw ValidationException::withMessages([
+                'phone' => 'Укажи номер телефона полностью — не меньше 10 цифр.',
+            ]);
+        }
+
         $user = $request->user();
+        $user->update(['phone' => $digits]);
+
         $calc = $this->purchaseService->calculatePrices($tariff, $request->input('promocode'));
 
         $manual = (bool) config('prostoy.presale_manual_payment');
         $yookassaOn = $this->yooKassa->isConfigured();
 
         if ($calc['final'] === 0) {
-            $purchase = DB::transaction(function () use ($user, $tariff, $calc) {
+            $purchase = DB::transaction(function () use ($user, $tariff, $calc, $digits, $telegram) {
                 $p = $this->purchaseService->createPendingPurchase(
                     $user,
                     $tariff,
                     $calc['final'],
                     $calc['discount'],
-                    $calc['promo']
+                    $calc['promo'],
+                    $digits
                 );
+                $telegram->notifyPurchaseIntent($p);
                 $this->purchaseService->finalizePurchaseAsPaid($p);
 
                 return $p->fresh('tariff');
@@ -67,8 +82,11 @@ class CheckoutController extends Controller
             $tariff,
             $calc['final'],
             $calc['discount'],
-            $calc['promo']
+            $calc['promo'],
+            $digits
         );
+
+        $telegram->notifyPurchaseIntent($purchase);
 
         if ($manual) {
             return redirect()

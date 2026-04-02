@@ -1,6 +1,6 @@
 <header class="sticky top-0 z-40 w-full border-b border-[#ecece8]/80 bg-[#fffffa]/90 backdrop-blur-md">
     <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12">
-        <a href="{{ route('home') }}" class="text-lg font-semibold tracking-tight text-[#2d312d] md:text-xl">
+        <a href="{{ route('home') }}" class="inline-flex shrink-0 items-center text-lg font-semibold leading-none tracking-tight text-[#2d312d] md:text-xl">
             Prosto.<span class="text-[#869274]">Yoga</span>
         </a>
         <nav class="hidden items-center gap-6 text-sm font-medium text-[#7a837a] md:flex lg:gap-8">
@@ -11,12 +11,12 @@
             <a href="{{ route('home') }}#program" class="pv-nav-marketing">12 практик</a>
             <a href="{{ route('home') }}#tariffs" class="pv-nav-marketing">Тарифы</a>
         </nav>
-        <div class="flex items-center gap-2 text-sm">
+        <div class="flex items-center gap-4 text-sm sm:gap-5">
             @auth
-                <a href="{{ route('dashboard') }}" class="inline-flex rounded-full bg-[#2d312d] px-4 py-2 font-medium text-[#fffffa] transition duration-[650ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:bg-black/80 hover:shadow-md">Кабинет</a>
+                <a href="{{ route('dashboard') }}" class="inline-flex items-center rounded-full bg-[#2d312d] px-3 py-2 text-sm font-medium leading-none text-[#fffffa] transition duration-[650ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:bg-black/80 hover:shadow-md sm:px-4 sm:py-2.5">Кабинет</a>
             @else
-                <a href="{{ route('login') }}" class="pv-nav-marketing hidden px-3 py-2 sm:inline">Вход</a>
-                <a href="{{ route('register') }}" class="inline-flex rounded-full bg-[#869274] px-4 py-2 font-medium text-[#fffffa] transition duration-[650ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:opacity-95 hover:shadow-md">Регистрация</a>
+                <a href="{{ route('login') }}" class="pv-nav-marketing inline-flex items-center px-1 py-2 text-sm sm:px-2">Вход</a>
+                <a href="{{ route('register') }}" class="inline-flex items-center rounded-full bg-[#869274] px-3 py-2 text-sm font-medium leading-none text-[#fffffa] transition duration-[650ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:opacity-95 hover:shadow-md sm:px-4 sm:py-2.5">Регистрация</a>
             @endauth
             <button
                 id="pv-marketing-burger"

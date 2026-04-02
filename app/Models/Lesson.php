@@ -10,14 +10,12 @@ class Lesson extends Model
         'course_slug', 'order_index', 'slug', 'title', 'subtitle',
         'short_description', 'body', 'duration_minutes', 'calories_estimate',
         'video_url', 'video_path', 'cover_image_path', 'released_at', 'is_preview_free',
-        'is_active',
     ];
 
     protected function casts(): array
     {
         return [
             'is_preview_free' => 'boolean',
-            'is_active' => 'boolean',
             'released_at' => 'datetime',
         ];
     }
@@ -49,9 +47,28 @@ class Lesson extends Model
             return false;
         }
 
+        return $this->hasLessonVideoSource();
+    }
+
+    /** Есть ли загруженное видео / ссылка (без учёта даты релиза). */
+    public function hasLessonVideoSource(): bool
+    {
         return $this->hasServerVideo()
             || filled($this->video_url)
             || $this->youtubeVideoId() !== null;
+    }
+
+    /**
+     * Видео можно показывать этому пользователю: участник — только после даты релиза;
+     * админ — любое загруженное видео (проверка кабинета до публикации).
+     */
+    public function mediaAvailableForUser(?User $user): bool
+    {
+        if ($user !== null && $user->is_admin) {
+            return $this->hasLessonVideoSource();
+        }
+
+        return $this->isMediaReleased();
     }
 
     /** Обложка урока в кабинете. Без YouTube — только загруженный файл или null (тогда плейсхолдер в шаблоне). */
@@ -124,5 +141,4 @@ class Lesson extends Model
 
         return null;
     }
-
 }

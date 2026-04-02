@@ -15,7 +15,7 @@
             @endif
         </div>
 
-        @if ($lesson->isMediaReleased())
+        @if ($lesson->mediaAvailableForUser(auth()->user()))
             @php $embedUrl = $lesson->youtubeEmbedUrl(); @endphp
             <div
                 data-pv-reveal
@@ -79,7 +79,13 @@
             <div data-pv-reveal class="pv-reveal pv-reveal--up mt-8 rounded-2xl border border-dashed border-[#cfd4c9] bg-gradient-to-br from-[#f6f8f1] to-[#fffffa] p-8 text-center shadow-[0_8px_32px_-24px_rgba(45,49,45,0.12)]" style="--rv-delay: 0.1s">
                 <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#869274]">Видео готовится</p>
                 <p class="mt-3 text-lg font-semibold text-[#2d312d]">Скоро здесь появится запись практики</p>
-                <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[#5c655c]">Предпродажа: после старта курса загрузим все 12 видео. Пока загляни в описание урока ниже — там уже есть смысл и структура.</p>
+                <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[#5c655c]">
+                    @if ($cabinetPresaleMode ?? false)
+                        Предпродажа: после старта курса загрузим все 12 видео. Пока загляни в описание урока ниже — там уже есть смысл и структура.
+                    @else
+                        Запись откроется в день публикации урока. Ниже — описание и структура практики.
+                    @endif
+                </p>
             </div>
         @endif
 
@@ -94,7 +100,15 @@
             </div>
             <div>
                 <p class="text-xs font-medium uppercase text-[#7a837a]">Доступ</p>
-                <p class="mt-1 text-lg font-semibold">{{ $lesson->is_preview_free ? 'Открыт' : 'По тарифу' }}</p>
+                <p class="mt-1 text-lg font-semibold">
+                    @if ($lesson->is_preview_free)
+                        Открыт
+                    @elseif (auth()->user()->is_admin)
+                        Админ · превью
+                    @else
+                        По тарифу
+                    @endif
+                </p>
             </div>
         </div>
 

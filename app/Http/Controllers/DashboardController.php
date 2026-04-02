@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lesson;
+use App\Models\SiteSetting;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -21,6 +22,7 @@ class DashboardController extends Controller
             'purchase' => $user->activePurchase(),
             'pendingPurchase' => $user->purchases()->where('status', 'pending')->with('tariff')->latest()->first(),
             'presaleManual' => (bool) config('prostoy.presale_manual_payment'),
+            'cabinetPresaleMode' => SiteSetting::cabinetPresaleMode(),
         ]);
     }
 }

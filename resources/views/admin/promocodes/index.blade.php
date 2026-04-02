@@ -11,7 +11,7 @@
         <p class="mt-4 text-sm text-emerald-400">{{ session('ok') }}</p>
     @endif
     <div class="mt-8 overflow-x-auto rounded-2xl border border-white/10">
-        <table class="w-full text-left text-sm">
+        <table class="w-full min-w-[640px] text-left text-sm">
             <thead class="border-b border-white/10 bg-white/5 text-xs uppercase text-white/50">
                 <tr>
                     <th class="px-4 py-3">Код</th>

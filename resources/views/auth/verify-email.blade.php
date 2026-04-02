@@ -3,21 +3,19 @@
 @section('title', 'Подтверждение email — ProstoYoga')
 
 @section('content')
-    <div class="min-h-screen bg-gradient-to-b from-[#eef0ea] via-[#fafaf8] to-[#f4f6f0] px-4 py-10 sm:py-14">
-        <div class="mx-auto w-full max-w-[420px]">
+    <div class="pv-auth-page-centered">
+        <div class="pv-auth-page-centered__inner">
+        <div class="pv-auth-page-centered__content">
             <p class="text-center">
-                <a href="{{ route('home') }}" class="text-sm text-[#7a837a] transition hover:text-[#2d312d]">← На главную</a>
+                <a href="{{ route('home') }}" class="inline-flex min-h-10 items-center justify-center px-2 text-sm text-[#7a837a] transition hover:text-[#2d312d]">← На главную</a>
             </p>
-            <div class="mt-8 text-center">
-                <a href="{{ route('home') }}" class="text-xl font-semibold tracking-tight text-[#2d312d]">Prosto<span class="text-[#869274]">Yoga</span></a>
-            </div>
-            <div class="mt-10 text-center">
+            <div class="mt-4 text-center sm:mt-5">
                 <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#869274]">Безопасность</p>
-                <h1 class="mt-3 text-2xl font-semibold tracking-tight text-[#2d312d]">Проверь почту</h1>
-                <p class="mt-2 text-sm leading-relaxed text-[#5c655c]">Мы отправили 6-значный код на <span class="font-medium text-[#2d312d]">{{ auth()->user()->email }}</span></p>
+                <h1 class="mt-2 text-2xl font-semibold tracking-tight text-[#2d312d]">Проверь почту</h1>
+                <p class="mt-2 text-sm leading-snug text-[#5c655c]">Мы отправили 6-значный код на <span class="font-medium text-[#2d312d]">{{ auth()->user()->email }}</span></p>
             </div>
 
-            <div class="pv-auth-card mt-8">
+            <div class="pv-auth-card mt-6 sm:mt-7">
                 <form method="post" action="{{ route('verification.verify') }}" class="pv-auth-form">
                     @csrf
                     @if ($errors->any())
@@ -38,6 +36,7 @@
                             type="text"
                             name="code"
                             id="code"
+                            value="{{ old('code') }}"
                             inputmode="numeric"
                             autocomplete="one-time-code"
                             maxlength="8"
@@ -45,19 +44,23 @@
                             placeholder="000000"
                             class="pv-auth-input text-center font-mono text-xl tracking-[0.35em]"
                         >
+                        @error('code')
+                            <p class="pv-auth-error" role="alert">{{ $message }}</p>
+                        @enderror
                     </div>
                     <button type="submit" class="pv-auth-submit-olive">Подтвердить</button>
                 </form>
-                <form method="post" action="{{ route('verification.resend') }}" class="mt-4">
+                <form method="post" action="{{ route('verification.resend') }}" class="mt-3">
                     @csrf
-                    <button type="submit" class="w-full text-center text-sm font-medium text-[#869274] underline underline-offset-2 hover:text-[#2d312d]">Отправить код ещё раз</button>
+                    <button type="submit" class="inline-flex min-h-10 w-full items-center justify-center text-sm font-medium text-[#869274] underline underline-offset-2 hover:text-[#2d312d]">Отправить код ещё раз</button>
                 </form>
             </div>
 
-            <form action="{{ route('logout') }}" method="post" class="mt-10 text-center">
+            <form action="{{ route('logout') }}" method="post" class="mt-8 text-center sm:mt-9">
                 @csrf
-                <button type="submit" class="text-sm text-[#7a837a] hover:text-[#2d312d]">Выйти и зайти с другой почты</button>
+                <button type="submit" class="inline-flex min-h-10 items-center justify-center px-2 text-sm text-[#7a837a] hover:text-[#2d312d]">Выйти и зайти с другой почты</button>
             </form>
+        </div>
         </div>
     </div>
 @endsection

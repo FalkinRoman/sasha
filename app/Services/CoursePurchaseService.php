@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\PromoCode;
 use App\Models\Purchase;
 use App\Models\ReferralEarning;
+use App\Models\SiteSetting;
 use App\Models\Tariff;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,7 @@ class CoursePurchaseService
         }
 
         $autoCode = config('prostoy.presale_auto_promo_code');
-        if (config('prostoy.presale_mode') && is_string($autoCode) && $autoCode !== '') {
+        if (SiteSetting::cabinetPresaleMode() && is_string($autoCode) && $autoCode !== '') {
             $presale = PromoCode::query()->whereRaw('UPPER(code) = ?', [mb_strtoupper($autoCode)])->first();
             if ($presale && $presale->isUsable()) {
                 $d = (int) round($base * ($presale->discount_percent / 100));
@@ -61,7 +62,7 @@ class CoursePurchaseService
         ];
     }
 
-    public function createPendingPurchase(User $user, Tariff $tariff, int $finalRub, int $discountRub, ?PromoCode $promo): Purchase
+    public function createPendingPurchase(User $user, Tariff $tariff, int $finalRub, int $discountRub, ?PromoCode $promo, ?string $contactPhone = null): Purchase
     {
         return Purchase::query()->create([
             'user_id' => $user->id,
@@ -69,6 +70,7 @@ class CoursePurchaseService
             'promocode_id' => $promo?->id,
             'price_rub' => $finalRub,
             'discount_rub' => $discountRub,
+            'contact_phone' => $contactPhone,
             'status' => 'pending',
             'paid_at' => null,
             'expires_at' => null,
@@ -88,7 +90,8 @@ class CoursePurchaseService
                 $tariff,
                 $calc['final'],
                 $calc['discount'],
-                $calc['promo']
+                $calc['promo'],
+                null
             );
             $this->finalizePurchaseAsPaid($purchase);
 
@@ -118,10 +121,14 @@ class CoursePurchaseService
                     ?->increment('used_count');
             }
 
+            $expiresAt = SiteSetting::instance()->cabinet_presale_mode
+                ? null
+                : now()->addDays(max(1, (int) $tariff->duration_days));
+
             $locked->update([
                 'status' => 'paid',
                 'paid_at' => now(),
-                'expires_at' => now()->addDays($tariff->duration_days),
+                'expires_at' => $expiresAt,
                 'confirmed_by_user_id' => $confirmedBy?->id,
             ]);
 
@@ -150,5 +157,27 @@ class CoursePurchaseService
     public function attachYooKassaPaymentId(Purchase $purchase, string $paymentId): void
     {
         $purchase->update(['yookassa_payment_id' => $paymentId]);
+    }
+
+    /**
+     * После выхода из предпродажи: для оплаченных покупок без срока — старт отсчёта по тарифу от сегодня.
+     */
+    public function startTariffClockForPaidWithoutExpiry(): int
+    {
+        $n = 0;
+        Purchase::query()
+            ->where('status', 'paid')
+            ->whereNull('expires_at')
+            ->with('tariff')
+            ->orderBy('id')
+            ->chunkById(100, function ($purchases) use (&$n): void {
+                foreach ($purchases as $purchase) {
+                    $days = max(1, (int) ($purchase->tariff?->duration_days ?? 30));
+                    $purchase->update(['expires_at' => now()->addDays($days)]);
+                    $n++;
+                }
+            });
+
+        return $n;
     }
 }

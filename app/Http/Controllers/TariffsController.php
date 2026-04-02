@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SiteSetting;
 use App\Models\Tariff;
 use App\Services\CoursePurchaseService;
 use Illuminate\View\View;
@@ -21,7 +22,7 @@ class TariffsController extends Controller
             'tariffs' => $tariffs,
             'purchase' => auth()->user()->activePurchase(),
             'priceCalcs' => $calcs,
-            'presaleMode' => (bool) config('prostoy.presale_mode'),
+            'presaleMode' => SiteSetting::cabinetPresaleMode(),
             'presaleManual' => (bool) config('prostoy.presale_manual_payment'),
         ]);
     }

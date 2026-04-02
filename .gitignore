@@ -13,6 +13,8 @@
 /.zed
 /auth.json
 /node_modules
+# Статический экспорт / старый GH Pages — не в репозиторий
+/docs
 /public/build
 /public/hot
 /public/storage

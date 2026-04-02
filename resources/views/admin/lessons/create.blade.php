@@ -57,13 +57,6 @@
                         class="mt-2 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 font-mono text-xs text-white"
                     >
                 </div>
-                <div class="rounded-lg border border-white/10 bg-white/[0.03] p-3">
-                    <label class="flex cursor-pointer items-center justify-between gap-3">
-                        <span class="text-sm text-white/80">Сразу опубликовать (не «готовится»)</span>
-                        <input type="checkbox" name="is_active" value="1" @checked(old('is_active', false)) class="h-4 w-4 rounded border-white/20 text-[#869274] focus:ring-[#869274]/40">
-                    </label>
-                    <p class="mt-2 text-xs text-white/40">Без галочки урок попадёт в список как «готовится» — притушенная карточка, яркие плашки.</p>
-                </div>
                 <label class="flex items-center gap-2 text-sm text-white/75">
                     <input type="checkbox" name="is_preview_free" value="1" @checked(old('is_preview_free')) class="rounded border-white/20">
                     Открыть как бесплатное превью (без оплаты)
