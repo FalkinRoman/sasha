@@ -129,6 +129,8 @@
                     $thumb = $lesson->posterPublicUrl() ?? $lessonThumbFallback;
                     $presale = (bool) ($cabinetPresaleMode ?? false);
                     $preparing = $presale && ! $lesson->is_preview_free;
+                    /* Без тарифа в предпродаже — «Скоро», не «По тарифу»; в боевом режиме — «По тарифу» / «По подписке» */
+                    $presaleLocked = $presale && ! $open && ! $lesson->is_preview_free;
                     /* «Скоро» / «Готовится» / затемнение — только в предпродажу; при запуске проекта список без этого */
                     $showSoonOnThumb = $presale && $open && ! $released && ! $lesson->is_preview_free;
                     $thumbUnreleasedDim = $presale && ! $released && $open;
@@ -182,7 +184,9 @@
                                 </span>
                             @endif
                         </div>
-                        @if (! $open)
+                        @if ($presaleLocked)
+                            <span class="pv-lesson-soon-badge pv-lesson-soon-badge--default absolute bottom-1 right-1">Скоро</span>
+                        @elseif (! $open)
                             <span class="absolute bottom-1 right-1 z-20 rounded bg-[#1a1d1a]/80 px-2 py-1 text-[10px] font-medium leading-tight text-[#f4f6ef]">По тарифу</span>
                         @elseif ($showSoonOnThumb)
                             <span class="pv-lesson-soon-badge pv-lesson-soon-badge--default absolute bottom-1 right-1">Скоро</span>
@@ -194,7 +198,9 @@
                             @if ($lesson->is_preview_free)
                                 <span class="rounded-full bg-[#eaf3dd] px-2 py-0.5 text-[10px] font-medium text-[#2d312d]">Бесплатно</span>
                             @endif
-                            @if (! $open)
+                            @if ($presaleLocked)
+                                <span class="pv-lesson-ready-badge pv-lesson-ready-badge--default shrink-0">После старта</span>
+                            @elseif (! $open)
                                 <span class="rounded-full bg-[#f0f0f0] px-2 py-0.5 text-[10px] text-[#7a837a]">По подписке</span>
                             @elseif ($showVideoBadge)
                                 <span class="rounded-full bg-[#e8f0e0] px-2 py-0.5 text-[10px] font-medium text-[#4a6b3a]">Видео</span>
