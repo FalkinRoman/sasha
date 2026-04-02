@@ -19,8 +19,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>
                             </svg>
                         </a>
-                        <a href="https://youtube.com/@prostoyoga" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="YouTube" aria-label="YouTube">
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <a href="https://rutube.ru/channel/44960858/" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="RUTUBE — канал PROSTO.YOGA" aria-label="RUTUBE — канал PROSTO.YOGA">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="2.5" y="5" width="19" height="14" rx="2.5" ry="2.5" stroke-linejoin="round"/>
+                                <path fill="currentColor" stroke="none" d="M10.25 10.2 15.4 12 10.25 13.8V10.2z"/>
+                            </svg>
                         </a>
                     </div>
                 </div>

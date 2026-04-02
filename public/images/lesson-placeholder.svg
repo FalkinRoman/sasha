@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" fill="none">
+  <defs>
+    <linearGradient id="pv-ph-bg" x1="0" y1="0" x2="640" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f4f6ef"/>
+      <stop offset="0.5" stop-color="#fafaf6"/>
+      <stop offset="1" stop-color="#e8ecdf"/>
+    </linearGradient>
+    <linearGradient id="pv-ph-glow" x1="320" y1="80" x2="320" y2="280" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#869274" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#a4b092" stop-opacity="0.04"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#pv-ph-bg)"/>
+  <ellipse cx="320" cy="180" rx="260" ry="120" fill="url(#pv-ph-glow)"/>
+  <!-- Как фирменный знак: Prosto. + Yoga -->
+  <text
+    x="320"
+    y="192"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="46"
+    font-weight="700"
+    letter-spacing="-0.03em"
+  >
+    <tspan fill="#2d312d">Prosto.</tspan><tspan fill="#869274"> Yoga</tspan>
+  </text>
+  <text
+    x="320"
+    y="234"
+    text-anchor="middle"
+    fill="#869274"
+    fill-opacity="0.45"
+    font-family="ui-sans-serif, system-ui, -apple-system, sans-serif"
+    font-size="12"
+    font-weight="600"
+    letter-spacing="0.12em"
+  >практика</text>
+</svg>

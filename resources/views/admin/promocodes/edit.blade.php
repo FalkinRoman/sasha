@@ -18,6 +18,15 @@
             <label class="text-sm text-white/70">Истекает</label>
             <input type="datetime-local" name="expires_at" value="{{ old('expires_at', $promocode->expires_at?->format('Y-m-d\TH:i')) }}" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white">
         </div>
+        <div>
+            <label class="text-sm text-white/70">Партнёр (владелец кода)</label>
+            <select name="owner_user_id" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white">
+                <option value="">— нет —</option>
+                @foreach ($partnerUsers as $u)
+                    <option value="{{ $u->id }}" @selected(old('owner_user_id', $promocode->owner_user_id) == $u->id)>{{ $u->name }} · {{ $u->email }}</option>
+                @endforeach
+            </select>
+        </div>
         <label class="flex items-center gap-2 text-sm text-white/80">
             <input type="hidden" name="is_active" value="0">
             <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $promocode->is_active)) class="rounded border-white/20">

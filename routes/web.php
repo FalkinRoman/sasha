@@ -3,8 +3,10 @@
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\PromoCodeController;
+use App\Http\Controllers\Admin\PurchaseController as AdminPurchaseController;
 use App\Http\Controllers\Admin\ReferralEarningController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CheckoutController;
@@ -62,6 +64,12 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', [EmailVerificationController::class, 'show'])->name('verification.notice');
+    Route::post('/email/verify', [EmailVerificationController::class, 'verify'])->name('verification.verify');
+    Route::post('/email/verify/resend', [EmailVerificationController::class, 'resend'])->name('verification.resend');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/tariffs', TariffsController::class)->name('tariffs.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -74,9 +82,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/welcome', WelcomeController::class)->name('welcome');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/purchases', [AdminPurchaseController::class, 'index'])->name('purchases.index');
+    Route::post('/purchases/{purchase}/confirm', [AdminPurchaseController::class, 'confirm'])->name('purchases.confirm');
     Route::resource('lessons', AdminLessonController::class)->except(['show']);
     Route::resource('promocodes', PromoCodeController::class)->except(['show']);
     Route::get('/referrals', [ReferralEarningController::class, 'index'])->name('referrals.index');

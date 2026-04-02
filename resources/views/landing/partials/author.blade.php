@@ -33,9 +33,13 @@
                         <img src="{{ asset('images/figma/wc.png') }}" alt="" class="h-5 w-5 object-contain opacity-90" loading="lazy">
                         <span>World Class</span>
                     </span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full border border-[#cfd4c9] bg-[#f6f8f1] px-3 py-1 text-xs font-medium text-[#4a524a]">
+                        <img src="{{ asset('images/figma/fit.png') }}" alt="" class="h-5 w-auto max-h-5 max-w-[4.5rem] object-contain object-left opacity-95" loading="lazy">
+                        <span>Fitmost</span>
+                    </span>
                 </div>
                 <p data-pv-reveal class="pv-reveal pv-reveal--right mt-8 text-lg leading-relaxed text-[#2d312d]" style="--rv-delay: 0.12s">
-                    Мою йогу смотрят на IVI, Okko и World Class. Но самое важное — я научилась снимать страх и делать так, чтобы даже новичок через неделю сказал: «Как круто, что я это могу!».
+                    Мою йогу смотрят на IVI, Okko, World Class и в сети Fitmost. Но самое важное — я научилась снимать страх и делать так, чтобы даже новичок через неделю сказал: «Как круто, что я это могу!».
                 </p>
             </div>
         </div>

@@ -49,6 +49,7 @@ class LessonController extends Controller
         $data['body'] = null;
         $data['calories_estimate'] = null;
         $data['is_preview_free'] = $request->boolean('is_preview_free');
+        $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('video_file')) {
             $data['video_path'] = $request->file('video_file')->store('lessons', 'public');
@@ -103,6 +104,21 @@ class LessonController extends Controller
             $data['video_path'] = $request->file('video_file')->store('lessons', 'public');
         }
 
+        if ($request->boolean('remove_cover_image')) {
+            $this->deleteLessonCoverFromDisk($lesson);
+            $data['cover_image_path'] = null;
+        }
+
+        if ($request->hasFile('cover_image')) {
+            $request->validate([
+                'cover_image' => ['required', 'image', 'max:5120'],
+            ]);
+            $this->deleteLessonCoverFromDisk($lesson);
+            $data['cover_image_path'] = $request->file('cover_image')->store('lesson-covers', 'public');
+        }
+
+        $data['released_at'] = $request->filled('released_at') ? $request->date('released_at') : null;
+
         $lesson->update($data);
 
         return redirect()->route('admin.lessons.index')->with('ok', 'Сохранено.');
@@ -111,6 +127,7 @@ class LessonController extends Controller
     public function destroy(Lesson $lesson): RedirectResponse
     {
         $this->deleteLessonVideoFromDisk($lesson);
+        $this->deleteLessonCoverFromDisk($lesson);
         $lesson->delete();
 
         return redirect()->route('admin.lessons.index')->with('ok', 'Урок удалён.');
@@ -141,6 +158,15 @@ class LessonController extends Controller
         Storage::disk('public')->delete($lesson->video_path);
     }
 
+    private function deleteLessonCoverFromDisk(Lesson $lesson): void
+    {
+        if (! is_string($lesson->cover_image_path) || $lesson->cover_image_path === '') {
+            return;
+        }
+
+        Storage::disk('public')->delete($lesson->cover_image_path);
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -168,6 +194,7 @@ class LessonController extends Controller
 
         $data = $request->validate($rules);
         $data['is_preview_free'] = $request->boolean('is_preview_free');
+        $data['is_active'] = $request->boolean('is_active');
 
         return $data;
     }

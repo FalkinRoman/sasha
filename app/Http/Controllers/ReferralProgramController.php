@@ -27,6 +27,9 @@ class ReferralProgramController extends Controller
             $referralEarningsCount = $user->referralEarnings()->count();
         }
 
+        $ownedPromocodes = $user->ownedPromocodes()->get();
+        $referralsRegisteredCount = $user->referrals()->count();
+
         return view('referrals.show', compact(
             'user',
             'commissionPercent',
@@ -37,6 +40,8 @@ class ReferralProgramController extends Controller
             'referralPendingRub',
             'referralPaidRub',
             'referralEarningsCount',
+            'ownedPromocodes',
+            'referralsRegisteredCount',
         ));
     }
 }

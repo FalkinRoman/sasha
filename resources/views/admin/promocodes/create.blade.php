@@ -22,6 +22,16 @@
             <label class="text-sm text-white/70">Истекает</label>
             <input type="datetime-local" name="expires_at" value="{{ old('expires_at') }}" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white">
         </div>
+        <div>
+            <label class="text-sm text-white/70">Привязка к участнику (блогер / партнёр)</label>
+            <select name="owner_user_id" class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white">
+                <option value="">— нет —</option>
+                @foreach ($partnerUsers as $u)
+                    <option value="{{ $u->id }}" @selected(old('owner_user_id') == $u->id)>{{ $u->name }} · {{ $u->email }}</option>
+                @endforeach
+            </select>
+            <p class="mt-1 text-xs text-white/40">Регистрация с этим промокодом закрепит реферала за выбранным пользователем.</p>
+        </div>
         @foreach ($errors->all() as $e)
             <p class="text-sm text-red-400">{{ $e }}</p>
         @endforeach

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
                 'password' => 'password',
                 'is_admin' => true,
                 'referral_code' => 'PROSTOADM',
+                'email_verified_at' => now(),
             ]
         );
 
@@ -31,6 +32,18 @@ class DatabaseSeeder extends Seeder
                 'password' => 'password',
                 'is_admin' => false,
                 'referral_code' => 'PROSTOUSR',
+                'email_verified_at' => now(),
+            ]
+        );
+
+        $partner = User::query()->updateOrCreate(
+            ['email' => 'partner@prostoyoga.ru'],
+            [
+                'name' => 'Партнёр (демо)',
+                'password' => 'password',
+                'is_admin' => false,
+                'referral_code' => 'PARTNER01',
+                'email_verified_at' => now(),
             ]
         );
 
@@ -82,14 +95,41 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-        PromoCode::query()->create([
-            'code' => 'YOGA20',
-            'discount_percent' => 20,
-            'max_uses' => 100,
-            'used_count' => 0,
-            'expires_at' => now()->addMonths(6),
-            'is_active' => true,
-        ]);
+        PromoCode::query()->updateOrCreate(
+            ['code' => 'PRESALE20'],
+            [
+                'discount_percent' => 20,
+                'max_uses' => null,
+                'used_count' => 0,
+                'expires_at' => null,
+                'is_active' => true,
+                'owner_user_id' => null,
+            ]
+        );
+
+        PromoCode::query()->updateOrCreate(
+            ['code' => 'YOGA20'],
+            [
+                'discount_percent' => 20,
+                'max_uses' => 100,
+                'used_count' => 0,
+                'expires_at' => now()->addMonths(6),
+                'is_active' => true,
+                'owner_user_id' => null,
+            ]
+        );
+
+        PromoCode::query()->updateOrCreate(
+            ['code' => 'BLOGGER15'],
+            [
+                'discount_percent' => 15,
+                'max_uses' => null,
+                'used_count' => 0,
+                'expires_at' => null,
+                'is_active' => true,
+                'owner_user_id' => $partner->id,
+            ]
+        );
 
         PromoCode::query()->firstOrCreate(
             ['code' => 'QUIZ5'],
@@ -237,13 +277,16 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        $demo = 'https://www.youtube.com/embed/jfKfPfyJRdk';
+        Lesson::query()->where('course_slug', 'modern-yoga')->delete();
 
         foreach ($lessons as $row) {
             Lesson::query()->create([
                 ...$row,
                 'course_slug' => 'modern-yoga',
-                'video_url' => $demo,
+                'video_url' => null,
+                'video_path' => null,
+                'cover_image_path' => null,
+                'released_at' => null,
             ]);
         }
     }

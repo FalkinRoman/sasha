@@ -21,17 +21,33 @@ class CoursePurchaseService
     public function calculatePrices(Tariff $tariff, ?string $promoCodeInput): array
     {
         $base = $tariff->effectivePriceRub();
-        $discount = 0;
-        $promo = null;
+        $candidates = [];
 
         if ($promoCodeInput) {
-            $promo = PromoCode::query()
-                ->whereRaw('UPPER(code) = ?', [mb_strtoupper($promoCodeInput)])
+            $p = PromoCode::query()
+                ->whereRaw('UPPER(code) = ?', [mb_strtoupper(trim($promoCodeInput))])
                 ->first();
-            if ($promo && $promo->isUsable()) {
-                $discount = (int) round($base * ($promo->discount_percent / 100));
-            } else {
-                $promo = null;
+            if ($p && $p->isUsable()) {
+                $d = (int) round($base * ($p->discount_percent / 100));
+                $candidates[] = ['discount' => $d, 'promo' => $p];
+            }
+        }
+
+        $autoCode = config('prostoy.presale_auto_promo_code');
+        if (config('prostoy.presale_mode') && is_string($autoCode) && $autoCode !== '') {
+            $presale = PromoCode::query()->whereRaw('UPPER(code) = ?', [mb_strtoupper($autoCode)])->first();
+            if ($presale && $presale->isUsable()) {
+                $d = (int) round($base * ($presale->discount_percent / 100));
+                $candidates[] = ['discount' => $d, 'promo' => $presale];
+            }
+        }
+
+        $discount = 0;
+        $promo = null;
+        foreach ($candidates as $c) {
+            if ($c['discount'] > $discount) {
+                $discount = $c['discount'];
+                $promo = $c['promo'];
             }
         }
 
@@ -80,9 +96,9 @@ class CoursePurchaseService
         });
     }
 
-    public function finalizePurchaseAsPaid(Purchase $purchase): void
+    public function finalizePurchaseAsPaid(Purchase $purchase, ?User $confirmedBy = null): void
     {
-        DB::transaction(function () use ($purchase) {
+        DB::transaction(function () use ($purchase, $confirmedBy) {
             $locked = Purchase::query()->whereKey($purchase->id)->lockForUpdate()->first();
 
             if (! $locked || $locked->status === 'paid') {
@@ -106,6 +122,7 @@ class CoursePurchaseService
                 'status' => 'paid',
                 'paid_at' => now(),
                 'expires_at' => now()->addDays($tariff->duration_days),
+                'confirmed_by_user_id' => $confirmedBy?->id,
             ]);
 
             $locked->load('user');

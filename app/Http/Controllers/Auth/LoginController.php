@@ -28,6 +28,11 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
+        $user = $request->user();
+        if ($user && ! $user->hasVerifiedEmail()) {
+            return redirect()->intended(route('verification.notice'));
+        }
+
         return redirect()->intended(route('dashboard'));
     }
 

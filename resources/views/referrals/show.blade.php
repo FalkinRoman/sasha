@@ -22,9 +22,25 @@
             <header class="mb-8 max-w-2xl">
                 <h1 class="text-3xl font-semibold tracking-tight text-[#2d312d]">Реферальная программа</h1>
                 <p class="mt-2 text-sm leading-relaxed text-[#7a837a]">
-                    Бонус <span class="font-semibold text-[#2d312d]">{{ $commissionPercent }}%</span> от суммы оплаты приглашённого (после скидки по промокоду).
+                    Бонус <span class="font-semibold text-[#2d312d]">{{ $commissionPercent }}%</span> от суммы оплаты приглашённого (после скидки по промокоду). Начисляется <strong>после подтверждения оплаты</strong> администратором или через ЮKassa.
                 </p>
             </header>
+
+            @if ($ownedPromocodes->isNotEmpty())
+                <section class="mb-10 rounded-2xl border border-[#869274]/35 bg-[#f6f8f1]/90 p-6 shadow-sm">
+                    <h2 class="text-xs font-semibold uppercase tracking-[0.22em] text-[#869274]">Твои промокоды от школы</h2>
+                    <p class="mt-2 text-sm text-[#5c655c]">Делись кодом при регистрации — пользователь закрепится за тобой. После его оплаты бонус появится в блоке ниже.</p>
+                    <ul class="mt-4 space-y-2">
+                        @foreach ($ownedPromocodes as $op)
+                            <li class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#dce3db] bg-white px-4 py-3">
+                                <span class="font-mono text-sm font-semibold text-[#2d312d]">{{ $op->code }}</span>
+                                <span class="text-sm text-[#7a837a]">−{{ $op->discount_percent }}%</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <p class="mt-4 text-sm text-[#5c655c]">Зарегистрировались по твоей метке (ссылка или код партнёра): <span class="font-semibold tabular-nums text-[#2d312d]">{{ $referralsRegisteredCount }}</span></p>
+                </section>
+            @endif
 
             <div id="referral-program-root" class="rounded-2xl border border-[#dcdddb] bg-[#fffffa] p-6 shadow-sm md:p-8">
                 <div class="space-y-8">

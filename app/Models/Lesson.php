@@ -3,30 +3,73 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Lesson extends Model
 {
     protected $fillable = [
         'course_slug', 'order_index', 'slug', 'title', 'subtitle',
         'short_description', 'body', 'duration_minutes', 'calories_estimate',
-        'video_url', 'video_path', 'is_preview_free',
+        'video_url', 'video_path', 'cover_image_path', 'released_at', 'is_preview_free',
+        'is_active',
     ];
 
     protected function casts(): array
     {
         return [
             'is_preview_free' => 'boolean',
+            'is_active' => 'boolean',
+            'released_at' => 'datetime',
         ];
     }
 
-    public function userCanWatch(?User $user): bool
+    /** Можно открыть страницу урока (превью или оплаченный доступ). */
+    public function userCanOpen(?User $user): bool
     {
-        if ($this->is_preview_free) {
+        if ($user !== null && $user->is_admin) {
             return true;
         }
 
+        if ($this->is_preview_free) {
+            return $user !== null;
+        }
+
         return $user !== null && $user->hasActiveCourseAccess();
+    }
+
+    /** @deprecated use userCanOpen */
+    public function userCanWatch(?User $user): bool
+    {
+        return $this->userCanOpen($user);
+    }
+
+    /** Видео доступно для просмотра (релиз + источник). */
+    public function isMediaReleased(): bool
+    {
+        if ($this->released_at === null || $this->released_at->isFuture()) {
+            return false;
+        }
+
+        return $this->hasServerVideo()
+            || filled($this->video_url)
+            || $this->youtubeVideoId() !== null;
+    }
+
+    /** Обложка урока в кабинете. Без YouTube — только загруженный файл или null (тогда плейсхолдер в шаблоне). */
+    public function posterPublicUrl(): ?string
+    {
+        if (! is_string($this->cover_image_path) || $this->cover_image_path === '') {
+            return null;
+        }
+
+        return self::publicStorageUrl($this->cover_image_path);
+    }
+
+    /** Корневой относительный URL: не зависит от APP_URL (127.0.0.1:8001 vs localhost). */
+    public static function publicStorageUrl(string $relativePath): string
+    {
+        $path = ltrim(str_replace('\\', '/', $relativePath), '/');
+
+        return '/storage/'.$path;
     }
 
     /** Видеофайл на диске public (приоритетнее внешнего URL при отображении). */
@@ -41,7 +84,7 @@ class Lesson extends Model
             return null;
         }
 
-        return Storage::disk('public')->url($this->video_path);
+        return self::publicStorageUrl($this->video_path);
     }
 
     public function youtubeVideoId(): ?string
@@ -82,11 +125,4 @@ class Lesson extends Model
         return null;
     }
 
-    /** Превью как у YouTube (mqdefault ~ 320×180). Для файла на сервере — null (постер в UI отдельно). */
-    public function thumbnailUrl(): ?string
-    {
-        $id = $this->youtubeVideoId();
-
-        return $id !== null ? "https://img.youtube.com/vi/{$id}/mqdefault.jpg" : null;
-    }
 }

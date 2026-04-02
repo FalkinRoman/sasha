@@ -16,6 +16,7 @@
                 <tr>
                     <th class="px-4 py-3">Код</th>
                     <th class="px-4 py-3">%</th>
+                    <th class="px-4 py-3">Партнёр</th>
                     <th class="px-4 py-3">Исп.</th>
                     <th class="px-4 py-3">Статус</th>
                     <th class="px-4 py-3"></th>
@@ -26,6 +27,7 @@
                     <tr>
                         <td class="px-4 py-3 font-mono">{{ $p->code }}</td>
                         <td class="px-4 py-3">{{ $p->discount_percent }}%</td>
+                        <td class="px-4 py-3 text-xs text-white/60">{{ $p->owner?->email ?? '—' }}</td>
                         <td class="px-4 py-3">{{ $p->used_count }} / {{ $p->max_uses ?? '∞' }}</td>
                         <td class="px-4 py-3">{{ $p->is_active ? 'активен' : 'выкл' }}</td>
                         <td class="px-4 py-3">

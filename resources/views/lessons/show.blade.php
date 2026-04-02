@@ -15,7 +15,7 @@
             @endif
         </div>
 
-        @if ($lesson->hasServerVideo() || $lesson->video_url)
+        @if ($lesson->isMediaReleased())
             @php $embedUrl = $lesson->youtubeEmbedUrl(); @endphp
             <div
                 data-pv-reveal
@@ -52,11 +52,14 @@
                                 data-youtube-poster-btn
                             >
                                 <img
-                                    src="{{ asset('images/figma/promo.png') }}"
+                                    src="{{ $lesson->posterPublicUrl() ?? asset('images/lesson-placeholder.svg') }}"
                                     alt=""
                                     class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
                                     width="1200"
                                     height="675"
+                                    decoding="async"
+                                    data-pv-fallback="{{ asset('images/lesson-placeholder.svg') }}"
+                                    onerror="if(this.dataset.pvFallback){this.onerror=null;this.src=this.dataset.pvFallback;}"
                                 >
                                 <span class="pv-video-playhint">
                                     <span class="pv-video-playhint-icon">
@@ -71,6 +74,12 @@
                         </div>
                     @endif
                 </div>
+            </div>
+        @elseif ($lesson->userCanOpen(auth()->user()))
+            <div data-pv-reveal class="pv-reveal pv-reveal--up mt-8 rounded-2xl border border-dashed border-[#cfd4c9] bg-gradient-to-br from-[#f6f8f1] to-[#fffffa] p-8 text-center shadow-[0_8px_32px_-24px_rgba(45,49,45,0.12)]" style="--rv-delay: 0.1s">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#869274]">Видео готовится</p>
+                <p class="mt-3 text-lg font-semibold text-[#2d312d]">Скоро здесь появится запись практики</p>
+                <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[#5c655c]">Предпродажа: после старта курса загрузим все 12 видео. Пока загляни в описание урока ниже — там уже есть смысл и структура.</p>
             </div>
         @endif
 

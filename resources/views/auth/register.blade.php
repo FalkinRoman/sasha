@@ -85,6 +85,23 @@
                         >
                     </div>
 
+                    <div class="pv-auth-field">
+                        <label for="promocode" class="pv-auth-label">Промокод <span class="font-normal text-[#7a837a]">(необязательно)</span></label>
+                        <input
+                            type="text"
+                            name="promocode"
+                            id="promocode"
+                            value="{{ old('promocode') }}"
+                            autocomplete="off"
+                            placeholder="Код от партнёра или школы"
+                            class="pv-auth-input"
+                        >
+                        @error('promocode')
+                            <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        <p class="mt-1.5 text-xs leading-snug text-[#7a837a]">Если код привязан к партнёру — он получит реферальный бонус после твоей оплаты.</p>
+                    </div>
+
                     <button type="submit" class="pv-auth-submit-olive">Зарегистрироваться</button>
                 </form>
             </div>

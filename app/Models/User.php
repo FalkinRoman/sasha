@@ -47,6 +47,17 @@ class User extends Authenticatable
         return $this->hasMany(ReferralEarning::class, 'referrer_user_id');
     }
 
+    /** Промокоды, привязанные к участнику (блогер / партнёр). */
+    public function ownedPromocodes(): HasMany
+    {
+        return $this->hasMany(PromoCode::class, 'owner_user_id');
+    }
+
+    public function isPartnerWithPromocodes(): bool
+    {
+        return $this->ownedPromocodes()->exists();
+    }
+
     public function activePurchase(): ?Purchase
     {
         return $this->purchases()
@@ -68,5 +79,10 @@ class User extends Authenticatable
         $p = $this->activePurchase();
 
         return $p !== null && $p->tariff->includes_telegram;
+    }
+
+    public function hasVerifiedEmail(): bool
+    {
+        return $this->email_verified_at !== null;
     }
 }

@@ -10,7 +10,7 @@ class Purchase extends Model
 {
     protected $fillable = [
         'user_id', 'tariff_id', 'promocode_id', 'price_rub', 'discount_rub',
-        'status', 'paid_at', 'expires_at', 'yookassa_payment_id',
+        'status', 'paid_at', 'expires_at', 'yookassa_payment_id', 'confirmed_by_user_id',
     ];
 
     protected function casts(): array
@@ -39,6 +39,11 @@ class Purchase extends Model
     public function referralEarning(): HasOne
     {
         return $this->hasOne(ReferralEarning::class);
+    }
+
+    public function confirmedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'confirmed_by_user_id');
     }
 
     public function isActive(): bool

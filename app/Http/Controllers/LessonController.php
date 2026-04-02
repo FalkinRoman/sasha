@@ -12,7 +12,7 @@ class LessonController extends Controller
     {
         $user = auth()->user();
 
-        if (! $lesson->userCanWatch($user)) {
+        if (! $lesson->userCanOpen($user)) {
             return redirect()
                 ->route('checkout.show', ['tariff' => 'base'])
                 ->with('flash', 'Оформите доступ, чтобы смотреть этот урок.');

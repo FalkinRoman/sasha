@@ -20,9 +20,14 @@ class CheckoutController extends Controller
 
     public function show(Tariff $tariff): View
     {
+        $promo = old('promocode', request('promocode', session('checkout_promo')));
+
         return view('checkout', [
             'tariff' => $tariff,
             'yookassaConfigured' => $this->yooKassa->isConfigured(),
+            'priceCalc' => $this->purchaseService->calculatePrices($tariff, $promo),
+            'presaleManual' => (bool) config('prostoy.presale_manual_payment'),
+            'presaleMode' => (bool) config('prostoy.presale_mode'),
         ]);
     }
 
@@ -34,6 +39,9 @@ class CheckoutController extends Controller
 
         $user = $request->user();
         $calc = $this->purchaseService->calculatePrices($tariff, $request->input('promocode'));
+
+        $manual = (bool) config('prostoy.presale_manual_payment');
+        $yookassaOn = $this->yooKassa->isConfigured();
 
         if ($calc['final'] === 0) {
             $purchase = DB::transaction(function () use ($user, $tariff, $calc) {
@@ -62,7 +70,13 @@ class CheckoutController extends Controller
             $calc['promo']
         );
 
-        if (! $this->yooKassa->isConfigured()) {
+        if ($manual) {
+            return redirect()
+                ->route('dashboard')
+                ->with('flash', 'Заявка на тариф «'.$tariff->name.'» создана. После оплаты по реквизитам мы подтвердим доступ — обычно в течение рабочего дня.');
+        }
+
+        if (! $yookassaOn) {
             $this->purchaseService->finalizePurchaseAsPaid($purchase);
 
             return redirect()
