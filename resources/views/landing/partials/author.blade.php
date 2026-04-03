@@ -48,12 +48,12 @@
             <p class="text-center text-sm font-medium text-[#2d312d]">Из зала, кемпа, дома</p>
             <div class="pv-author-strip mt-6 flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:gap-5 [&::-webkit-scrollbar]:hidden">
                 @foreach ([
-                    ['yoga-main3.png', 'Зал: поток и техника'],
-                    ['yoga-first.png', 'Кемп: энергия группы'],
-                    ['trainer.png', 'Дом: твой ритм'],
+                    ['resume1.png', 'Зал: поток и техника'],
+                    ['resume2.webp', 'Кемп: энергия группы'],
+                    ['resume3.png', 'Дом: твой ритм'],
                     ['yoga-main2.png', 'Разбор поз'],
-                    ['yoga-first.png', 'Практика без давления'],
-                    ['yoga-main3.png', 'Улыбка после сессии'],
+                    ['resume4.webp', 'Практика без давления'],
+                    ['resume6.webp', 'Улыбка после сессии'],
                 ] as $slide)
                     <figure class="w-[min(240px,78vw)] shrink-0 snap-start overflow-hidden rounded-xl ring-1 ring-[#ecece8]">
                         <img src="{{ asset('images/figma/'.$slide[0]) }}" alt="" class="aspect-[4/5] w-full object-cover" loading="lazy">

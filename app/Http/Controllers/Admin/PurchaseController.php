@@ -40,4 +40,15 @@ class PurchaseController extends Controller
             ->route('admin.purchases.index')
             ->with('ok', 'Оплата подтверждена, доступ выдан.');
     }
+
+    public function cancel(Request $request, Purchase $purchase): RedirectResponse
+    {
+        abort_unless($purchase->status === 'pending', 404);
+
+        $purchase->update(['status' => 'cancelled']);
+
+        return redirect()
+            ->route('admin.purchases.index')
+            ->with('ok', 'Заявка #'.$purchase->id.' отменена.');
+    }
 }

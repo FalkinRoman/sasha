@@ -18,15 +18,6 @@
             <div class="pv-auth-card mt-6 sm:mt-7">
                 <form method="post" action="{{ route('verification.verify') }}" class="pv-auth-form">
                     @csrf
-                    @if ($errors->any())
-                        <div class="pv-auth-errors" role="alert">
-                            <ul class="list-none space-y-1.5">
-                                @foreach ($errors->all() as $e)
-                                    <li class="text-sm leading-snug">{{ $e }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                     @if (session('flash'))
                         <p class="mb-4 rounded-xl border border-[#dce3db] bg-[#f6f8f1] px-4 py-3 text-sm text-[#2d312d]">{{ session('flash') }}</p>
                     @endif
@@ -42,11 +33,8 @@
                             maxlength="8"
                             required
                             placeholder="000000"
-                            class="pv-auth-input text-center font-mono text-xl tracking-[0.35em]"
+                            @class(['pv-auth-input text-center font-mono text-xl tracking-[0.35em]', 'pv-input-error' => $errors->has('code')])
                         >
-                        @error('code')
-                            <p class="pv-auth-error" role="alert">{{ $message }}</p>
-                        @enderror
                     </div>
                     <button type="submit" class="pv-auth-submit-olive">Подтвердить</button>
                 </form>

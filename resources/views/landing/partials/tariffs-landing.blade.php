@@ -34,10 +34,27 @@
 
 <section id="tariffs" class="scroll-mt-24 w-full bg-gradient-to-b from-[#f6f8f1] to-[#fffffa] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+        @php
+            $landingPresalePct = null;
+            if (($presaleMode ?? false) && ! empty($landingPriceCalcs ?? [])) {
+                foreach ($landingPriceCalcs as $c) {
+                    if (($c['discount'] ?? 0) > 0 && ($c['discount_percent'] ?? null) !== null) {
+                        $landingPresalePct = (int) $c['discount_percent'];
+                        break;
+                    }
+                }
+            }
+        @endphp
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-2xl text-center">
             <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#869274]">Варианты участия</p>
             <h2 class="mt-3 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Выбери свой формат</h2>
-            <p class="mt-4 text-lg text-[#5c655c]">Оплата онлайн — доступ в кабинете сразу после подтверждения.</p>
+            @if ($presaleMode ?? false)
+                <p class="mt-4 text-lg text-[#5c655c]">
+                    <span class="font-semibold text-[#2d312d]">Предпродажа</span>@if ($landingPresalePct !== null): скидка <span class="font-semibold text-[#2d312d]">{{ $landingPresalePct }}%</span>@endif — зачёркнута цена до скидки, ниже итог. Доступ по тарифу — после запуска курса.
+                </p>
+            @else
+                <p class="mt-4 text-lg text-[#5c655c]">Оплата онлайн — доступ в кабинете сразу после подтверждения.</p>
+            @endif
         </div>
 
         <div class="mt-16 grid gap-8 lg:grid-cols-3 lg:gap-6 xl:gap-8">
@@ -60,18 +77,34 @@
                         <p class="mt-1 text-sm font-medium text-[#869274]">{{ $tariff->tagline }}</p>
                     @endif
                     <p class="mt-4 flex-1 text-sm leading-relaxed text-[#5c655c]">{{ $tariff->description }}</p>
-                    <p class="mt-8 whitespace-nowrap text-3xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($tariff->effectivePriceRub(), 0, ',', ' ') }} ₽</p>
-                    <p class="mt-1 text-xs text-[#7a837a]">Доступ: {{ $tariff->duration_days }} дней</p>
+                    @include('partials.tariff-presale-price', [
+                        'tariff' => $tariff,
+                        'pc' => ($landingPriceCalcs ?? [])[$tariff->id] ?? null,
+                        'presaleMode' => $presaleMode ?? false,
+                        'finalClass' => 'text-3xl font-semibold tabular-nums text-[#2d312d] whitespace-nowrap',
+                    ])
+                    <p class="mt-1 text-xs text-[#7a837a]">
+                        @if ($presaleMode ?? false)
+                            Доступ: {{ $tariff->duration_days }} дн. (отсчёт после запуска курса)
+                        @else
+                            Доступ: {{ $tariff->duration_days }} дней
+                        @endif
+                    </p>
                     <ul class="mt-6 space-y-2 text-sm text-[#2d312d]">
                         @foreach ($c['lines'] as $line)
                             <li class="flex gap-2"><span class="text-[#869274]">•</span> {{ $line }}</li>
                         @endforeach
                     </ul>
                     <div class="mt-8 flex flex-col gap-3">
+                        @php
+                            $landingCta = ($presaleMode ?? false) && ($presaleManual ?? false)
+                                ? 'Оформить предпродажу'
+                                : (($presaleMode ?? false) ? 'Оформить со скидкой' : 'Оформить');
+                        @endphp
                         @auth
-                            <a href="{{ route('checkout.show', $tariff) }}" class="pv-btn-dark py-3.5">Оформить</a>
+                            <a href="{{ route('checkout.show', $tariff) }}" class="pv-btn-dark py-3.5">{{ $landingCta }}</a>
                         @else
-                            <a href="{{ route('register') }}" class="pv-btn-olive py-3.5">Регистрация и оплата</a>
+                            <a href="{{ route('register') }}" class="pv-btn-olive py-3.5">{{ ($presaleMode ?? false) ? 'Регистрация и предпродажа' : 'Регистрация и оплата' }}</a>
                         @endauth
                         <a
                             href="{{ auth()->check() ? route('checkout.show', $tariff).'?promocode=QUIZ5' : route('register') }}"

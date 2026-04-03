@@ -19,6 +19,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\TariffsController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\SiteSetting;
 use App\Models\Tariff;
 use App\Services\CoursePurchaseService;
 use Illuminate\Http\Request;
@@ -29,8 +30,19 @@ Route::get('/', function (Request $request) {
         session(['referral_code_pending' => mb_strtoupper($request->string('ref'))]);
     }
 
+    $tariffs = Tariff::query()->orderBy('sort_order')->get();
+    $presaleMode = SiteSetting::cabinetPresaleMode();
+    $purchaseService = app(CoursePurchaseService::class);
+    $landingPriceCalcs = [];
+    foreach ($tariffs as $t) {
+        $landingPriceCalcs[$t->id] = $purchaseService->calculatePrices($t, null);
+    }
+
     return view('landing.home', [
-        'tariffs' => Tariff::query()->orderBy('sort_order')->get(),
+        'tariffs' => $tariffs,
+        'presaleMode' => $presaleMode,
+        'landingPriceCalcs' => $landingPriceCalcs,
+        'presaleManual' => (bool) config('prostoy.presale_manual_payment'),
     ]);
 })->name('home');
 
@@ -61,6 +73,9 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
+    Route::post('/register/check-email', [RegisterController::class, 'checkEmail'])
+        ->middleware('throttle:40,1')
+        ->name('register.check-email');
     Route::post('/register', [RegisterController::class, 'store']);
 
     Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])->name('password.request');
@@ -95,6 +110,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/purchases', [AdminPurchaseController::class, 'index'])->name('purchases.index');
     Route::post('/purchases/{purchase}/confirm', [AdminPurchaseController::class, 'confirm'])->name('purchases.confirm');
+    Route::post('/purchases/{purchase}/cancel', [AdminPurchaseController::class, 'cancel'])->name('purchases.cancel');
     Route::resource('lessons', AdminLessonController::class)->except(['show']);
     Route::resource('promocodes', PromoCodeController::class)->except(['show']);
     Route::get('/referrals', [ReferralEarningController::class, 'index'])->name('referrals.index');

@@ -32,11 +32,8 @@
                             autocomplete="email"
                             autofocus
                             placeholder="name@mail.ru"
-                            class="pv-auth-input"
+                            @class(['pv-auth-input', 'pv-input-error' => $errors->has('email')])
                         >
-                        @error('email')
-                            <p class="pv-auth-error" role="alert">{{ $message }}</p>
-                        @enderror
                     </div>
                     <button type="submit" class="pv-auth-submit-olive">Отправить ссылку</button>
                 </form>

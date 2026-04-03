@@ -15,8 +15,8 @@ class LessonController extends Controller
 
         if (! $lesson->userCanOpen($user)) {
             return redirect()
-                ->route('checkout.show', ['tariff' => 'base'])
-                ->with('flash', 'Оформите доступ, чтобы смотреть этот урок.');
+                ->route('tariffs.index')
+                ->with('flash', 'Чтобы смотреть этот урок, выбери тариф.');
         }
 
         return view('lessons.show', [

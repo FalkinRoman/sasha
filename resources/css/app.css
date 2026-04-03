@@ -230,12 +230,7 @@
         @apply relative overflow-hidden rounded-2xl bg-[#eef0ea] shadow-[0_12px_40px_-22px_rgba(45,49,45,0.14)];
     }
 
-    /* Регистрация: длинная форма — сверху, с запасом под «На главную» и safe area */
-    .pv-auth-page-register {
-        @apply min-h-screen min-h-[100dvh] bg-gradient-to-b from-[#eef0ea] via-[#fafaf8] to-[#f4f6f0] px-5 pb-20 pt-[max(1.75rem,calc(1rem+env(safe-area-inset-top,0px)))] sm:px-6 sm:pb-24 sm:pt-[max(2.25rem,calc(1.25rem+env(safe-area-inset-top,0px)))];
-    }
-
-    /* Вход / восстановление: короткий блок — по центру экрана */
+    /* Вход / регистрация / восстановление: блок по центру по вертикали (длинная форма регистрации скроллится внутри) */
     .pv-auth-page-centered {
         @apply flex min-h-screen min-h-[100dvh] flex-col bg-gradient-to-b from-[#eef0ea] via-[#fafaf8] to-[#f4f6f0] px-5 sm:px-6;
     }
@@ -259,7 +254,7 @@
     }
 
     .pv-auth-field {
-        @apply flex min-w-0 flex-col gap-1.5;
+        @apply flex min-w-0 flex-col gap-2;
     }
 
     .pv-auth-label {
@@ -268,6 +263,62 @@
 
     .pv-auth-input {
         @apply box-border min-h-11 w-full min-w-0 rounded-xl border border-[#dcdddb] bg-[#fafaf8] px-4 py-2.5 text-sm leading-normal text-[#2d312d] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-[color,background-color,border-color,box-shadow] placeholder:text-[#869274]/55 focus:border-[#869274] focus:outline-none focus:ring-2 focus:ring-[#869274]/25;
+    }
+
+    /* Регистрация: сила пароля — рамка в тонах оливы / тёплого песка */
+    .pv-auth-input.pv-reg-pw-input.pv-reg-pw--weak:not(.pv-input-error) {
+        @apply border-[#c9b896] ring-1 ring-[#d4c4a8]/50;
+    }
+
+    .pv-auth-input.pv-reg-pw-input.pv-reg-pw--weak:not(.pv-input-error):focus {
+        @apply border-[#b8a078] ring-2 ring-[#869274]/25;
+    }
+
+    .pv-auth-input.pv-reg-pw-input.pv-reg-pw--medium:not(.pv-input-error) {
+        @apply border-[#a3b18a] ring-1 ring-[#869274]/22;
+    }
+
+    .pv-auth-input.pv-reg-pw-input.pv-reg-pw--strong:not(.pv-input-error) {
+        @apply border-[#869274]/85 ring-1 ring-[#869274]/35;
+    }
+
+    /* Ошибка поля — явный красный (инпуты форм, не чекбоксы) */
+    input:not([type='checkbox']):not([type='radio']):not([type='hidden']).pv-input-error,
+    textarea.pv-input-error,
+    select.pv-input-error {
+        @apply border-red-400 bg-red-50 ring-2 ring-red-200/80;
+    }
+
+    input:not([type='checkbox']):not([type='radio']):not([type='hidden']).pv-input-error:focus,
+    textarea.pv-input-error:focus,
+    select.pv-input-error:focus {
+        @apply border-red-500 ring-red-300/90;
+    }
+
+    .pv-details-error {
+        @apply border-red-200 bg-red-50/90 ring-1 ring-red-200/70;
+    }
+
+    #pv-toast-host {
+        @apply pointer-events-none fixed inset-x-0 bottom-0 z-[200] flex flex-col items-center gap-2 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2;
+    }
+
+    .pv-toast {
+        pointer-events: auto;
+        max-width: min(24rem, calc(100vw - 2rem));
+        @apply rounded-2xl border px-4 py-3 text-sm leading-snug shadow-[0_8px_32px_-12px_rgba(45,49,45,0.25)] opacity-0 translate-y-3 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.33,1,0.68,1)];
+    }
+
+    .pv-toast.is-visible {
+        @apply translate-y-0 opacity-100;
+    }
+
+    .pv-toast--error {
+        @apply border-red-200 bg-red-50 text-red-800;
+    }
+
+    .pv-toast--success {
+        @apply border-[#c5d4b8] bg-[#f6faf0] text-[#2d3d28];
     }
 
     .pv-auth-check-row {
@@ -284,6 +335,32 @@
 
     .pv-auth-errors {
         @apply rounded-xl border border-red-100 bg-red-50/90 px-3 py-2.5 text-red-800;
+    }
+
+    /* Регистрация: согласия под кнопкой — приглушённо, без акцента */
+    .pv-reg-consent-stack {
+        @apply flex flex-col gap-3 pt-1;
+    }
+
+    .pv-reg-consent-row {
+        @apply flex cursor-pointer items-start gap-2.5 text-left;
+    }
+
+    .pv-reg-consent-text {
+        @apply text-[13px] leading-snug text-[#a0a0a0];
+    }
+
+    /* Ссылки как обычный серый текст + подчёркивание, без оливкового/зелёного */
+    .pv-reg-consent-text a {
+        @apply font-normal text-inherit underline underline-offset-2 decoration-[#b8b8b8] transition hover:text-[#8a8a8a];
+    }
+
+    .pv-reg-consent-check {
+        @apply mt-0.5 h-[1.125rem] w-[1.125rem] shrink-0 cursor-pointer rounded-md border border-[#dcdddb] bg-[#fafaf8] text-[#2d312d] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] accent-[#869274] focus:border-[#869274] focus:outline-none focus:ring-2 focus:ring-[#869274]/25 focus:ring-offset-0;
+    }
+
+    .pv-reg-consent-check.pv-input-error {
+        @apply border-red-400 bg-red-50 ring-2 ring-red-200/80;
     }
 
     .pv-auth-submit-dark {
@@ -542,3 +619,126 @@
         animation: none !important;
     }
 }
+/* Лендинг: блок отзывов — «чат», палитра pv-olive + мятный фон как в референсах */
+.pv-chat-thread {
+    box-shadow:
+        0 1px 0 rgba(255, 255, 250, 0.75) inset,
+        0 24px 60px -32px rgba(45, 49, 45, 0.2),
+        0 8px 24px -18px rgba(134, 146, 116, 0.12);
+}
+
+.pv-chat-avatar {
+    display: flex;
+    height: 2.25rem;
+    width: 2.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid rgba(207, 224, 194, 0.95);
+    background: rgba(255, 255, 250, 0.92);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #6d7d62;
+    box-shadow: 0 2px 8px -4px rgba(45, 49, 45, 0.12);
+}
+
+@media (min-width: 640px) {
+    .pv-chat-avatar {
+        height: 2.5rem;
+        width: 2.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+.pv-chat-avatar--host {
+    border-color: rgba(134, 146, 116, 0.45);
+    background: linear-gradient(145deg, #8f9f7c 0%, #869274 100%);
+    color: #fffffa;
+    box-shadow: 0 3px 12px -6px rgba(134, 146, 116, 0.55);
+}
+
+.pv-chat-bubble {
+    max-width: 100%;
+    padding: 0.8rem 1rem 0.45rem;
+}
+
+.pv-chat-bubble--in {
+    position: relative;
+    border-radius: 1.15rem;
+    border-bottom-left-radius: 0.3rem;
+    background: #fffffa;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 250, 0.9) inset,
+        0 6px 24px -12px rgba(45, 49, 45, 0.14),
+        0 2px 8px -6px rgba(45, 49, 45, 0.08);
+}
+
+.pv-chat-bubble--in::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    bottom: 10px;
+    width: 12px;
+    height: 12px;
+    background: #fffffa;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    box-shadow: -2px 2px 6px -4px rgba(45, 49, 45, 0.12);
+}
+
+.pv-chat-bubble--out {
+    position: relative;
+    max-width: min(100%, 20rem);
+    border-radius: 1.15rem;
+    border-bottom-right-radius: 0.3rem;
+    background: linear-gradient(155deg, #909f7e 0%, #869274 55%, #7a8869 100%);
+    color: #fffffa;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.12) inset,
+        0 8px 28px -14px rgba(134, 146, 116, 0.45);
+}
+
+.pv-chat-bubble--out::before {
+    content: '';
+    position: absolute;
+    right: -5px;
+    bottom: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    background: #7a8869;
+    box-shadow: 2px 2px 8px -4px rgba(45, 49, 45, 0.15);
+}
+
+.pv-chat-bubble-meta {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    padding-top: 0.35rem;
+    font-size: 0.6875rem;
+    line-height: 1;
+    color: rgba(106, 122, 106, 0.88);
+    border-top: 1px solid rgba(45, 49, 45, 0.06);
+}
+
+.pv-chat-bubble--out .pv-chat-bubble-meta {
+    color: rgba(255, 255, 250, 0.72);
+    border-top-color: rgba(255, 255, 250, 0.12);
+}
+
+.pv-chat-read {
+    font-size: 0.65rem;
+    letter-spacing: -0.06em;
+    color: #7aab7a;
+    opacity: 0.85;
+}
+
+.pv-chat-bubble--out .pv-chat-read {
+    display: none;
+}
+

@@ -21,11 +21,17 @@
                     <div class="mt-6 space-y-5">
                         <div>
                             <label for="name" class="block text-sm font-medium text-[#2d312d]">Имя</label>
-                            <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
-                                class="mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-1 focus:ring-[#869274]">
-                            @error('name')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                value="{{ old('name', $user->name) }}"
+                                required
+                                @class([
+                                    'mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-1 focus:ring-[#869274]',
+                                    'pv-input-error' => $errors->has('name'),
+                                ])
+                            >
                         </div>
                         <div>
                             <p class="text-sm font-medium text-[#2d312d]">Email</p>
@@ -33,19 +39,31 @@
                         </div>
                         <div>
                             <label for="phone" class="block text-sm font-medium text-[#2d312d]">Телефон <span class="font-normal text-[#7a837a]">(необязательно)</span></label>
-                            <input type="text" name="phone" id="phone" value="{{ old('phone', $user->phone) }}" placeholder="+7 …"
-                                class="mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-1 focus:ring-[#869274]">
-                            @error('phone')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <input
+                                type="text"
+                                name="phone"
+                                id="phone"
+                                value="{{ old('phone', $user->phone) }}"
+                                placeholder="+7 …"
+                                @class([
+                                    'mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-1 focus:ring-[#869274]',
+                                    'pv-input-error' => $errors->has('phone'),
+                                ])
+                            >
                         </div>
                         <div>
                             <label for="telegram_username" class="block text-sm font-medium text-[#2d312d]">Telegram <span class="font-normal text-[#7a837a]">(username без t.me)</span></label>
-                            <input type="text" name="telegram_username" id="telegram_username" value="{{ old('telegram_username', $user->telegram_username ? '@'.$user->telegram_username : '') }}" placeholder="@username"
-                                class="mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-1 focus:ring-[#869274]">
-                            @error('telegram_username')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <input
+                                type="text"
+                                name="telegram_username"
+                                id="telegram_username"
+                                value="{{ old('telegram_username', $user->telegram_username ? '@'.$user->telegram_username : '') }}"
+                                placeholder="@username"
+                                @class([
+                                    'mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-1 focus:ring-[#869274]',
+                                    'pv-input-error' => $errors->has('telegram_username'),
+                                ])
+                            >
                         </div>
                     </div>
                     <button type="submit" class="pv-btn-dark mt-8 px-8 py-3 text-sm font-semibold">

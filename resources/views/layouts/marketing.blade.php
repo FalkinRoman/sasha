@@ -12,5 +12,8 @@
 </head>
 <body class="font-sans text-[#2d312d] antialiased">
     @yield('content')
+    @if ($errors->any())
+        <script type="application/json" id="pv-page-errors">@json($errors->messages())</script>
+    @endif
 </body>
 </html>

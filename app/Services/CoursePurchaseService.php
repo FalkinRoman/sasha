@@ -17,7 +17,7 @@ class CoursePurchaseService
     ) {}
 
     /**
-     * @return array{base: int, discount: int, final: int, promo: ?PromoCode}
+     * @return array{base: int, discount: int, final: int, promo: ?PromoCode, discount_percent: ?int}
      */
     public function calculatePrices(Tariff $tariff, ?string $promoCodeInput): array
     {
@@ -59,6 +59,7 @@ class CoursePurchaseService
             'discount' => $discount,
             'final' => $final,
             'promo' => $promo,
+            'discount_percent' => $promo !== null ? (int) $promo->discount_percent : null,
         ];
     }
 

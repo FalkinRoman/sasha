@@ -3,6 +3,7 @@
 @section('title', 'Вход — ProstoYoga')
 
 @section('content')
+    @php($authFail = $errors->has('email'))
     <div class="pv-auth-page-centered">
         <div class="pv-auth-page-centered__inner">
         <div class="pv-auth-page-centered__content">
@@ -32,11 +33,8 @@
                             autocomplete="email"
                             autofocus
                             placeholder="name@mail.ru"
-                            class="pv-auth-input"
+                            @class(['pv-auth-input', 'pv-input-error' => $authFail])
                         >
-                        @error('email')
-                            <p class="pv-auth-error" role="alert">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div class="pv-auth-field">
@@ -51,7 +49,7 @@
                             required
                             autocomplete="current-password"
                             placeholder="Ваш пароль"
-                            class="pv-auth-input"
+                            @class(['pv-auth-input', 'pv-input-error' => $authFail])
                         >
                     </div>
 

@@ -36,19 +36,25 @@ class CheckoutController extends Controller
 
     public function store(Request $request, Tariff $tariff, TelegramLeadNotifierService $telegram): RedirectResponse
     {
+        $user = $request->user();
+        $storedDigits = preg_replace('/\D/', '', (string) ($user->phone ?? '')) ?? '';
+        $hasStoredPhone = strlen($storedDigits) >= 10;
+
         $request->validate([
             'promocode' => ['nullable', 'string', 'max:32'],
-            'phone' => ['required', 'string', 'max:40'],
+            'phone' => [$hasStoredPhone ? 'nullable' : 'required', 'string', 'max:40'],
         ]);
 
-        $digits = preg_replace('/\D/', '', $request->string('phone')->toString()) ?? '';
+        $rawPhone = $request->input('phone');
+        $digits = ($hasStoredPhone && (! is_string($rawPhone) || trim((string) $rawPhone) === ''))
+            ? $storedDigits
+            : (preg_replace('/\D/', '', (string) $rawPhone) ?? '');
         if (strlen($digits) < 10) {
             throw ValidationException::withMessages([
                 'phone' => 'Укажи номер телефона полностью — не меньше 10 цифр.',
             ]);
         }
 
-        $user = $request->user();
         $user->update(['phone' => $digits]);
 
         $calc = $this->purchaseService->calculatePrices($tariff, $request->input('promocode'));
@@ -91,7 +97,7 @@ class CheckoutController extends Controller
         if ($manual) {
             return redirect()
                 ->route('dashboard')
-                ->with('flash', 'Заявка на тариф «'.$tariff->name.'» создана. После оплаты по реквизитам мы подтвердим доступ — обычно в течение рабочего дня.');
+                ->with('flash', 'Заявка принята. Тариф «'.$tariff->name.'». В ближайшее время с тобой свяжется менеджер.');
         }
 
         if (! $yookassaOn) {

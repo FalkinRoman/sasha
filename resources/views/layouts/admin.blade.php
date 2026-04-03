@@ -53,5 +53,8 @@
             @yield('content')
         </main>
     </div>
+    @if ($errors->any())
+        <script type="application/json" id="pv-page-errors">@json($errors->messages())</script>
+    @endif
 </body>
 </html>

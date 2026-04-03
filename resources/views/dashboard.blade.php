@@ -33,11 +33,9 @@
             </section>
         @else
             @if ($pendingPurchase && $presaleManual)
-                <section class="mb-8 overflow-hidden rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50 to-[#fffffa] p-5 shadow-[0_6px_32px_-18px_rgba(45,49,45,0.08)] sm:p-6" aria-label="Ожидание оплаты">
+                <section class="mb-8 overflow-hidden rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50 to-[#fffffa] p-5 shadow-[0_6px_32px_-18px_rgba(45,49,45,0.08)] sm:p-6" aria-label="Заявка на тариф">
                     <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800/90">Предпродажа · заявка принята</p>
-                    <h2 class="mt-2 text-xl font-semibold text-[#2d312d]">Ждём оплату по тарифу «{{ $pendingPurchase->tariff->name }}»</h2>
-                    <p class="mt-3 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Сумма к переводу: <span class="font-semibold tabular-nums text-[#2d312d]">{{ number_format($pendingPurchase->price_rub, 0, ',', ' ') }} ₽</span>@if ($pendingPurchase->discount_rub > 0) <span class="text-[#869274]">(скидка уже учтена)</span>@endif. Реквизиты и комментарий к платежу — отдельным письмом или на <a href="mailto:{{ $contactEmail }}" class="font-medium text-[#869274] underline underline-offset-2 hover:text-[#2d312d]">{{ $contactEmail }}</a>. После поступления средств команда подтвердит оплату — доступ откроется автоматически.</p>
-                    <p class="mt-3 text-xs text-[#7a837a]">Обычно подтверждение в течение 1 рабочего дня.</p>
+                    <p class="mt-3 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Заявка принята. Тариф <span class="font-semibold text-[#2d312d]">«{{ $pendingPurchase->tariff->name }}»</span>. В ближайшее время с тобой свяжется менеджер.</p>
                 </section>
             @endif
 
@@ -139,7 +137,7 @@
                     $showPreparingBadge = $presale && $open && ! $lesson->is_preview_free && ! $released;
                 @endphp
                 <a
-                    href="{{ $open ? route('lessons.show', $lesson) : route('checkout.show', 'base') }}"
+                    href="{{ $open ? route('lessons.show', $lesson) : route('tariffs.index') }}"
                     class="group pv-lesson-row {{ $preparing ? 'pv-lesson-row--preparing' : '' }}"
                 >
                     <div class="relative aspect-video w-[140px] shrink-0 sm:w-[180px] md:w-[200px]">

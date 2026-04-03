@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\PromoCode;
 use App\Models\User;
-use App\Services\EmailVerificationService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -25,14 +24,51 @@ class RegisterController extends Controller
         return view('auth.register');
     }
 
-    public function store(Request $request, EmailVerificationService $emailVerification): RedirectResponse
+    /** AJAX: свободен ли email для регистрации */
+    public function checkEmail(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'promocode' => ['nullable', 'string', 'max:32'],
+        $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255'],
         ]);
+
+        $email = mb_strtolower(trim($request->input('email')));
+        $exists = User::query()->whereRaw('LOWER(email) = ?', [$email])->exists();
+
+        return response()->json([
+            'available' => ! $exists,
+            'message' => $exists
+                ? 'Этот email уже зарегистрирован. Войди или восстанови пароль.'
+                : null,
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $request->validate(
+            [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'phone' => ['required', 'string', 'max:40'],
+                'password' => ['required', 'string', 'min:8', 'max:255'],
+                'promocode' => ['nullable', 'string', 'max:32'],
+                'policy_accept' => ['required', 'accepted'],
+            ],
+            [
+                'policy_accept.required' => 'Отметь согласие с офертой, политикой и обработкой данных.',
+                'policy_accept.accepted' => 'Отметь согласие с офертой, политикой и обработкой данных.',
+                'password.required' => 'Нужен пароль — минимум 8 символов (можно сгенерировать).',
+                'password.min' => 'Пароль не короче 8 символов.',
+            ]
+        );
+
+        $newsletterOptIn = $request->boolean('newsletter_opt_in');
+
+        $digits = preg_replace('/\D/', '', $data['phone']) ?? '';
+        if (strlen($digits) < 10) {
+            throw ValidationException::withMessages([
+                'phone' => 'Укажи номер полностью — не меньше 10 цифр.',
+            ]);
+        }
 
         $registrationPromo = null;
         if (filled($data['promocode'])) {
@@ -67,10 +103,12 @@ class RegisterController extends Controller
         $user = User::query()->create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'phone' => $digits,
+            'password' => $data['password'],
             'referred_by_user_id' => $referrerId,
             'referral_code' => $this->makeUniqueReferralCode(),
-            'email_verified_at' => null,
+            'email_verified_at' => now(),
+            'newsletter_opt_in' => $newsletterOptIn,
         ]);
 
         session()->forget('referral_code_pending');
@@ -81,9 +119,9 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        $emailVerification->sendNewCode($user);
-
-        return redirect()->route('verification.notice');
+        return redirect()
+            ->route('dashboard')
+            ->with('flash', 'Аккаунт создан — добро пожаловать в кабинет.');
     }
 
     private function makeUniqueReferralCode(): string

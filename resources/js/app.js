@@ -407,7 +407,481 @@ function initProstoQuiz() {
     });
 }
 
+const PV_VALIDATION_FIELD_IDS = {
+    name: 'name',
+    email: 'email',
+    phone: 'phone',
+    password: 'password',
+    password_confirmation: 'password_confirmation',
+    promocode: 'promocode',
+    policy_accept: 'policy_accept',
+    newsletter_opt_in: 'newsletter_opt_in',
+    remember: 'remember',
+    code: 'code',
+    telegram_username: 'telegram_username',
+};
+
+function ensurePvToastHost() {
+    let host = document.getElementById('pv-toast-host');
+    if (!host) {
+        host = document.createElement('div');
+        host.id = 'pv-toast-host';
+        host.setAttribute('aria-live', 'polite');
+        document.body.appendChild(host);
+    }
+
+    return host;
+}
+
+/**
+ * @param {string} message
+ * @param {'error'|'success'} [variant]
+ * @param {number} [duration]
+ */
+function pvToast(message, variant = 'error', duration = 5200) {
+    if (!message) {
+        return;
+    }
+    const host = ensurePvToastHost();
+    const el = document.createElement('div');
+    el.className = `pv-toast pv-toast--${variant}`;
+    el.setAttribute('role', 'alert');
+    el.textContent = message;
+    host.appendChild(el);
+    requestAnimationFrame(() => {
+        el.classList.add('is-visible');
+    });
+    window.setTimeout(() => {
+        el.classList.remove('is-visible');
+        window.setTimeout(() => el.remove(), 320);
+    }, duration);
+}
+
+function pvMarkFieldErrorKey(fieldKey) {
+    const id = PV_VALIDATION_FIELD_IDS[fieldKey] || fieldKey;
+    let el = document.getElementById(id);
+    if (!el) {
+        const safe = typeof CSS !== 'undefined' && typeof CSS.escape === 'function' ? CSS.escape(fieldKey) : fieldKey;
+        el = document.querySelector(`[name="${safe}"]`);
+    }
+    if (!el) {
+        return;
+    }
+    el.classList.add('pv-input-error');
+    el.setAttribute('aria-invalid', 'true');
+    if (fieldKey === 'promocode') {
+        el.closest('details')?.classList.add('pv-details-error');
+    }
+}
+
+function pvClearInputError(el) {
+    if (!el?.classList?.contains('pv-input-error')) {
+        return;
+    }
+    el.classList.remove('pv-input-error');
+    el.removeAttribute('aria-invalid');
+    el.closest('details')?.classList.remove('pv-details-error');
+}
+
+function initPvPageValidationFeedback() {
+    const scriptEl = document.getElementById('pv-page-errors');
+    if (!scriptEl) {
+        return;
+    }
+    let data;
+    try {
+        data = JSON.parse(scriptEl.textContent || '{}');
+    } catch {
+        return;
+    }
+    scriptEl.remove();
+    if (!data || typeof data !== 'object') {
+        return;
+    }
+    const keys = Object.keys(data);
+    keys.forEach((key) => pvMarkFieldErrorKey(key));
+    const loginForm = document.querySelector('.pv-auth-form[action*="login"]');
+    if (keys.length === 1 && keys[0] === 'email' && loginForm && document.getElementById('password')) {
+        pvMarkFieldErrorKey('password');
+    }
+    let delay = 0;
+    keys.forEach((k) => {
+        const arr = data[k];
+        if (!Array.isArray(arr)) {
+            return;
+        }
+        arr.forEach((msg) => {
+            window.setTimeout(() => pvToast(msg, 'error'), delay);
+            delay += 140;
+        });
+    });
+}
+
+function initPvInputErrorAutoClear() {
+    document.addEventListener(
+        'input',
+        (e) => {
+            const t = e.target;
+            if (t?.classList?.contains('pv-input-error')) {
+                pvClearInputError(t);
+            }
+        },
+        true
+    );
+    document.addEventListener(
+        'change',
+        (e) => {
+            const t = e.target;
+            if ((t?.type === 'checkbox' || t?.type === 'radio') && t?.classList?.contains('pv-input-error')) {
+                pvClearInputError(t);
+            }
+        },
+        true
+    );
+}
+
+/**
+ * Регистрация: проверка email, два шага, пароль (сила, генерировать, копировать).
+ */
+function initRegisterWizard() {
+    const root = document.getElementById('pv-register-wizard');
+    if (!root) {
+        return;
+    }
+
+    const checkUrl = root.dataset.checkEmailUrl;
+    const csrf = root.dataset.csrf || '';
+    const serverError = root.dataset.serverError === '1';
+
+    const step1 = document.getElementById('pv-reg-step1');
+    const step2 = document.getElementById('pv-reg-step2');
+    const nextBtn = document.getElementById('pv-reg-next');
+    const backBtn = document.getElementById('pv-reg-back');
+    const form = document.getElementById('pv-register-form');
+    const emailInput = document.getElementById('email');
+    const emailHint = document.getElementById('email-hint');
+    const nameInput = document.getElementById('name');
+    const phoneInput = document.getElementById('phone');
+    const phoneHint = document.getElementById('phone-hint');
+    const pwInput = document.getElementById('password');
+    const strengthEl = document.getElementById('pv-reg-strength');
+    const genBtn = document.getElementById('pv-reg-gen');
+    const togglePwBtn = document.getElementById('pv-reg-toggle-pw');
+    const copyBtn = document.getElementById('pv-reg-copy');
+    const policyAccept = document.getElementById('policy_accept');
+    const policyAcceptHint = document.getElementById('policy-accept-hint');
+
+    if (!step1 || !step2 || !nextBtn || !form || !emailInput || !pwInput) {
+        return;
+    }
+
+    const digitsOnly = (v) => String(v || '').replace(/\D/g, '');
+
+    function passwordStrength(pw) {
+        if (pw.length < 8) {
+            return { key: 'weak', text: 'Минимум 8 символов', className: 'text-[#a67c52]' };
+        }
+        let score = 0;
+        if (pw.length >= 10) {
+            score += 1;
+        }
+        if (/\d/.test(pw)) {
+            score += 1;
+        }
+        if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) {
+            score += 1;
+        }
+        if (/[^a-zA-Z0-9]/.test(pw)) {
+            score += 1;
+        }
+        if (score <= 1) {
+            return { key: 'weak', text: 'Пароль можно усилить', className: 'text-[#a67c52]' };
+        }
+        if (score <= 2) {
+            return { key: 'medium', text: 'Нормальный пароль', className: 'text-[#6d8a4a]' };
+        }
+
+        return { key: 'strong', text: 'Надёжный пароль', className: 'text-[#4a7c23]' };
+    }
+
+    function updateStrength() {
+        if (!strengthEl) {
+            return;
+        }
+        const s = passwordStrength(pwInput.value);
+        strengthEl.textContent = s.text;
+        strengthEl.className = `min-h-[1.25rem] text-xs font-medium ${s.className}`;
+        if (!pwInput.classList.contains('pv-input-error')) {
+            pwInput.classList.remove('pv-reg-pw--weak', 'pv-reg-pw--medium', 'pv-reg-pw--strong');
+            const v = pwInput.value;
+            if (v.length > 0) {
+                if (v.length < 8 || s.key === 'weak') {
+                    pwInput.classList.add('pv-reg-pw--weak');
+                } else if (s.key === 'medium') {
+                    pwInput.classList.add('pv-reg-pw--medium');
+                } else {
+                    pwInput.classList.add('pv-reg-pw--strong');
+                }
+            }
+        }
+    }
+
+    function generatePassword() {
+        const lower = 'abcdefghjkmnpqrstuvwxyz';
+        const upper = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+        const num = '23456789';
+        const sym = '!@#$%&*';
+        const len = 14;
+        const buf = new Uint8Array(len);
+        crypto.getRandomValues(buf);
+        let out = '';
+        out += lower[buf[0] % lower.length];
+        out += upper[buf[1] % upper.length];
+        out += num[buf[2] % num.length];
+        out += sym[buf[3] % sym.length];
+        const all = lower + upper + num + sym;
+        for (let i = 4; i < len; i += 1) {
+            out += all[buf[i] % all.length];
+        }
+        const arr = out.split('');
+        for (let i = arr.length - 1; i > 0; i -= 1) {
+            const j = buf[i % buf.length] % (i + 1);
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        pwInput.value = arr.join('');
+        updateStrength();
+    }
+
+    let emailCheckTimer;
+    let lastEmailOk = null;
+
+    async function checkEmailNow(showHint = true) {
+        const email = emailInput.value.trim().toLowerCase();
+        if (!email || !email.includes('@')) {
+            lastEmailOk = null;
+            if (emailHint && showHint) {
+                emailHint.textContent = '';
+                emailHint.className = 'min-h-[1.25rem] text-xs text-[#7a837a]';
+            }
+
+            return false;
+        }
+        if (!checkUrl) {
+            return true;
+        }
+        try {
+            const res = await fetch(checkUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({ email }),
+            });
+            const data = await res.json().catch(() => ({}));
+            const available = Boolean(data.available);
+            lastEmailOk = available;
+            if (emailHint && showHint) {
+                emailHint.textContent = data.message || (available ? 'Email свободен' : 'Этот email уже занят');
+                emailHint.className = available
+                    ? 'min-h-[1.25rem] text-xs text-[#4a7c23]'
+                    : 'min-h-[1.25rem] text-xs text-red-600';
+            }
+            if (!available && showHint) {
+                emailInput.classList.add('pv-input-error');
+                emailInput.setAttribute('aria-invalid', 'true');
+            } else if (available) {
+                emailInput.classList.remove('pv-input-error');
+                emailInput.removeAttribute('aria-invalid');
+            }
+
+            return available;
+        } catch {
+            lastEmailOk = null;
+            if (emailHint && showHint) {
+                emailHint.textContent = 'Не удалось проверить. Повтори через секунду.';
+                emailHint.className = 'min-h-[1.25rem] text-xs text-red-600';
+            }
+            emailInput.classList.add('pv-input-error');
+            emailInput.setAttribute('aria-invalid', 'true');
+
+            return false;
+        }
+    }
+
+    phoneInput?.addEventListener('input', () => {
+        if (phoneHint) {
+            phoneHint.textContent = '';
+            phoneHint.className = 'min-h-[1.25rem] text-xs';
+        }
+    });
+
+    emailInput.addEventListener('input', () => {
+        lastEmailOk = null;
+        if (emailHint) {
+            emailHint.textContent = '';
+            emailHint.className = 'min-h-[1.25rem] text-xs text-[#7a837a]';
+        }
+        window.clearTimeout(emailCheckTimer);
+        emailCheckTimer = window.setTimeout(() => {
+            void checkEmailNow(true);
+        }, 450);
+    });
+
+    emailInput.addEventListener('blur', () => {
+        void checkEmailNow(true);
+    });
+
+    policyAccept?.addEventListener('change', () => {
+        if (policyAccept.checked && policyAcceptHint) {
+            policyAcceptHint.textContent = '';
+            policyAcceptHint.classList.add('hidden');
+        }
+    });
+
+    function goStep2() {
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+        nextBtn.classList.add('hidden');
+        backBtn?.classList.remove('hidden');
+        pwVisible = false;
+        pwInput.type = 'password';
+        const eo = togglePwBtn?.querySelector('[data-pv-pw-eye]');
+        const ec = togglePwBtn?.querySelector('[data-pv-pw-eye-off]');
+        eo?.classList.remove('hidden');
+        ec?.classList.add('hidden');
+        togglePwBtn?.setAttribute('aria-label', 'Показать пароль');
+        pwInput.focus();
+    }
+
+    function goStep1() {
+        step1.classList.remove('hidden');
+        step2.classList.add('hidden');
+        nextBtn.classList.remove('hidden');
+        backBtn?.classList.add('hidden');
+    }
+
+    nextBtn.addEventListener('click', async () => {
+        const name = (nameInput?.value || '').trim();
+        const email = emailInput.value.trim();
+        const phoneDigits = digitsOnly(phoneInput?.value);
+
+        if (name.length < 2) {
+            nameInput?.classList.add('pv-input-error');
+            nameInput?.setAttribute('aria-invalid', 'true');
+            pvToast('Укажи имя — минимум 2 символа.');
+            nameInput?.focus();
+
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            emailInput.classList.add('pv-input-error');
+            emailInput.setAttribute('aria-invalid', 'true');
+            pvToast('Введи корректный email.');
+            emailInput.focus();
+
+            return;
+        }
+        if (phoneDigits.length < 10) {
+            phoneInput?.classList.add('pv-input-error');
+            phoneInput?.setAttribute('aria-invalid', 'true');
+            if (phoneHint) {
+                phoneHint.textContent = '';
+                phoneHint.className = 'min-h-[1.25rem] text-xs';
+            }
+            pvToast('Номер полностью — не меньше 10 цифр.');
+            phoneInput?.focus();
+
+            return;
+        }
+
+        nextBtn.disabled = true;
+        const ok = lastEmailOk === true ? true : await checkEmailNow(true);
+        nextBtn.disabled = false;
+
+        if (!ok) {
+            emailInput.classList.add('pv-input-error');
+            emailInput.setAttribute('aria-invalid', 'true');
+            const msg = emailHint?.textContent?.trim() || 'Проверь email — возможно, он уже занят.';
+            pvToast(msg);
+            emailInput.focus();
+
+            return;
+        }
+
+        if (!policyAccept?.checked) {
+            policyAccept?.classList.add('pv-input-error');
+            policyAccept?.setAttribute('aria-invalid', 'true');
+            pvToast('Отметь согласие с офертой, политикой и обработкой данных.');
+            policyAccept?.focus();
+
+            return;
+        }
+        if (policyAcceptHint) {
+            policyAcceptHint.textContent = '';
+            policyAcceptHint.classList.add('hidden');
+        }
+
+        goStep2();
+    });
+
+    backBtn?.addEventListener('click', () => {
+        goStep1();
+    });
+
+    pwInput.addEventListener('input', updateStrength);
+    updateStrength();
+
+    genBtn?.addEventListener('click', () => {
+        generatePassword();
+    });
+
+    const eyeOpen = togglePwBtn?.querySelector('[data-pv-pw-eye]');
+    const eyeOff = togglePwBtn?.querySelector('[data-pv-pw-eye-off]');
+    let pwVisible = false;
+    togglePwBtn?.addEventListener('click', () => {
+        pwVisible = !pwVisible;
+        pwInput.type = pwVisible ? 'text' : 'password';
+        eyeOpen?.classList.toggle('hidden', pwVisible);
+        eyeOff?.classList.toggle('hidden', !pwVisible);
+        togglePwBtn.setAttribute('aria-label', pwVisible ? 'Скрыть пароль' : 'Показать пароль');
+    });
+
+    copyBtn?.addEventListener('click', async () => {
+        const t = pwInput.value;
+        if (!t) {
+            pvToast('Нечего копировать — сначала введи или сгенерируй пароль.');
+            return;
+        }
+        const prevLabel = copyBtn.getAttribute('aria-label');
+        try {
+            await navigator.clipboard.writeText(t);
+            pvToast('Пароль скопирован.', 'success');
+            copyBtn.setAttribute('aria-label', 'Скопировано');
+            copyBtn.classList.add('text-[#869274]');
+            window.setTimeout(() => {
+                copyBtn.setAttribute('aria-label', prevLabel || 'Копировать пароль');
+                copyBtn.classList.remove('text-[#869274]');
+            }, 1200);
+        } catch {
+            pvToast('Не удалось скопировать — разреши доступ к буферу или скопируй вручную.');
+            copyBtn.setAttribute('aria-label', 'Не удалось скопировать');
+            window.setTimeout(() => {
+                copyBtn.setAttribute('aria-label', prevLabel || 'Копировать пароль');
+            }, 2000);
+        }
+    });
+
+    if (!serverError) {
+        step2.classList.add('hidden');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initPvPageValidationFeedback();
+    initPvInputErrorAutoClear();
     initSplashIntro();
     initCabinetMobileNav();
     initAdminMobileNav();
@@ -416,4 +890,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initYouTubePoster();
     initHeroCounter();
     initProstoQuiz();
+    initRegisterWizard();
 });

@@ -7,9 +7,24 @@
         <div data-pv-reveal class="pv-reveal pv-reveal--up">
             <h1 class="text-3xl font-semibold text-[#2d312d]">Тарифы</h1>
         </div>
+        @php
+            $presalePctIntro = null;
+            if (($presaleMode ?? false) && ! empty($priceCalcs)) {
+                foreach ($priceCalcs as $c) {
+                    if (($c['discount'] ?? 0) > 0 && ($c['discount_percent'] ?? null) !== null) {
+                        $presalePctIntro = (int) $c['discount_percent'];
+                        break;
+                    }
+                }
+            }
+        @endphp
+        @if (session('flash'))
+            <div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">{{ session('flash') }}</div>
+        @endif
+
         <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-3 max-w-2xl text-[#7a837a]" style="--rv-delay: 0.08s">
             @if ($presaleMode ?? false)
-                Предпродажа: скидка уже учтена в цене ниже. Срок доступа по тарифу начнётся после переключения проекта в режим «запущен» в кабинете администратора; видео — по мере публикации.
+                Предпродажа@if ($presalePctIntro !== null): скидка <strong class="font-semibold text-[#2d312d]">{{ $presalePctIntro }}%</strong> уже в ценах ниже@else: скидка уже в ценах ниже@endif. Срок доступа по тарифу начнётся после переключения проекта в режим «запущен» в админке; видео — по мере публикации.
             @else
                 Выбери формат доступа. После оплаты уроки открываются в кабинете на срок тарифа.
             @endif
@@ -29,14 +44,12 @@
                     <h2 class="text-lg font-semibold text-[#2d312d]">{{ $tariff->name }}</h2>
                     <p class="mt-1 text-xs font-medium text-[#869274]">{{ $tariff->tagline }}</p>
                     <p class="mt-3 flex-1 text-sm leading-relaxed text-[#5c655c]">{{ $tariff->description }}</p>
-                    @php $pc = $priceCalcs[$tariff->id] ?? null; @endphp
-                    @if (($presaleMode ?? false) && $pc && $pc['discount'] > 0)
-                        <p class="mt-8 text-sm text-[#7a837a] line-through tabular-nums">{{ number_format($pc['base'], 0, ',', ' ') }} ₽</p>
-                        <p class="mt-1 whitespace-nowrap text-2xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($pc['final'], 0, ',', ' ') }} ₽</p>
-                        <p class="mt-1 text-xs font-medium text-[#869274]">−{{ number_format($pc['discount'], 0, ',', ' ') }} ₽ предпродажа</p>
-                    @else
-                        <p class="mt-8 whitespace-nowrap text-2xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($tariff->effectivePriceRub(), 0, ',', ' ') }} ₽</p>
-                    @endif
+                    @include('partials.tariff-presale-price', [
+                        'tariff' => $tariff,
+                        'pc' => $priceCalcs[$tariff->id] ?? null,
+                        'presaleMode' => $presaleMode ?? false,
+                        'finalClass' => 'text-2xl font-semibold tabular-nums text-[#2d312d] whitespace-nowrap',
+                    ])
                     <p class="mt-1 text-xs text-[#7a837a]">
                         @if ($presaleMode ?? false)
                             {{ $tariff->duration_days }} дней доступа (отсчёт — после запуска курса)
