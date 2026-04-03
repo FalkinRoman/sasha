@@ -11,11 +11,12 @@
             <a href="{{ route('home') }}#program" class="pv-nav-marketing">12 практик</a>
             <a href="{{ route('home') }}#tariffs" class="pv-nav-marketing">Тарифы</a>
         </nav>
-        <div class="flex items-center gap-4 text-sm sm:gap-5">
+        <div class="flex shrink-0 items-center gap-2 text-sm sm:gap-3 md:gap-5">
             @auth
                 <a href="{{ route('dashboard') }}" class="inline-flex items-center rounded-full bg-[#2d312d] px-3 py-2 text-sm font-medium leading-none text-[#fffffa] transition duration-[650ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:bg-black/80 hover:shadow-md sm:px-4 sm:py-2.5">Кабинет</a>
             @else
-                <a href="{{ route('login') }}" class="pv-nav-marketing inline-flex items-center px-1 py-2 text-sm sm:px-2">Вход</a>
+                {{-- На мобилке только CTA «Регистрация» + бургер; «Вход» — в выезжающем меню (меньше шума в баре). --}}
+                <a href="{{ route('login') }}" class="pv-nav-marketing hidden items-center px-1 py-2 md:inline-flex md:px-2">Вход</a>
                 <a href="{{ route('register') }}" class="inline-flex items-center rounded-full bg-[#869274] px-3 py-2 text-sm font-medium leading-none text-[#fffffa] transition duration-[650ms] ease-[cubic-bezier(0.33,1,0.68,1)] hover:-translate-y-px hover:opacity-95 hover:shadow-md sm:px-4 sm:py-2.5">Регистрация</a>
             @endauth
             <button

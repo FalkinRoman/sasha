@@ -8,6 +8,7 @@
 
     @include('landing.partials.hero')
     @include('landing.partials.results-30')
+    @include('landing.partials.practice-gallery')
     @include('landing.partials.preview-strip')
     @include('landing.partials.quiz')
     @include('landing.partials.author')
