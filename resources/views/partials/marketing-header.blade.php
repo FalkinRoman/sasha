@@ -1,4 +1,8 @@
-<header class="sticky top-0 z-40 w-full border-b border-[#ecece8]/80 bg-[#fffffa]/90 backdrop-blur-md">
+<div class="sticky top-0 z-40 pt-[env(safe-area-inset-top,0px)]">
+@if (! empty($presaleTopBar ?? $presaleMode ?? false))
+    @include('partials.presale-top-bar')
+@endif
+<header class="w-full border-b border-[#ecece8]/80 bg-[#fffffa]/90 backdrop-blur-md">
     <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12">
         <a href="{{ route('home') }}" class="inline-flex shrink-0 items-center text-lg font-semibold leading-none tracking-tight text-[#2d312d] md:text-xl">
             Prosto.<span class="text-[#869274]">Yoga</span>
@@ -35,6 +39,7 @@
     </div>
 
 </header>
+</div>
 <div id="pv-marketing-menu-backdrop" class="pointer-events-none fixed inset-0 z-[70] bg-black/88 opacity-0 backdrop-blur-[2px] transition duration-300 md:hidden"></div>
 <aside id="pv-marketing-menu" class="fixed inset-y-0 right-0 z-[80] w-[82vw] max-w-[360px] translate-x-full overflow-hidden border-l border-[#dce2d6] bg-[#fffffa] shadow-[-18px_0_40px_rgba(20,24,20,0.35)] transition-transform duration-300 md:hidden" aria-hidden="true">
     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-100" style="background-image: url('{{ asset('images/figma/decstop.webp') }}');"></div>

@@ -21,4 +21,19 @@ return [
     /** Единая почта поддержки и контактов (футер, страницы, письма). */
     'contact_email' => env('PROSTOY_CONTACT_EMAIL', 'prostoyoga@mail.ru'),
 
+    /** SEO / Open Graph: название бренда, описание по умолчанию, превью для соцсетей (герой). */
+    'site_name' => env('PROSTOY_SITE_NAME', 'PROSTO.YOGA'),
+
+    'meta_description' => env(
+        'PROSTOY_META_DESCRIPTION',
+        'PROSTO.YOGA — 12 практик онлайн, 3 раза в неделю. За 30 дней: осанка, тело, энергия. Тарифы и предпродажа на prostoyoga.ru.'
+    ),
+
+    /** Путь от public/ или полный URL для og:image (шаринг ссылки). */
+    'og_image' => env('PROSTOY_OG_IMAGE', 'images/figma/decstop.webp'),
+
+    'og_image_width' => (int) env('PROSTOY_OG_IMAGE_WIDTH', 1920),
+
+    'og_image_height' => (int) env('PROSTOY_OG_IMAGE_HEIGHT', 1080),
+
 ];

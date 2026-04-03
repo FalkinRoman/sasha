@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 128" fill="none" aria-label="PROSTO.YOGA lotus">
+    <path d="M60 62 Q48 38 60 16 Q72 38 60 62" stroke="#869274" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M60 66 Q48 90 60 112 Q72 90 60 66" stroke="#869274" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M58 64 Q32 52 24 64 Q32 76 58 64" stroke="#869274" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M62 64 Q88 52 96 64 Q88 76 62 64" stroke="#869274" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="60" cy="64" r="5.5" stroke="#869274" stroke-width="7"/>
+</svg>

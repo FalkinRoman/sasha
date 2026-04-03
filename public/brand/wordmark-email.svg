@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200">
+    <defs>
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&amp;display=swap');
+        </style>
+    </defs>
+    <rect width="640" height="200" fill="#fffffa"/>
+    <text x="320" y="118" text-anchor="middle" font-family="Montserrat, system-ui, -apple-system, sans-serif" font-size="52" font-weight="600" letter-spacing="-0.02em" fill="#0f0f0f">Prosto.<tspan fill="#c8e650">Yoga</tspan></text>
+</svg>

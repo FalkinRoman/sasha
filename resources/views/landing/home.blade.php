@@ -2,6 +2,10 @@
 
 @section('title', 'PROSTO.YOGA — всё на самом деле просто')
 
+@section('canonical', route('home'))
+
+@section('meta_description', 'PROSTO.YOGA — 12 практик онлайн, 3 раза в неделю. За 30 дней: осанка, тело, энергия. Предпродажа со скидкой, бесплатный урок после регистрации.')
+
 @section('content')
     @include('partials.splash-intro')
     @include('partials.marketing-header')

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\PromoCode;
+use App\Models\SiteSetting;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
@@ -30,6 +32,25 @@ class AppServiceProvider extends ServiceProvider
         /* После config:cache без пересборки ключа contact_email бывает null — пустые mailto в футере */
         $contact = config('prostoy.contact_email');
         View::share('contactEmail', is_string($contact) && $contact !== '' ? $contact : 'prostoyoga@mail.ru');
+
+        /*
+         * Полоса предпродажи: композитор именно на партиал — при @extends('layouts.marketing')
+         * дочерний вид (landing.home) не гарантированно триггерит composers у родительского layout.
+         */
+        View::composer('partials.marketing-header', function (\Illuminate\View\View $view): void {
+            $presaleTopBar = SiteSetting::cabinetPresaleMode();
+            $presaleTopBarPercent = null;
+            if ($presaleTopBar) {
+                $code = config('prostoy.presale_auto_promo_code');
+                if (is_string($code) && $code !== '') {
+                    $promo = PromoCode::query()->whereRaw('UPPER(code) = ?', [mb_strtoupper($code)])->first();
+                    $presaleTopBarPercent = $promo ? (int) round((float) $promo->discount_percent) : 20;
+                } else {
+                    $presaleTopBarPercent = 20;
+                }
+            }
+            $view->with(compact('presaleTopBar', 'presaleTopBarPercent'));
+        });
 
         /** Не зависит от intl / локали PHP — всегда русские названия месяцев */
         Carbon::macro('toRussianLongDate', function (): string {

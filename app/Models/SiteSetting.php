@@ -8,12 +8,17 @@ class SiteSetting extends Model
 {
     protected $fillable = [
         'cabinet_presale_mode',
+        'telegram_bot_token',
+        'telegram_chat_id',
+        'telegram_notifications_enabled',
     ];
 
     protected function casts(): array
     {
         return [
             'cabinet_presale_mode' => 'boolean',
+            'telegram_notifications_enabled' => 'boolean',
+            'telegram_bot_token' => 'encrypted',
         ];
     }
 

@@ -256,6 +256,135 @@ function initAdminMobileNav() {
 /**
  * Лендинг: бургер-меню на мобиле (header marketing).
  */
+/**
+ * Полоса предпродажи (md+): длинный текст, пока одна строка (и flex-ряд не ломается); иначе — короткая версия.
+ */
+function initPresaleBarResponsiveMessage() {
+    const root = document.querySelector('[data-pv-presale-bar]');
+    if (!root) {
+        return;
+    }
+    const row = root.querySelector('[data-presale-bar-row]');
+    const longEl = root.querySelector('[data-presale-msg-long]');
+    const shortEl = root.querySelector('[data-presale-msg-short]');
+    if (!row || !longEl || !shortEl) {
+        return;
+    }
+
+    const mq = window.matchMedia('(min-width: 768px)');
+    let debounceTimer;
+
+    function apply() {
+        if (!mq.matches) {
+            root.removeAttribute('data-presale-mode');
+            root.removeAttribute('data-presale-ready');
+            return;
+        }
+
+        root.removeAttribute('data-presale-ready');
+
+        const runMeasure = () => {
+            root.setAttribute('data-presale-mode', 'long');
+            void row.offsetHeight;
+            void longEl.offsetHeight;
+
+            const visibleKids = [...row.children].filter((el) => el.offsetParent !== null);
+            const tops = visibleKids.map((el) => el.offsetTop);
+            const minTop = tops.length ? Math.min(...tops) : 0;
+            const flexWrapped = tops.some((t) => t > minTop + 4);
+
+            const lineRects = longEl.getClientRects();
+            const textWrapped = lineRects.length > 1;
+
+            root.setAttribute('data-presale-mode', flexWrapped || textWrapped ? 'short' : 'long');
+            root.setAttribute('data-presale-ready', '1');
+        };
+
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(runMeasure);
+        });
+    }
+
+    function schedule() {
+        window.clearTimeout(debounceTimer);
+        debounceTimer = window.setTimeout(() => {
+            window.requestAnimationFrame(apply);
+        }, 45);
+    }
+
+    mq.addEventListener('change', schedule);
+    window.addEventListener('resize', schedule);
+    const ro = new ResizeObserver(() => schedule());
+    ro.observe(row);
+
+    if (document.fonts?.ready) {
+        void document.fonts.ready.then(schedule);
+    }
+
+    schedule();
+}
+
+/**
+ * Лендинг «Результаты»: на md+ одинаковая высота трёх карточек (как у самой высокой), без гигантского min-height в CSS.
+ */
+function initResults30EqualHeight() {
+    const wrap = document.querySelector('[data-pv-results-eq]');
+    if (!wrap) {
+        return;
+    }
+
+    const mq = window.matchMedia('(min-width: 768px)');
+    let debounceTimer;
+
+    const getArticles = () => [...wrap.querySelectorAll(':scope > article')];
+
+    function apply() {
+        const list = getArticles();
+        if (!list.length) {
+            return;
+        }
+        list.forEach((a) => {
+            a.style.minHeight = '';
+        });
+        if (!mq.matches) {
+            return;
+        }
+        window.requestAnimationFrame(() => {
+            let max = 0;
+            list.forEach((a) => {
+                max = Math.max(max, a.offsetHeight);
+            });
+            if (max > 0) {
+                list.forEach((a) => {
+                    a.style.minHeight = `${max}px`;
+                });
+            }
+        });
+    }
+
+    function schedule() {
+        window.clearTimeout(debounceTimer);
+        debounceTimer = window.setTimeout(apply, 70);
+    }
+
+    apply();
+    mq.addEventListener('change', apply);
+    window.addEventListener('resize', schedule);
+
+    const ro = new ResizeObserver(() => schedule());
+    getArticles().forEach((a) => ro.observe(a));
+
+    wrap.querySelectorAll('img').forEach((img) => {
+        if (!img.complete) {
+            img.addEventListener('load', schedule, { once: true });
+        }
+    });
+
+    if (document.fonts?.ready) {
+        void document.fonts.ready.then(schedule);
+    }
+}
+
 function initMarketingMobileNav() {
     const burger = document.getElementById('pv-marketing-burger');
     const closeBtn = document.getElementById('pv-marketing-menu-close');
@@ -886,6 +1015,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initCabinetMobileNav();
     initAdminMobileNav();
     initMarketingMobileNav();
+    initPresaleBarResponsiveMessage();
+    initResults30EqualHeight();
     initProstoScrollReveal();
     initYouTubePoster();
     initHeroCounter();

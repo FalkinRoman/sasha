@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\BrandLogoController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\PurchaseController as AdminPurchaseController;
@@ -115,6 +116,8 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::resource('promocodes', PromoCodeController::class)->except(['show']);
     Route::get('/referrals', [ReferralEarningController::class, 'index'])->name('referrals.index');
     Route::post('/referrals/{earning}/paid', [ReferralEarningController::class, 'markPaid'])->name('referrals.paid');
+    Route::get('/brand-logo', BrandLogoController::class)->name('brand-logo');
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::post('/settings/cabinet-mode', [SettingsController::class, 'updateCabinetMode'])->name('settings.cabinet-mode');
+    Route::post('/settings/telegram', [SettingsController::class, 'updateTelegram'])->name('settings.telegram');
 });

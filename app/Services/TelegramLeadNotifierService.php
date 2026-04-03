@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Purchase;
+use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -24,13 +25,9 @@ class TelegramLeadNotifierService
 
     public function notifyPurchaseIntent(Purchase $purchase): void
     {
-        if (! config('telegram.notifications_enabled')) {
-            return;
-        }
-
-        $token = config('telegram.bot_token');
-        $chatId = config('telegram.notifications_chat_id');
-        if (! is_string($token) || $token === '' || ! is_string($chatId) || $chatId === '') {
+        $token = $this->resolveBotToken();
+        $chatId = $this->resolveChatId();
+        if ($token === null || $chatId === null || ! $this->notificationsEnabled()) {
             return;
         }
 
@@ -93,5 +90,42 @@ class TelegramLeadNotifierService
         $d = preg_replace('/\D/', '', $digits) ?? '';
 
         return $d !== '' ? $d : $digits;
+    }
+
+    private function resolveBotToken(): ?string
+    {
+        $setting = SiteSetting::instance();
+        $db = $setting->telegram_bot_token;
+        if (is_string($db) && $db !== '') {
+            return $db;
+        }
+        $env = config('telegram.bot_token');
+
+        return is_string($env) && $env !== '' ? $env : null;
+    }
+
+    private function resolveChatId(): ?string
+    {
+        $setting = SiteSetting::instance();
+        $db = $setting->telegram_chat_id;
+        if (is_string($db) && $db !== '') {
+            return $db;
+        }
+        $env = config('telegram.notifications_chat_id');
+
+        return is_string($env) && $env !== '' ? $env : null;
+    }
+
+    private function notificationsEnabled(): bool
+    {
+        $s = SiteSetting::instance();
+        $dbToken = is_string($s->telegram_bot_token) && $s->telegram_bot_token !== '';
+        $dbChat = is_string($s->telegram_chat_id) && $s->telegram_chat_id !== '';
+
+        if ($dbToken && $dbChat) {
+            return (bool) $s->telegram_notifications_enabled;
+        }
+
+        return (bool) config('telegram.notifications_enabled');
     }
 }

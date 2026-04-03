@@ -767,3 +767,38 @@
     min-width: 0;
 }
 
+/* Полоса предпродажи: на md+ длинный или короткий текст (переключение data-presale-mode + JS) */
+@media (max-width: 767px) {
+    [data-pv-presale-bar] [data-presale-msg-long],
+    [data-pv-presale-bar] [data-presale-msg-short] {
+        display: none !important;
+    }
+}
+
+@media (min-width: 768px) {
+    /* Пока JS не измерил — только короткая строка (без мигания двух текстов). */
+    [data-pv-presale-bar]:not([data-presale-ready='1']) [data-presale-msg-long] {
+        display: none !important;
+    }
+
+    [data-pv-presale-bar]:not([data-presale-ready='1']) [data-presale-msg-short] {
+        display: inline-block !important;
+    }
+
+    [data-pv-presale-bar][data-presale-mode='long'] [data-presale-msg-long] {
+        display: inline-block !important;
+    }
+
+    [data-pv-presale-bar][data-presale-mode='long'] [data-presale-msg-short] {
+        display: none !important;
+    }
+
+    [data-pv-presale-bar][data-presale-mode='short'] [data-presale-msg-long] {
+        display: none !important;
+    }
+
+    [data-pv-presale-bar][data-presale-mode='short'] [data-presale-msg-short] {
+        display: inline-block !important;
+    }
+}
+

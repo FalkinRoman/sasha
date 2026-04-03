@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Админка — ProstoYoga')</title>
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-[#1e211e] font-sans text-[#e8e8e4] antialiased">
@@ -40,6 +41,7 @@
                 <a href="{{ route('admin.purchases.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.purchases.*') ? 'bg-white/10 text-white' : '' }}">Оплаты</a>
                 <a href="{{ route('admin.referrals.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.referrals.*') ? 'bg-white/10 text-white' : '' }}">Рефералы</a>
                 <a href="{{ route('admin.lessons.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.lessons.*') ? 'bg-white/10 text-white' : '' }}">Уроки (видео)</a>
+                <a href="{{ route('admin.brand-logo') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.brand-logo') ? 'bg-white/10 text-white' : '' }}">Логотип</a>
                 <a href="{{ route('admin.settings.edit') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.settings.*') ? 'bg-white/10 text-white' : '' }}">Настройки</a>
                 <a href="{{ route('dashboard') }}" class="mt-6 rounded-lg px-3 py-2 text-[#869274] hover:bg-white/5">← Кабинет</a>
             </nav>
