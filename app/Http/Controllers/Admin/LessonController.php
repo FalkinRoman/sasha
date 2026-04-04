@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +27,7 @@ class LessonController extends Controller
         return view('admin.lessons.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse|JsonResponse
     {
         $this->validateOptionalVideoUpload($request);
 
@@ -63,6 +64,13 @@ class LessonController extends Controller
             'order_index' => $maxOrder + 1,
         ]);
 
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Урок добавлен в курс.',
+                'redirect' => route('admin.lessons.index'),
+            ]);
+        }
+
         return redirect()->route('admin.lessons.index')->with('ok', 'Урок добавлен в курс.');
     }
 
@@ -88,7 +96,7 @@ class LessonController extends Controller
         return view('admin.lessons.edit', compact('lesson'));
     }
 
-    public function update(Request $request, Lesson $lesson): RedirectResponse
+    public function update(Request $request, Lesson $lesson): RedirectResponse|JsonResponse
     {
         $this->validateOptionalVideoUpload($request);
         $data = $this->validated($request, $lesson);
@@ -110,7 +118,7 @@ class LessonController extends Controller
 
         if ($request->hasFile('cover_image')) {
             $request->validate([
-                'cover_image' => ['required', 'image', 'max:5120'],
+                'cover_image' => ['required', 'image', 'max:10240'],
             ]);
             $this->deleteLessonCoverFromDisk($lesson);
             $data['cover_image_path'] = $request->file('cover_image')->store('lesson-covers', 'public');
@@ -119,6 +127,13 @@ class LessonController extends Controller
         $data['released_at'] = $request->filled('released_at') ? $request->date('released_at') : null;
 
         $lesson->update($data);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Сохранено.',
+                'redirect' => route('admin.lessons.index'),
+            ]);
+        }
 
         return redirect()->route('admin.lessons.index')->with('ok', 'Сохранено.');
     }
@@ -138,11 +153,13 @@ class LessonController extends Controller
             return;
         }
 
+        $maxKb = (int) config('prostoy.lesson_video_max_mb', 2048) * 1024;
+
         $request->validate([
             'video_file' => [
                 'required',
                 'file',
-                'max:512000',
+                'max:'.$maxKb,
                 'mimetypes:video/mp4,video/webm,video/quicktime,video/ogg',
             ],
         ]);

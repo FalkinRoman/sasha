@@ -8,7 +8,13 @@
         <p class="mt-2 text-sm text-white/50">Достаточно названия и видео — урок сам появится в курсе в конце списка.</p>
     </div>
 
-    <form action="{{ route('admin.lessons.store') }}" method="post" enctype="multipart/form-data" class="mt-8 max-w-lg space-y-8">
+    <form
+        action="{{ route('admin.lessons.store') }}"
+        method="post"
+        enctype="multipart/form-data"
+        class="mt-8 max-w-lg space-y-8"
+        data-lesson-upload="create"
+    >
         @csrf
 
         <div>
@@ -27,7 +33,7 @@
 
         <div>
             <p class="text-sm font-medium text-white/90">Видео</p>
-            <p class="mt-1 text-xs text-white/45">Файл на сервере: до 500 МБ (mp4, webm, mov). Если не загружаете файл — можно только ссылку ниже.</p>
+            <p class="mt-1 text-xs text-white/45">Файл на сервер: до {{ (int) config('prostoy.lesson_video_max_mb', 2048) }} МБ (mp4, webm, mov). На проде подними лимиты nginx/php под этот размер. Без файла — ссылка ниже в «Дополнительно».</p>
             <div class="relative mt-3">
                 <input
                     id="video_file"
@@ -40,6 +46,12 @@
                     <span class="inline-flex items-center rounded-full bg-[#869274] px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-black/20 pointer-events-none">Загрузить видео</span>
                     <p id="video-file-name" class="mt-3 max-w-full truncate text-xs text-white/50">Файл не выбран</p>
                 </div>
+            </div>
+            <div data-upload-progress class="mt-4 hidden rounded-xl border border-white/10 bg-white/[0.06] p-4">
+                <div class="h-2 w-full overflow-hidden rounded-full bg-white/10">
+                    <div data-upload-progress-bar class="h-full w-0 rounded-full bg-[#869274] transition-[width] duration-150"></div>
+                </div>
+                <p data-upload-progress-text class="mt-2 text-xs text-white/60"></p>
             </div>
         </div>
 

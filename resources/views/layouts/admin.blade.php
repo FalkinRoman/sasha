@@ -3,9 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Админка — ProstoYoga')</title>
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (request()->routeIs('admin.lessons.*'))
+        @vite(['resources/js/admin-lessons.js'])
+    @endif
 </head>
 <body class="min-h-screen bg-[#1e211e] font-sans text-[#e8e8e4] antialiased">
     <div id="pv-admin-backdrop" class="fixed inset-0 z-[90] bg-black/50 opacity-0 transition-opacity duration-300 pointer-events-none md:hidden" aria-hidden="true"></div>

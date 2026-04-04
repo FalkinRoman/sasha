@@ -36,4 +36,7 @@ return [
 
     'og_image_height' => (int) env('PROSTOY_OG_IMAGE_HEIGHT', 1080),
 
+    /** Макс. размер файла урока (МБ). Синхронизируй с nginx client_max_body_size и PHP upload_max_filesize / post_max_size. */
+    'lesson_video_max_mb' => max(1, (int) env('LESSON_VIDEO_MAX_MB', 2048)),
+
 ];

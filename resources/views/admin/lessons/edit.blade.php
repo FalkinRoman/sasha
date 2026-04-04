@@ -5,7 +5,13 @@
 @section('content')
     <h1 class="text-2xl font-semibold text-white">Редактирование урока</h1>
     <p class="mt-2 text-sm text-white/50 font-mono">{{ $lesson->slug }}</p>
-    <form action="{{ route('admin.lessons.update', $lesson) }}" method="post" enctype="multipart/form-data" class="mt-8 max-w-2xl space-y-5">
+    <form
+        action="{{ route('admin.lessons.update', $lesson) }}"
+        method="post"
+        enctype="multipart/form-data"
+        class="mt-8 max-w-2xl space-y-5"
+        data-lesson-upload="edit"
+    >
         @csrf
         @method('PUT')
         <div>
@@ -57,8 +63,14 @@
             @else
                 <p class="mt-1 text-xs text-white/45">Файл не загружен.</p>
             @endif
-            <p class="mt-2 text-xs text-white/45">Новый файл заменит старый. Форматы: mp4, webm, mov (до 500 МБ).</p>
+            <p class="mt-2 text-xs text-white/45">Новый файл заменит старый. mp4, webm, mov — до {{ (int) config('prostoy.lesson_video_max_mb', 2048) }} МБ (nginx/php на проде должны позволять).</p>
             <input type="file" name="video_file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov" class="mt-3 block w-full text-sm text-white/80 file:mr-4 file:rounded-lg file:border-0 file:bg-[#869274] file:px-4 file:py-2 file:text-sm file:text-white">
+            <div data-upload-progress class="mt-4 hidden rounded-xl border border-white/10 bg-white/[0.06] p-4">
+                <div class="h-2 w-full overflow-hidden rounded-full bg-white/10">
+                    <div data-upload-progress-bar class="h-full w-0 rounded-full bg-[#869274] transition-[width] duration-150"></div>
+                </div>
+                <p data-upload-progress-text class="mt-2 text-xs text-white/60"></p>
+            </div>
         </div>
         <div>
             <label class="text-sm text-white/70">Или URL видео</label>
@@ -75,6 +87,7 @@
             @else
                 <p class="mt-1 text-xs text-white/45">Не загружена.</p>
             @endif
+            <p class="mt-1 text-xs text-white/35">JPEG, PNG, WebP, GIF — до 10 МБ.</p>
             <input type="file" name="cover_image" accept="image/jpeg,image/png,image/webp,image/gif" class="mt-3 block w-full text-sm text-white/80 file:mr-4 file:rounded-lg file:border-0 file:bg-[#869274] file:px-4 file:py-2 file:text-sm file:text-white">
         </div>
         <div>
