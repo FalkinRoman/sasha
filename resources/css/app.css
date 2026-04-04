@@ -802,3 +802,14 @@
     }
 }
 
+/*
+ * Мобильные браузеры (особенно iOS Safari): при фокусе на поле с font-size < 16px
+ * страница масштабируется. Минимум 16px на узких экранах — без отключения pinch-zoom в viewport.
+ */
+@media (max-width: 1023px) {
+    input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='hidden']):not([type='button']):not([type='submit']):not([type='reset']):not([type='range']):not([type='image']),
+    select,
+    textarea {
+        font-size: 1rem !important;
+    }
+}
