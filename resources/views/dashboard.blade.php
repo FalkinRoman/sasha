@@ -7,7 +7,7 @@
         $user = auth()->user();
         $lessonThumbFallback = asset('images/lesson-placeholder.svg');
     @endphp
-    <div class="mx-auto w-full max-w-5xl px-4 sm:px-0">
+    <div class="mx-auto w-full max-w-5xl">
         @if ($user->is_admin)
             <section
                 class="overflow-hidden rounded-2xl border border-[#cfd4c9] bg-gradient-to-br from-[#f6f8f1] via-[#fafaf6] to-[#fffffa] shadow-[0_6px_32px_-18px_rgba(45,49,45,0.1)]"

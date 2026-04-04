@@ -93,7 +93,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/verify/resend', [EmailVerificationController::class, 'resend'])->name('verification.resend');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/tariffs', TariffsController::class)->name('tariffs.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -106,7 +106,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/welcome', WelcomeController::class)->name('welcome');
 });
 
-Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/purchases', [AdminPurchaseController::class, 'index'])->name('purchases.index');
