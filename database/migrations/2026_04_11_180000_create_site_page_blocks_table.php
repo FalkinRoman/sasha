@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('admin_label');
             $table->string('title')->nullable();
             $table->text('subtitle')->nullable();
-            $table->string('title_level', 8)->default('h2');
+            $table->string('title_level', 24)->default('h2');
             $table->longText('body')->nullable();
             $table->unsignedSmallInteger('sort_order')->default(0);
             $table->boolean('is_active')->default(true);

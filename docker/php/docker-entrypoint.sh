@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# Composer/post-install scripts вызывают git; в bind-mount с другим владельцем иначе «dubious ownership».
+git config --global --add safe.directory /var/www/html 2>/dev/null || true
+
 if [ "${1#-}" != "$1" ] || [ -z "$(command -v "$1")" ]; then
   set -- php-fpm "$@"
 fi
