@@ -1,4 +1,5 @@
 @php
+    $quizSec = $landingSections->get('quiz');
     $tMid = $tariffs->firstWhere('slug', 'community');
     $tTop = $tariffs->firstWhere('slug', 'intensive');
     $checkoutMid = $tMid ? route('checkout.show', $tMid) : '#tariffs';
@@ -6,12 +7,18 @@
 @endphp
 
 <section id="prosto-test" class="relative isolate scroll-mt-24 w-full overflow-hidden bg-gradient-to-b from-[#fffffa] to-[#f4f6ef] py-20 md:py-28">
-    <img src="{{ asset('images/figma/quiz.png') }}" alt="" class="absolute inset-0 z-0 h-full w-full object-cover object-center opacity-55 brightness-[0.68]">
+    <img src="{{ $quizSec instanceof \App\Models\LandingSection ? ($quizSec->displaySingleImageUrl() ?? asset('images/figma/quiz.png')) : asset('images/figma/quiz.png') }}" alt="" class="absolute inset-0 z-0 h-full w-full object-cover object-center opacity-55 brightness-[0.68]">
     <div class="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(247,248,244,0.86),rgba(247,248,244,0.74),rgba(240,243,235,0.86))]"></div>
     <div class="relative z-10 mx-auto w-full max-w-[720px] px-5 sm:px-8">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade text-center">
-            <h2 class="text-3xl font-semibold uppercase tracking-[0.06em] text-[#6c835a] md:text-4xl">PROSTO TEST</h2>
-            <p class="mx-auto mt-4 max-w-2xl text-base font-medium leading-snug text-[#3f463f] md:text-lg">За 22 секунды узнай, какая версия Prosto<br class="hidden sm:block">создана для тебя!</p>
+            <h2 class="text-3xl font-semibold uppercase tracking-[0.06em] text-[#6c835a] md:text-4xl">{{ $quizSec?->title ?? 'PROSTO TEST' }}</h2>
+            @if (filled($quizSec?->body))
+                <div class="landing-quiz-lead mx-auto mt-4 max-w-2xl text-base font-medium leading-snug text-[#3f463f] md:text-lg">
+                    {!! $quizSec->body !!}
+                </div>
+            @else
+                <p class="mx-auto mt-4 max-w-2xl text-base font-medium leading-snug text-[#3f463f] md:text-lg">За 22 секунды узнай, какая версия Prosto<br class="hidden sm:block">создана для тебя!</p>
+            @endif
         </div>
 
         <div

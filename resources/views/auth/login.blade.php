@@ -8,7 +8,7 @@
         <div class="pv-auth-page-centered__inner">
         <div class="pv-auth-page-centered__content">
             <p class="text-center">
-                <a href="{{ route('home') }}" class="inline-flex min-h-10 items-center justify-center px-2 text-sm text-[#7a837a] transition hover:text-[#2d312d]">← На главную</a>
+                <a href="{{ $marketingHome }}" class="inline-flex min-h-10 items-center justify-center px-2 text-sm text-[#7a837a] transition hover:text-[#2d312d]">← На главную</a>
             </p>
             <div data-pv-reveal class="pv-reveal pv-reveal--up mt-4 text-center sm:mt-5" style="--rv-delay: 0.05s">
                 <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#869274]">Личный кабинет</p>
@@ -42,15 +42,18 @@
                             <label for="password" class="pv-auth-label mb-0">Пароль</label>
                             <a href="{{ route('password.request') }}" class="text-xs font-medium text-[#869274] underline underline-offset-2 hover:text-[#2d312d]">Забыли?</a>
                         </div>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            required
-                            autocomplete="current-password"
-                            placeholder="Ваш пароль"
-                            @class(['pv-auth-input', 'pv-input-error' => $authFail])
-                        >
+                        <div class="relative">
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                required
+                                autocomplete="current-password"
+                                placeholder="Ваш пароль"
+                                @class(['pv-auth-input pr-12', 'pv-input-error' => $authFail])
+                            >
+                            @include('partials.auth-pw-toggle-button', ['targetId' => 'password'])
+                        </div>
                     </div>
 
                     <div class="pv-auth-check-row">

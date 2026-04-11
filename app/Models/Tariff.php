@@ -28,9 +28,17 @@ class Tariff extends Model
         return $this->hasMany(Purchase::class);
     }
 
-    /** Цена для отображения и оплаты: из config/pricing.php или из БД. */
+    /**
+     * Цена для отображения и оплаты.
+     * Приоритет: явное значение в «Настройках» админки → config/pricing.php → tariffs.price_rub.
+     */
     public function effectivePriceRub(): int
     {
+        $override = SiteSetting::tariffPriceOverrideRubForSlug($this->slug);
+        if ($override !== null && $override > 0) {
+            return $override;
+        }
+
         $map = config('pricing.tariffs', []);
         if (is_array($map) && array_key_exists($this->slug, $map) && is_numeric($map[$this->slug])) {
             return (int) $map[$this->slug];
@@ -39,20 +47,19 @@ class Tariff extends Model
         return (int) $this->price_rub;
     }
 
-    /** Мин/макс цен по каноническому конфигу или по БД. */
+    /** Мин/макс фактических цен по всем тарифам (с учётом переопределений и конфига). */
     public static function displayPriceRangeRub(): array
     {
-        $map = config('pricing.tariffs', []);
-        if (is_array($map) && $map !== []) {
-            $vals = array_values(array_filter($map, fn ($v) => is_numeric($v)));
-            if ($vals !== []) {
-                return [min($vals), max($vals)];
-            }
+        $tariffs = static::query()->orderBy('sort_order')->get(['slug', 'price_rub']);
+        if ($tariffs->isEmpty()) {
+            return [0, 0];
         }
 
-        return [
-            (int) static::query()->min('price_rub'),
-            (int) static::query()->max('price_rub'),
-        ];
+        $prices = $tariffs->map(fn (Tariff $t) => $t->effectivePriceRub())->filter(fn (int $p) => $p > 0)->values();
+        if ($prices->isEmpty()) {
+            return [0, 0];
+        }
+
+        return [$prices->min(), $prices->max()];
     }
 }

@@ -1,9 +1,12 @@
 {{-- Блок 2: результаты через 30 дней --}}
+@php
+    $resultsHeader = $landingSections->get('results_30');
+@endphp
 <section id="results-30" class="scroll-mt-24 w-full bg-[#fffffa] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-3xl text-center">
-            <h2 class="text-3xl font-semibold uppercase tracking-[0.06em] text-[#2d312d] md:text-4xl">РЕЗУЛЬТАТЫ</h2>
-            <p class="mt-4 text-base italic leading-snug text-[#6f786f] md:text-xl">И это будет самое приятное «Блин, я это сделала» в твоей жизни.</p>
+            <h2 class="text-3xl font-semibold uppercase tracking-[0.06em] text-[#2d312d] md:text-4xl">{{ $resultsHeader?->title ?? 'РЕЗУЛЬТАТЫ' }}</h2>
+            <p class="mt-4 text-base italic leading-snug text-[#6f786f] md:text-xl">{{ $resultsHeader?->subtitle ?? 'И это будет самое приятное «Блин, я это сделала» в твоей жизни.' }}</p>
         </div>
 
         {{-- md+: высота трёх карточек выравнивается к самой высокой (initResults30EqualHeight в app.js) --}}

@@ -1,4 +1,5 @@
 @php
+    $programIntro = $landingSections->get('program_12');
     $practices = [
         ['n' => '01', 't' => 'Практика для пробуждения и активации тела'],
         ['n' => '02', 't' => 'Комплекс на осанку и дыхательные техники'],
@@ -20,8 +21,14 @@
 <section id="program" class="scroll-mt-24 w-full bg-[#f9faf6] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto mt-12 max-w-3xl text-center" style="--rv-delay: 0.08s">
-            <h2 class="text-2xl font-semibold tracking-tight text-[#2d312d] md:text-3xl">12 рабочих практик</h2>
-            <p class="mt-3 text-sm leading-relaxed text-[#5c655c] md:text-base">График 3 раза в неделю. Никакого хаоса. Смотри первые 4, остальные подгрузи ниже.</p>
+            <h2 class="text-2xl font-semibold tracking-tight text-[#2d312d] md:text-3xl">{{ $programIntro?->title ?? '12 рабочих практик' }}</h2>
+            @if (filled($programIntro?->body))
+                <div class="landing-program-intro mt-3 text-sm leading-relaxed text-[#5c655c] md:text-base">
+                    {!! $programIntro->body !!}
+                </div>
+            @else
+                <p class="mt-3 text-sm leading-relaxed text-[#5c655c] md:text-base">График 3 раза в неделю. Никакого хаоса. Смотри первые 4, остальные подгрузи ниже.</p>
+            @endif
         </div>
 
         <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

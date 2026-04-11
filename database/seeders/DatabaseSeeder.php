@@ -292,5 +292,8 @@ class DatabaseSeeder extends Seeder
                 'released_at' => null,
             ]);
         }
+
+        $this->call(LandingSectionSeeder::class);
+        $this->call(SitePageBlockSeeder::class);
     }
 }

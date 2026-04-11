@@ -1,26 +1,24 @@
 {{-- После «Результаты»: сетка 4:5 — единый ритм как у карточек «Результаты», без masonry --}}
 @php
-    $smileGallery = [
-        ['after-practice-01-tall-studio.png', 'После практики в студии: собранность и мягкий взгляд', 732, 824],
-        ['after-practice-02-narrow-stretch.png', 'Растяжение и выдох — узкий кадр с занятия', 312, 554],
-        ['after-practice-03-square-calm.png', 'Спокойное состояние после асан', 412, 438],
-        ['after-practice-04-portrait-flow.png', 'Поток практики: портрет участницы', 358, 498],
-        ['after-practice-05-portrait-soft.png', 'Мягкое лицо после тренировки', 356, 490],
-        ['after-practice-06-square-center.png', 'Центр, дыхание, ровный кадр', 414, 426],
-        ['after-practice-07-tall-radiant.png', 'Высокий кадр: энергия после занятия', 616, 802],
-        ['after-practice-08-vertical-exhale.png', 'Вертикальный кадр: лёгкость после выдоха', 410, 624],
-        ['after-practice-09-portrait-glow.png', 'Тепло и улыбка после сессии', 444, 544],
-    ];
+    $gallery = $landingSections->get('practice_gallery');
+    $galleryFooter = $landingSections->get('practice_gallery_footer');
+    $slides = $gallery instanceof \App\Models\LandingSection ? $gallery->gallerySlidesForView() : [];
 @endphp
 
 <section id="practice-gallery" class="scroll-mt-24 w-full border-t border-[#ecece8] bg-[linear-gradient(180deg,#fffffa_0%,#f4f6f0_42%,#faf9f5_100%)] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-3xl text-center">
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#869274]">Атмосфера</p>
-            <h2 class="mt-3 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Горящие глаза после практики</h2>
-            <p class="mt-4 text-base leading-relaxed text-[#5c655c] md:text-lg">
-                Подборка кадров с занятий — как выглядит энергия и радость после того, как выдохнули и сделали своё.
-            </p>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#869274]">{{ $gallery?->subtitle ?? 'Атмосфера' }}</p>
+            <h2 class="mt-3 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">{{ $gallery?->title ?? 'Горящие глаза после практики' }}</h2>
+            @if (filled($gallery?->body))
+                <div class="mt-4 text-base leading-relaxed text-[#5c655c] md:text-lg">
+                    {!! $gallery->body !!}
+                </div>
+            @else
+                <p class="mt-4 text-base leading-relaxed text-[#5c655c] md:text-lg">
+                    Подборка кадров с занятий — как выглядит энергия и радость после того, как выдохнули и сделали своё.
+                </p>
+            @endif
         </div>
 
         <div
@@ -40,23 +38,16 @@
                 </p>
 
                 <div class="pv-practice-gallery-grid pt-5">
-                    @foreach ($smileGallery as $item)
-                        @php
-                            $file = $item[0];
-                            $alt = $item[1];
-                            $w = $item[2];
-                            $h = $item[3];
-                            $desktopOnlyCard = $loop->last;
-                        @endphp
-                        <figure class="group pv-practice-gallery-grid__cell m-0 {{ $desktopOnlyCard ? 'hidden md:block' : '' }}">
+                    @foreach ($slides as $item)
+                        <figure class="group pv-practice-gallery-grid__cell m-0 {{ ! empty($item['desktop_only']) ? 'hidden md:block' : '' }}">
                             <div
                                 class="relative aspect-[4/5] overflow-hidden rounded-xl border border-[#e8ebe3] bg-[#eef0ea] shadow-[0_14px_40px_-24px_rgba(45,49,45,0.18)] transition-[transform,box-shadow,border-color] duration-[800ms] ease-[cubic-bezier(0.25,0.85,0.35,1)] group-hover:-translate-y-0.5 group-hover:border-[#869274]/25 group-hover:shadow-[0_22px_50px_-28px_rgba(45,49,45,0.14)] motion-reduce:transition-none motion-reduce:group-hover:translate-y-0 md:rounded-2xl"
                             >
                                 <img
-                                    src="{{ asset('images/smile/'.$file) }}"
-                                    alt="{{ $alt }}"
-                                    width="{{ $w }}"
-                                    height="{{ $h }}"
+                                    src="{{ $item['src'] }}"
+                                    alt="{{ $item['alt'] }}"
+                                    width="{{ $item['w'] }}"
+                                    height="{{ $item['h'] }}"
                                     class="absolute inset-0 h-full w-full object-cover object-center"
                                     loading="lazy"
                                     decoding="async"
@@ -69,8 +60,14 @@
             </div>
         </div>
 
-        <p data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-[#7a837a] md:mt-12" style="--rv-delay: 0.1s">
-            Здесь не про идеальную позу в кадре — улыбки, смех, лёгкий каприз и та самая свобода, когда можно вести себя по-честному, почти как дети: без маски «для фото».
-        </p>
+        @if (filled($galleryFooter?->body))
+            <div data-pv-reveal class="pv-reveal pv-reveal--fade landing-gallery-footer mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-[#7a837a] md:mt-12" style="--rv-delay: 0.1s">
+                {!! $galleryFooter->body !!}
+            </div>
+        @else
+            <p data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-[#7a837a] md:mt-12" style="--rv-delay: 0.1s">
+                Здесь не про идеальную позу в кадре — улыбки, смех, лёгкий каприз и та самая свобода, когда можно вести себя по-честному, почти как дети: без маски «для фото».
+            </p>
+        @endif
     </div>
 </section>

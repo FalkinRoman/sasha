@@ -1008,6 +1008,31 @@ function initRegisterWizard() {
     }
 }
 
+/** Вход / сброс пароля: кнопки с data-pv-auth-pw-toggle + data-pv-target-id */
+function initAuthPasswordToggles() {
+    document.querySelectorAll('[data-pv-auth-pw-toggle]').forEach((btn) => {
+        const id = btn.getAttribute('data-pv-target-id');
+        if (!id) {
+            return;
+        }
+        const input = document.getElementById(id);
+        if (!input || input.tagName !== 'INPUT') {
+            return;
+        }
+        const eyeOpen = btn.querySelector('[data-pv-pw-eye]');
+        const eyeOff = btn.querySelector('[data-pv-pw-eye-off]');
+        let visible = false;
+        btn.addEventListener('click', () => {
+            visible = !visible;
+            input.type = visible ? 'text' : 'password';
+            eyeOpen?.classList.toggle('hidden', visible);
+            eyeOff?.classList.toggle('hidden', !visible);
+            btn.setAttribute('aria-label', visible ? 'Скрыть пароль' : 'Показать пароль');
+            btn.setAttribute('aria-pressed', visible ? 'true' : 'false');
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initPvPageValidationFeedback();
     initPvInputErrorAutoClear();
@@ -1022,4 +1047,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroCounter();
     initProstoQuiz();
     initRegisterWizard();
+    initAuthPasswordToggles();
 });

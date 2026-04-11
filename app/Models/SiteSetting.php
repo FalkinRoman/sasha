@@ -8,6 +8,9 @@ class SiteSetting extends Model
 {
     protected $fillable = [
         'cabinet_presale_mode',
+        'tariff_price_base_rub',
+        'tariff_price_community_rub',
+        'tariff_price_intensive_rub',
         'telegram_bot_token',
         'telegram_chat_id',
         'telegram_notifications_enabled',
@@ -39,5 +42,26 @@ class SiteSetting extends Model
     public static function cabinetPresaleMode(): bool
     {
         return (bool) static::instance()->cabinet_presale_mode;
+    }
+
+    /** Переопределение цены из /admin/settings; null — не задано. */
+    public static function tariffPriceOverrideRubForSlug(string $slug): ?int
+    {
+        $row = static::instance();
+
+        $v = match ($slug) {
+            'base' => $row->tariff_price_base_rub,
+            'community' => $row->tariff_price_community_rub,
+            'intensive' => $row->tariff_price_intensive_rub,
+            default => null,
+        };
+
+        if ($v === null) {
+            return null;
+        }
+
+        $n = (int) $v;
+
+        return $n > 0 ? $n : null;
     }
 }

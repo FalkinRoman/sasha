@@ -46,6 +46,49 @@
     </div>
 
     <div class="mt-10 max-w-2xl rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#a4b092]">Цены тарифов (₽)</p>
+        <p class="mt-3 text-sm leading-relaxed text-white/65">
+            В полях уже стоит та сумма, которую сейчас видят на сайте и в оплате. Поменяй цифры и нажми «Сохранить цены».
+            Срок доступа (дней) и наполнение тарифа по-прежнему в таблице <code class="rounded bg-black/30 px-1 text-xs">tariffs</code>.
+        </p>
+        <form method="post" action="{{ route('admin.settings.tariff-prices') }}" class="mt-6 space-y-5">
+            @csrf
+            @foreach ($tariffPricingRows ?? [] as $row)
+                @php
+                    /** @var \App\Models\Tariff $t */
+                    $t = $row['tariff'];
+                    $field = $row['field'];
+                    $effective = $t->effectivePriceRub();
+                @endphp
+                <div>
+                    <label for="{{ $field }}" class="block text-sm font-medium text-white/85">
+                        {{ $t->name }} <span class="font-normal text-white/45">({{ $t->slug }})</span>
+                    </label>
+                    <p class="mt-1 text-xs text-white/45">{{ (int) $t->duration_days }} дн. доступа по тарифу</p>
+                    <input
+                        id="{{ $field }}"
+                        name="{{ $field }}"
+                        type="number"
+                        inputmode="numeric"
+                        min="1"
+                        max="50000000"
+                        step="1"
+                        required
+                        class="mt-2 w-full max-w-xs rounded-xl border border-white/15 bg-black/25 px-4 py-3 text-sm text-white focus:border-[#869274]/55 focus:outline-none focus:ring-1 focus:ring-[#869274]/40 @error($field) border-amber-500/60 @enderror"
+                        value="{{ old($field, $effective) }}"
+                    >
+                    @error($field)
+                        <p class="mt-1 text-xs text-amber-200/90">{{ $message }}</p>
+                    @enderror
+                </div>
+            @endforeach
+            <button type="submit" class="rounded-full bg-[#869274] px-6 py-2.5 text-sm font-semibold text-white transition hover:brightness-105">
+                Сохранить цены
+            </button>
+        </form>
+    </div>
+
+    <div class="mt-10 max-w-2xl rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#a4b092]">Telegram — заявки на оплату</p>
         <p class="mt-3 text-sm leading-relaxed text-white/65">
             Уведомления о новых заказах (ожидают оплаты / ручное подтверждение). Токен от <strong class="text-white/90">@BotFather</strong>,

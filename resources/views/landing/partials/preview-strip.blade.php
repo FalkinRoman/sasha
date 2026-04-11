@@ -1,9 +1,12 @@
 {{-- Превью стиля: видео — между результатами и квизом --}}
+@php
+    $previewStrip = $landingSections->get('preview_strip');
+@endphp
 <section id="preview" class="scroll-mt-24 w-full border-y border-[#ecece8] bg-[#f9faf6] py-16 md:py-24">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-2xl text-center">
-            <p class="text-sm font-medium uppercase tracking-wider text-[#869274]">Стиль практики</p>
-            <h2 class="mt-2 text-2xl font-semibold tracking-tight text-[#2d312d] md:text-3xl">Загляни внутрь: темп, подача, атмосфера</h2>
+            <p class="text-sm font-medium uppercase tracking-wider text-[#869274]">{{ $previewStrip?->subtitle ?? 'Стиль практики' }}</p>
+            <h2 class="mt-2 text-2xl font-semibold tracking-tight text-[#2d312d] md:text-3xl">{{ $previewStrip?->title ?? 'Загляни внутрь: темп, подача, атмосфера' }}</h2>
         </div>
         <div
             data-pv-reveal
@@ -27,7 +30,7 @@
                         data-youtube-poster-btn
                     >
                         <img
-                            src="{{ asset('images/figma/promo.png') }}"
+                            src="{{ $previewStrip instanceof \App\Models\LandingSection ? ($previewStrip->displaySingleImageUrl() ?? asset('images/figma/promo.png')) : asset('images/figma/promo.png') }}"
                             alt=""
                             class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
                             width="1200"

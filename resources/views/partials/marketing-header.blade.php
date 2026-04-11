@@ -4,16 +4,16 @@
 @endif
 <header class="w-full border-b border-[#ecece8]/80 bg-[#fffffa]/90 backdrop-blur-md">
     <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12">
-        <a href="{{ route('home') }}" class="inline-flex shrink-0 items-center text-lg font-semibold leading-none tracking-tight text-[#2d312d] md:text-xl">
+        <a href="{{ $marketingHome }}" class="inline-flex shrink-0 items-center text-lg font-semibold leading-none tracking-tight text-[#2d312d] md:text-xl">
             Prosto.<span class="text-[#869274]">Yoga</span>
         </a>
         <nav class="hidden items-center gap-6 text-sm font-medium text-[#7a837a] md:flex lg:gap-8">
-            <a href="{{ route('home') }}#results-30" class="pv-nav-marketing">Результаты</a>
-            <a href="{{ route('home') }}#preview" class="pv-nav-marketing">Превью</a>
-            <a href="{{ route('home') }}#prosto-test" class="pv-nav-marketing">Тест</a>
-            <a href="{{ route('home') }}#author" class="pv-nav-marketing">Автор</a>
-            <a href="{{ route('home') }}#program" class="pv-nav-marketing">12 практик</a>
-            <a href="{{ route('home') }}#tariffs" class="pv-nav-marketing">Тарифы</a>
+            <a href="{{ $marketingHome }}#results-30" class="pv-nav-marketing">Результаты</a>
+            <a href="{{ $marketingHome }}#preview" class="pv-nav-marketing">Превью</a>
+            <a href="{{ $marketingHome }}#prosto-test" class="pv-nav-marketing">Тест</a>
+            <a href="{{ $marketingHome }}#author" class="pv-nav-marketing">Автор</a>
+            <a href="{{ $marketingHome }}#program" class="pv-nav-marketing">12 практик</a>
+            <a href="{{ $marketingHome }}#tariffs" class="pv-nav-marketing">Тарифы</a>
         </nav>
         <div class="flex shrink-0 items-center gap-2 text-sm sm:gap-3 md:gap-5">
             @auth
@@ -60,12 +60,12 @@
         </div>
 
         <nav class="mt-7 flex flex-col gap-2 text-[15px] text-[#2d312d]">
-            <a href="{{ route('home') }}#results-30" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Результаты</a>
-            <a href="{{ route('home') }}#preview" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Превью</a>
-            <a href="{{ route('home') }}#prosto-test" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Тест</a>
-            <a href="{{ route('home') }}#author" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Автор</a>
-            <a href="{{ route('home') }}#program" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">12 практик</a>
-            <a href="{{ route('home') }}#tariffs" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Тарифы</a>
+            <a href="{{ $marketingHome }}#results-30" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Результаты</a>
+            <a href="{{ $marketingHome }}#preview" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Превью</a>
+            <a href="{{ $marketingHome }}#prosto-test" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Тест</a>
+            <a href="{{ $marketingHome }}#author" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Автор</a>
+            <a href="{{ $marketingHome }}#program" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">12 практик</a>
+            <a href="{{ $marketingHome }}#tariffs" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Тарифы</a>
         </nav>
 
         <div class="mt-6 border-t border-[#ebece7] pt-5">

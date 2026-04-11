@@ -1,16 +1,20 @@
 {{-- Блок 4: автор --}}
+@php
+    $authorSec = $landingSections->get('author');
+    $authorStrip = $landingSections->get('author_strip_caption');
+@endphp
 <section id="author" class="scroll-mt-24 w-full border-t border-[#ecece8] bg-[#fffffa] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
             <div>
                 <div data-pv-reveal class="pv-reveal pv-reveal--lift overflow-hidden rounded-2xl shadow-[0_24px_60px_rgba(45,49,45,0.12)] ring-1 ring-[#ecece8]">
-                    <img src="{{ asset('images/figma/yoga-second.png') }}" alt="Александра Вихорева" class="aspect-[4/5] w-full object-cover object-[center_20%] md:aspect-[3/4]" loading="lazy">
+                    <img src="{{ $authorSec instanceof \App\Models\LandingSection ? ($authorSec->displaySingleImageUrl() ?? asset('images/figma/yoga-second.png')) : asset('images/figma/yoga-second.png') }}" alt="Александра Вихорева" class="aspect-[4/5] w-full object-cover object-[center_20%] md:aspect-[3/4]" loading="lazy">
                 </div>
             </div>
             <div>
                 <div data-pv-reveal class="pv-reveal pv-reveal--right">
-                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#869274]">Автор программы</p>
-                    <h2 class="mt-2 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Александра Вихорева</h2>
+                    <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#869274]">{{ $authorSec?->subtitle ?? 'Автор программы' }}</p>
+                    <h2 class="mt-2 text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">{{ $authorSec?->title ?? 'Александра Вихорева' }}</h2>
                 </div>
                 <ul data-pv-reveal class="pv-reveal pv-reveal--right mt-8 space-y-3 text-[#5c655c]" style="--rv-delay: 0.06s">
                     <li class="flex gap-2"><span class="text-[#869274]">·</span> 12 лет групповой и персональной работы</li>
@@ -38,14 +42,20 @@
                         <span>Fitmost</span>
                     </span>
                 </div>
-                <p data-pv-reveal class="pv-reveal pv-reveal--right mt-8 text-lg leading-relaxed text-[#2d312d]" style="--rv-delay: 0.12s">
-                    Мою йогу смотрят на IVI, Okko, World Class и в сети Fitmost. Но самое важное — я научилась снимать страх и делать так, чтобы даже новичок через неделю сказал: «Как круто, что я это могу!».
-                </p>
+                @if (filled($authorSec?->body))
+                    <div data-pv-reveal class="pv-reveal pv-reveal--right landing-author-body mt-8 text-lg leading-relaxed text-[#2d312d]" style="--rv-delay: 0.12s">
+                        {!! $authorSec->body !!}
+                    </div>
+                @else
+                    <p data-pv-reveal class="pv-reveal pv-reveal--right mt-8 text-lg leading-relaxed text-[#2d312d]" style="--rv-delay: 0.12s">
+                        Мою йогу смотрят на IVI, Okko, World Class и в сети Fitmost. Но самое важное — я научилась снимать страх и делать так, чтобы даже новичок через неделю сказал: «Как круто, что я это могу!».
+                    </p>
+                @endif
             </div>
         </div>
 
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mt-10 md:mt-12" style="--rv-delay: 0.08s">
-            <p class="text-center text-sm font-medium text-[#2d312d]">Из зала, кемпа, дома</p>
+            <p class="text-center text-sm font-medium text-[#2d312d]">{{ $authorStrip?->subtitle ?? 'Из зала, кемпа, дома' }}</p>
             <div class="pv-author-strip mt-6 flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:gap-5 [&::-webkit-scrollbar]:hidden">
                 @foreach ([
                     ['resume1.png', 'Зал: поток и техника'],
@@ -60,9 +70,15 @@
                     </figure>
                 @endforeach
             </div>
-            <p class="mx-auto mt-10 max-w-3xl text-center text-lg font-medium italic leading-relaxed text-[#4a524a]">
-                «Мне не важно где и не важно сколько вас… Каждая получит результат и останется довольной».
-            </p>
+            @if (filled($authorStrip?->body))
+                <div class="landing-author-strip-quote mx-auto mt-10 max-w-3xl text-center text-lg font-medium italic leading-relaxed text-[#4a524a]">
+                    {!! $authorStrip->body !!}
+                </div>
+            @else
+                <p class="mx-auto mt-10 max-w-3xl text-center text-lg font-medium italic leading-relaxed text-[#4a524a]">
+                    «Мне не важно где и не важно сколько вас… Каждая получит результат и останется довольной».
+                </p>
+            @endif
         </div>
     </div>
 </section>

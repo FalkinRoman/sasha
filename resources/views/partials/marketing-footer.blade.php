@@ -3,9 +3,15 @@
         <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
                 <div class="lg:col-span-4">
                     <p class="text-lg font-semibold tracking-tight text-white">Prosto.<span class="text-[#a4b092]">Yoga</span></p>
-                    <p class="mt-4 max-w-sm text-sm leading-relaxed text-[#9aa396]">
-                        Онлайн-практика для города: дыхание, осанка, движение без давления. Живи в теле — в своём темпе.
-                    </p>
+                    @if (filled($landingFooterBrandBody ?? null))
+                        <div class="landing-footer-brand mt-4 max-w-sm text-sm leading-relaxed text-[#9aa396]">
+                            {!! $landingFooterBrandBody !!}
+                        </div>
+                    @else
+                        <p class="mt-4 max-w-sm text-sm leading-relaxed text-[#9aa396]">
+                            Онлайн-практика для города: дыхание, осанка, движение без давления. Живи в теле — в своём темпе.
+                        </p>
+                    @endif
                     <div class="mt-8 flex flex-wrap items-center gap-3">
                         <a href="https://t.me/sasha_vikh" target="_blank" rel="noopener noreferrer" class="pv-social-icon" title="Telegram" aria-label="Telegram">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -31,11 +37,11 @@
                 <div class="lg:col-span-2">
                     <p class="text-xs font-semibold uppercase tracking-[0.15em] text-[#869274]">Курс</p>
                     <ul class="mt-4 space-y-3 text-sm">
-                        <li><a href="{{ route('home') }}#results-30" class="pv-footer-link">Результаты</a></li>
-                        <li><a href="{{ route('home') }}#preview" class="pv-footer-link">Превью</a></li>
-                        <li><a href="{{ route('home') }}#prosto-test" class="pv-footer-link">Тест</a></li>
-                        <li><a href="{{ route('home') }}#program" class="pv-footer-link">12 практик</a></li>
-                        <li><a href="{{ route('home') }}#tariffs" class="pv-footer-link">Тарифы</a></li>
+                        <li><a href="{{ $marketingHome }}#results-30" class="pv-footer-link">Результаты</a></li>
+                        <li><a href="{{ $marketingHome }}#preview" class="pv-footer-link">Превью</a></li>
+                        <li><a href="{{ $marketingHome }}#prosto-test" class="pv-footer-link">Тест</a></li>
+                        <li><a href="{{ $marketingHome }}#program" class="pv-footer-link">12 практик</a></li>
+                        <li><a href="{{ $marketingHome }}#tariffs" class="pv-footer-link">Тарифы</a></li>
                         @auth
                             <li><a href="{{ route('dashboard') }}" class="pv-footer-link">Личный кабинет</a></li>
                         @else

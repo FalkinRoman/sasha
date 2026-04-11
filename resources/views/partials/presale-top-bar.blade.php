@@ -44,7 +44,7 @@
 
         <a
             data-presale-link
-            href="{{ route('home') }}#tariffs"
+            href="{{ $marketingHome }}#tariffs"
             class="shrink-0 text-[10px] font-medium text-[#c8cec4] underline decoration-[#5c6358] underline-offset-2 transition hover:text-[#fffffa] hover:decoration-[#8a9484] sm:text-[11px] sm:underline-offset-[3px] md:text-[13px]"
         >
             К тарифам

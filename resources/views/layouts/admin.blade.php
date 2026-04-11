@@ -47,6 +47,7 @@
                 <a href="{{ route('admin.lessons.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.lessons.*') ? 'bg-white/10 text-white' : '' }}">Уроки (видео)</a>
                 <a href="{{ route('admin.brand-logo') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.brand-logo') ? 'bg-white/10 text-white' : '' }}">Логотип</a>
                 <a href="{{ route('admin.settings.edit') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.settings.*') ? 'bg-white/10 text-white' : '' }}">Настройки</a>
+                <a href="{{ url('/filament') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 text-[#c5d4b8]">Лендинг (Filament)</a>
                 <a href="{{ route('dashboard') }}" class="mt-6 rounded-lg px-3 py-2 text-[#869274] hover:bg-white/5">← Кабинет</a>
             </nav>
         </aside>

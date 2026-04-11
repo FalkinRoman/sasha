@@ -20,6 +20,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\TariffsController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\LandingSection;
 use App\Models\SiteSetting;
 use App\Models\Tariff;
 use App\Services\CoursePurchaseService;
@@ -44,6 +45,7 @@ Route::get('/', function (Request $request) {
         'presaleMode' => $presaleMode,
         'landingPriceCalcs' => $landingPriceCalcs,
         'presaleManual' => (bool) config('prostoy.presale_manual_payment'),
+        'landingSections' => LandingSection::mapForView(),
     ]);
 })->name('home');
 
@@ -119,5 +121,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/brand-logo', BrandLogoController::class)->name('brand-logo');
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::post('/settings/cabinet-mode', [SettingsController::class, 'updateCabinetMode'])->name('settings.cabinet-mode');
+    Route::post('/settings/tariff-prices', [SettingsController::class, 'updateTariffPrices'])->name('settings.tariff-prices');
     Route::post('/settings/telegram', [SettingsController::class, 'updateTelegram'])->name('settings.telegram');
 });

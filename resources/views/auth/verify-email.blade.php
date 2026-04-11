@@ -7,7 +7,7 @@
         <div class="pv-auth-page-centered__inner">
         <div class="pv-auth-page-centered__content">
             <p class="text-center">
-                <a href="{{ route('home') }}" class="inline-flex min-h-10 items-center justify-center px-2 text-sm text-[#7a837a] transition hover:text-[#2d312d]">← На главную</a>
+                <a href="{{ $marketingHome }}" class="inline-flex min-h-10 items-center justify-center px-2 text-sm text-[#7a837a] transition hover:text-[#2d312d]">← На главную</a>
             </p>
             <div class="mt-4 text-center sm:mt-5">
                 <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#869274]">Безопасность</p>

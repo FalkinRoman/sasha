@@ -23,27 +23,33 @@
 
                     <div class="pv-auth-field">
                         <label for="password" class="pv-auth-label">Новый пароль</label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            required
-                            autocomplete="new-password"
-                            placeholder="Не меньше 8 символов"
-                            @class(['pv-auth-input', 'pv-input-error' => $errors->has('password')])
-                        >
+                        <div class="relative">
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                required
+                                autocomplete="new-password"
+                                placeholder="Не меньше 8 символов"
+                                @class(['pv-auth-input pr-12', 'pv-input-error' => $errors->has('password')])
+                            >
+                            @include('partials.auth-pw-toggle-button', ['targetId' => 'password'])
+                        </div>
                     </div>
                     <div class="pv-auth-field">
                         <label for="password_confirmation" class="pv-auth-label">Повтор пароля</label>
-                        <input
-                            type="password"
-                            name="password_confirmation"
-                            id="password_confirmation"
-                            required
-                            autocomplete="new-password"
-                            placeholder="Ещё раз"
-                            @class(['pv-auth-input', 'pv-input-error' => $errors->has('password_confirmation')])
-                        >
+                        <div class="relative">
+                            <input
+                                type="password"
+                                name="password_confirmation"
+                                id="password_confirmation"
+                                required
+                                autocomplete="new-password"
+                                placeholder="Ещё раз"
+                                @class(['pv-auth-input pr-12', 'pv-input-error' => $errors->has('password_confirmation')])
+                            >
+                            @include('partials.auth-pw-toggle-button', ['targetId' => 'password_confirmation'])
+                        </div>
                     </div>
                     <button type="submit" class="pv-auth-submit-dark">Сохранить и войти</button>
                 </form>

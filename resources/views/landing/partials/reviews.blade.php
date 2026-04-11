@@ -1,8 +1,18 @@
+@php
+    $reviewsSec = $landingSections->get('reviews');
+    $reviewsPs = $landingSections->get('reviews_ps');
+@endphp
 <section id="reviews" class="scroll-mt-24 w-full bg-[#fffffa] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-3xl text-center">
-            <h2 class="text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">Что пишут после практики со мной</h2>
-            <p class="mt-3 text-lg text-[#5c655c]">С коврика это часто переходит в слова — благодарность, ощущения, про то, как веду урок. Ниже короткое видео и ещё от тех, кто уже занимался; зал или онлайн, без разницы.</p>
+            <h2 class="text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">{{ $reviewsSec?->title ?? 'Что пишут после практики со мной' }}</h2>
+            @if (filled($reviewsSec?->body))
+                <div class="landing-reviews-lead mt-3 text-lg text-[#5c655c]">
+                    {!! $reviewsSec->body !!}
+                </div>
+            @else
+                <p class="mt-3 text-lg text-[#5c655c]">С коврика это часто переходит в слова — благодарность, ощущения, про то, как веду урок. Ниже короткое видео и ещё от тех, кто уже занимался; зал или онлайн, без разницы.</p>
+            @endif
         </div>
 
         <div data-pv-reveal class="pv-reveal pv-reveal--up mx-auto mt-12 max-w-3xl" style="--rv-delay: 0.06s">
@@ -128,8 +138,14 @@
             </div>
         </div>
 
-        <p data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto mt-12 max-w-2xl text-center text-lg font-medium text-[#2d312d]" style="--rv-delay: 0.12s">
-            P.S. Ко мне ходят даже тренеры по йоге.
-        </p>
+        @if (filled($reviewsPs?->body))
+            <div data-pv-reveal class="pv-reveal pv-reveal--fade landing-reviews-ps mx-auto mt-12 max-w-2xl text-center text-lg font-medium text-[#2d312d]" style="--rv-delay: 0.12s">
+                {!! $reviewsPs->body !!}
+            </div>
+        @else
+            <p data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto mt-12 max-w-2xl text-center text-lg font-medium text-[#2d312d]" style="--rv-delay: 0.12s">
+                P.S. Ко мне ходят даже тренеры по йоге.
+            </p>
+        @endif
     </div>
 </section>

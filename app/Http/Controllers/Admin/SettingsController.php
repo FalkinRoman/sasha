@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
+use App\Models\Tariff;
 use App\Services\CoursePurchaseService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,11 +16,33 @@ class SettingsController extends Controller
     {
         $s = SiteSetting::instance();
 
+        $tariffs = Tariff::query()->orderBy('sort_order')->get();
+        $tariffPricingRows = $tariffs
+            ->map(function (Tariff $t): ?array {
+                $field = match ($t->slug) {
+                    'base' => 'tariff_price_base_rub',
+                    'community' => 'tariff_price_community_rub',
+                    'intensive' => 'tariff_price_intensive_rub',
+                    default => null,
+                };
+                if ($field === null) {
+                    return null;
+                }
+
+                return [
+                    'tariff' => $t,
+                    'field' => $field,
+                ];
+            })
+            ->filter()
+            ->values();
+
         return view('admin.settings.edit', [
             'cabinetPresaleMode' => SiteSetting::cabinetPresaleMode(),
             'telegramChatId' => $s->telegram_chat_id,
             'telegramNotificationsEnabled' => (bool) $s->telegram_notifications_enabled,
             'telegramTokenConfigured' => is_string($s->telegram_bot_token) && $s->telegram_bot_token !== '',
+            'tariffPricingRows' => $tariffPricingRows,
         ]);
     }
 
@@ -80,5 +103,22 @@ class SettingsController extends Controller
         $setting->save();
 
         return redirect()->route('admin.settings.edit')->with('ok', 'Настройки Telegram для заявок сохранены.');
+    }
+
+    public function updateTariffPrices(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'tariff_price_base_rub' => ['required', 'integer', 'min:1', 'max:50000000'],
+            'tariff_price_community_rub' => ['required', 'integer', 'min:1', 'max:50000000'],
+            'tariff_price_intensive_rub' => ['required', 'integer', 'min:1', 'max:50000000'],
+        ]);
+
+        $setting = SiteSetting::instance();
+        $setting->tariff_price_base_rub = (int) $request->input('tariff_price_base_rub');
+        $setting->tariff_price_community_rub = (int) $request->input('tariff_price_community_rub');
+        $setting->tariff_price_intensive_rub = (int) $request->input('tariff_price_intensive_rub');
+        $setting->save();
+
+        return redirect()->route('admin.settings.edit')->with('ok', 'Цены тарифов сохранены.');
     }
 }
