@@ -13,6 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // За docker-nginx с TLS Laravel должен видеть https (X-Forwarded-Proto из fastcgi).
+        $middleware->trustProxies(at: '*');
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,
             'verified' => EnsureEmailIsVerified::class,
