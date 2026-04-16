@@ -1,5 +1,12 @@
 <?php
 
+$videoExplicit = env('VIDEO_UPLOAD_MAX_MB');
+$videoUploadMaxMb = max(1, (int) (
+    $videoExplicit !== null && $videoExplicit !== ''
+        ? $videoExplicit
+        : env('LESSON_VIDEO_MAX_MB', 16384)
+));
+
 return [
 
     /*
@@ -36,8 +43,24 @@ return [
 
     'og_image_height' => (int) env('PROSTOY_OG_IMAGE_HEIGHT', 1080),
 
-    /** Макс. размер файла урока (МБ). Синхронизуй с nginx client_max_body_size и PHP upload_max_filesize / post_max_size. */
-    'lesson_video_max_mb' => max(1, (int) env('LESSON_VIDEO_MAX_MB', 2048)),
+    /**
+     * Макс. размер видеофайла в админке (МБ): уроки + превью лендинга (Filament / Livewire).
+     * Приоритет: VIDEO_UPLOAD_MAX_MB, иначе LESSON_VIDEO_MAX_MB. Синхронизируй с PHP upload_max_filesize / post_max_size (в Docker — docker/php/conf.d/99-prostoyoga-uploads.ini).
+     */
+    'lesson_video_max_mb' => $videoUploadMaxMb,
+
+    /**
+     * Пока в слоте «Отзывы» нет своего видео — в модалке играет этот URL (https .mp4).
+     * Переопредели в .env: REVIEW_TILES_PLACEHOLDER_VIDEO_URL=
+     */
+    'review_tiles_placeholder_video_url' => (static function (): string {
+        $u = env('REVIEW_TILES_PLACEHOLDER_VIDEO_URL');
+        if (is_string($u) && trim($u) !== '') {
+            return trim($u);
+        }
+
+        return 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
+    })(),
 
     /** Промокод блогера: скидка участнику, % от полной цены тарифа (до скидки) — вознаграждение блогеру. */
     'blogger_promo_discount_percent' => (int) env('BLOGGER_PROMO_DISCOUNT_PERCENT', 10),

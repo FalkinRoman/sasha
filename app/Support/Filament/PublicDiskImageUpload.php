@@ -58,4 +58,46 @@ final class PublicDiskImageUpload
             ];
         };
     }
+
+    public static function normalizeVideoMimeForPath(?string $mime, string $relativePath): ?string
+    {
+        if ($mime !== null && str_starts_with($mime, 'video/')) {
+            return $mime;
+        }
+
+        return match (strtolower(pathinfo($relativePath, PATHINFO_EXTENSION))) {
+            'mp4' => 'video/mp4',
+            'webm' => 'video/webm',
+            'mov' => 'video/quicktime',
+            default => $mime,
+        };
+    }
+
+    public static function resolveUploadedVideoFileCallback(): Closure
+    {
+        return static function (BaseFileUpload $component, string $file, string|array|null $storedFileNames): ?array {
+            $storage = $component->getDisk();
+            $shouldFetchFileInformation = $component->shouldFetchFileInformation();
+
+            if ($shouldFetchFileInformation) {
+                try {
+                    if (! $storage->exists($file)) {
+                        return null;
+                    }
+                } catch (UnableToCheckFileExistence) {
+                    return null;
+                }
+            }
+
+            $mime = $shouldFetchFileInformation ? $storage->mimeType($file) : null;
+            $mime = self::normalizeVideoMimeForPath($mime, $file);
+
+            return [
+                'name' => ($component->isMultiple() ? ($storedFileNames[$file] ?? null) : $storedFileNames) ?? basename($file),
+                'size' => $shouldFetchFileInformation ? $storage->size($file) : 0,
+                'type' => $mime,
+                'url' => '/storage/'.ltrim($file, '/'),
+            ];
+        };
+    }
 }

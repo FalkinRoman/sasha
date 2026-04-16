@@ -1,44 +1,105 @@
 @php
     $reviewsSec = $landingSections->get('reviews');
     $reviewsPs = $landingSections->get('reviews_ps');
+    $reviewTiles = $reviewsSec instanceof \App\Models\LandingSection
+        ? $reviewsSec->reviewsVideoTilesForView()
+        : \App\Models\LandingSection::defaultReviewTilesForLandingView();
 @endphp
 <section id="reviews" class="scroll-mt-24 w-full bg-[#fffffa] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-3xl text-center">
-            <h2 class="text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">{{ $reviewsSec?->title ?? 'Что пишут после практики со мной' }}</h2>
+            <h2 class="text-3xl font-semibold tracking-tight text-[#2d312d] md:text-4xl">{{ $reviewsSec?->title ?? 'Что говорят после практики со мной' }}</h2>
             @if (filled($reviewsSec?->body))
                 <div class="landing-reviews-lead mt-3 text-lg text-[#5c655c]">
                     {!! $reviewsSec->body !!}
                 </div>
             @else
-                <p class="mt-3 text-lg text-[#5c655c]">С коврика это часто переходит в слова — благодарность, ощущения, про то, как веду урок. Ниже короткое видео и ещё от тех, кто уже занимался; зал или онлайн, без разницы.</p>
+                <p class="mt-3 text-lg text-[#5c655c]">Ученицы иногда записывают короткое видео или пишут в чат. Ниже — три таких отзыва и фрагменты переписки после занятий.</p>
             @endif
         </div>
 
-        <div data-pv-reveal class="pv-reveal pv-reveal--up mx-auto mt-12 max-w-3xl" style="--rv-delay: 0.06s">
-            <p class="text-center text-sm font-medium text-[#869274]">На видео · 15–20 сек</p>
-            <div class="pv-video-frame relative mt-4 aspect-video w-full overflow-hidden rounded-2xl shadow-[0_20px_50px_-28px_rgba(45,49,45,0.18)]">
-                <iframe
-                    class="absolute inset-0 z-20 hidden h-full w-full"
-                    data-youtube-src="https://www.youtube.com/embed/jfKfPfyJRdk"
-                    src="about:blank"
-                    title="Участники — коротко на видео"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
-                <button
-                    type="button"
-                    class="absolute inset-0 z-10 flex h-full w-full cursor-pointer items-stretch justify-stretch border-0 bg-transparent p-0"
-                    aria-label="Смотреть видео: участники после практики"
-                    data-youtube-poster-btn
-                >
-                    <img src="{{ asset('images/figma/promo.png') }}" alt="" class="pointer-events-none absolute inset-0 h-full w-full object-cover">
-                    <span class="pv-video-playhint">
-                        <span class="pv-video-playhint-icon">
-                            <svg class="ml-1 h-7 w-7" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </span>
-                    </span>
-                </button>
+        {{-- Без data-pv-reveal: иначе блок с opacity:0 до скролла — превью «пропадают». Аспект в CSS (не только Tailwind arbitrary). --}}
+        <div class="mx-auto mt-12 w-full max-w-4xl">
+            <p class="text-center text-sm font-medium text-[#869274]">{{ filled($reviewsSec?->subtitle) ? $reviewsSec->subtitle : 'Три коротких видео — отзывы, которые записали ученицы' }}</p>
+            <div class="mt-4 grid grid-cols-1 gap-4 sm:mx-auto sm:grid-cols-3 sm:gap-x-4 sm:gap-y-2 sm:px-0">
+                @foreach ($reviewTiles as $i => $tile)
+                    @php
+                        $isPlaceholder = ! empty($tile['placeholder']);
+                    @endphp
+                    <div class="flex flex-col items-stretch sm:items-center">
+                        <div class="pv-review-video-tile relative mx-auto w-full max-w-[min(100%,15.5rem)] overflow-hidden rounded-2xl shadow-[0_16px_44px_-26px_rgba(45,49,45,0.2)] ring-1 ring-[#ecece8]/80 sm:mx-0 sm:max-w-none">
+                            <img
+                                src="{{ $tile['poster'] }}"
+                                alt=""
+                                class="absolute inset-0 h-full w-full object-cover object-center"
+                                width="400"
+                                height="800"
+                                loading="lazy"
+                                decoding="async"
+                            >
+                            @if (filled($tile['caption'] ?? null))
+                                <p class="pointer-events-none absolute inset-x-0 bottom-0 z-[15] bg-gradient-to-t from-black/55 to-transparent px-2 pb-2.5 pt-8 text-center text-[0.7rem] font-medium leading-snug text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] sm:text-xs">
+                                    {{ $tile['caption'] }}
+                                </p>
+                            @endif
+                            <button
+                                type="button"
+                                class="pv-review-play-btn group absolute inset-0 z-20 flex cursor-pointer items-center justify-center border-0 bg-gradient-to-t from-[#2d312d]/35 via-[#2d312d]/10 to-transparent p-0 transition hover:from-[#2d312d]/45"
+                                aria-label="{{ $isPlaceholder ? 'Демо-видео (загрузи свой в админке)' : 'Смотреть видео-отзыв '.($i + 1) }}"
+                                data-pv-review-video-open
+                                data-kind="{{ $tile['kind'] }}"
+                                @if ($tile['kind'] === 'native') data-src="{{ $tile['src'] }}" @endif
+                                @if ($tile['kind'] === 'youtube') data-youtube="{{ $tile['youtube_embed'] }}" @endif
+                            >
+                                <span class="pointer-events-none flex flex-col items-center justify-center gap-1">
+                                    <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-[#2d312d] shadow-[0_10px_36px_-8px_rgba(45,49,45,0.45)] ring-2 ring-white/60 transition group-hover:scale-[1.05] sm:h-14 sm:w-14">
+                                        <svg class="ml-0.5 h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                    </span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div
+            id="pv-reviews-video-overlay"
+            class="fixed inset-0 z-[90] hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-hidden="true"
+            aria-label="Видео-отзыв"
+        >
+            <div class="absolute inset-0 bg-[#1a1d1a]/88 backdrop-blur-[2px]" data-pv-reviews-video-backdrop></div>
+            <div class="relative z-10 mx-auto flex min-h-full w-full max-w-5xl flex-col justify-center gap-3 px-4 py-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-8">
+                <div class="flex shrink-0 justify-end">
+                    <button
+                        type="button"
+                        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-xl font-light leading-none text-white transition hover:bg-white/20"
+                        data-pv-reviews-video-close
+                        aria-label="Закрыть"
+                    >
+                        ×
+                    </button>
+                </div>
+                <div class="min-h-0 overflow-hidden rounded-2xl bg-black shadow-[0_24px_80px_-24px_rgba(0,0,0,0.65)] ring-1 ring-white/10">
+                    <video
+                        id="pv-reviews-video-el"
+                        class="hidden max-h-[min(78vh,85vw)] w-full bg-black object-contain sm:max-h-[min(78vh,56.25vw)]"
+                        controls
+                        playsinline
+                        preload="metadata"
+                    ></video>
+                    <iframe
+                        id="pv-reviews-yt-el"
+                        class="hidden aspect-video w-full bg-black sm:max-h-[min(78vh,56.25vw)]"
+                        title="Видео-отзыв"
+                        src="about:blank"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                        allowfullscreen
+                    ></iframe>
+                </div>
             </div>
         </div>
 
@@ -64,7 +125,7 @@
                         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#fffffa] text-sm font-semibold text-[#869274] shadow-sm ring-1 ring-[#dce8d0]" aria-hidden="true">PY</span>
                         <div class="min-w-0">
                             <p class="truncate text-sm font-semibold text-[#2d312d]">Мои чаты после уроков</p>
-                            <p class="truncate text-xs text-[#6b7a6b]">зал · онлайн</p>
+                            <p class="truncate text-xs text-[#6b7a6b]">реальные переписки</p>
                         </div>
                     </header>
 

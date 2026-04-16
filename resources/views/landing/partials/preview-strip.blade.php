@@ -1,6 +1,11 @@
 {{-- Превью стиля: видео — между результатами и квизом --}}
 @php
     $previewStrip = $landingSections->get('preview_strip');
+    $strip = $previewStrip instanceof \App\Models\LandingSection ? $previewStrip : null;
+    $poster = $strip?->displaySingleImageUrl() ?? asset('images/figma/promo.png');
+    $directVideo = $strip?->previewStripDirectVideoPublicUrl();
+    $youtubeEmbed = $strip?->previewStripYoutubeEmbedUrl();
+    $youtubeDataSrc = $youtubeEmbed ?? 'https://www.youtube.com/embed/jfKfPfyJRdk';
 @endphp
 <section id="preview" class="scroll-mt-24 w-full border-y border-[#ecece8] bg-[#f9faf6] py-16 md:py-24">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
@@ -15,33 +20,64 @@
         >
             <div class="relative z-10">
                 <div class="pv-video-frame aspect-video w-full overflow-hidden rounded-xl">
-                    <iframe
-                        class="absolute inset-0 z-20 hidden h-full w-full"
-                        data-youtube-src="https://www.youtube.com/embed/jfKfPfyJRdk"
-                        src="about:blank"
-                        title="Превью ProstoYoga"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                    ></iframe>
-                    <button
-                        type="button"
-                        class="absolute inset-0 z-10 flex h-full w-full cursor-pointer items-stretch justify-stretch border-0 bg-transparent p-0"
-                        aria-label="Смотреть превью видео"
-                        data-youtube-poster-btn
-                    >
-                        <img
-                            src="{{ $previewStrip instanceof \App\Models\LandingSection ? ($previewStrip->displaySingleImageUrl() ?? asset('images/figma/promo.png')) : asset('images/figma/promo.png') }}"
-                            alt=""
-                            class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
-                            width="1200"
-                            height="675"
+                    @if ($directVideo)
+                        <video
+                            class="absolute inset-0 z-20 hidden h-full w-full object-cover object-center"
+                            data-poster-video
+                            poster="{{ $poster }}"
+                            src="{{ $directVideo }}"
+                            playsinline
+                            preload="metadata"
+                            title="Превью ProstoYoga"
+                        ></video>
+                        <button
+                            type="button"
+                            class="absolute inset-0 z-10 flex h-full w-full cursor-pointer items-stretch justify-stretch border-0 bg-transparent p-0"
+                            aria-label="Смотреть превью видео"
+                            data-poster-video-btn
                         >
-                        <span class="pv-video-playhint">
-                            <span class="pv-video-playhint-icon">
-                                <svg class="ml-1 h-7 w-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            <img
+                                src="{{ $poster }}"
+                                alt=""
+                                class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+                                width="1200"
+                                height="675"
+                            >
+                            <span class="pv-video-playhint">
+                                <span class="pv-video-playhint-icon">
+                                    <svg class="ml-1 h-7 w-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                </span>
                             </span>
-                        </span>
-                    </button>
+                        </button>
+                    @else
+                        <iframe
+                            class="absolute inset-0 z-20 hidden h-full w-full"
+                            data-youtube-src="{{ $youtubeDataSrc }}"
+                            src="about:blank"
+                            title="Превью ProstoYoga"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                        ></iframe>
+                        <button
+                            type="button"
+                            class="absolute inset-0 z-10 flex h-full w-full cursor-pointer items-stretch justify-stretch border-0 bg-transparent p-0"
+                            aria-label="Смотреть превью видео"
+                            data-youtube-poster-btn
+                        >
+                            <img
+                                src="{{ $poster }}"
+                                alt=""
+                                class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+                                width="1200"
+                                height="675"
+                            >
+                            <span class="pv-video-playhint">
+                                <span class="pv-video-playhint-icon">
+                                    <svg class="ml-1 h-7 w-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                </span>
+                            </span>
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

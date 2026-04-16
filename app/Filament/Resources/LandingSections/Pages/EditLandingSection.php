@@ -15,18 +15,26 @@ class EditLandingSection extends EditRecord
 
     protected function afterFill(): void
     {
-        if ($this->record->key !== 'practice_gallery') {
+        if ($this->record->key === 'practice_gallery') {
+            $paths = $this->record->gallery_paths;
+            if (! is_array($paths) || $paths === []) {
+                LandingSection::ensurePracticeGalleryFilesFromPublicDefaults();
+                $this->record->refresh();
+            }
+
+            // Нельзя form->fill([...]) только с gallery_paths — в Filament это затирает весь state формы.
+            $this->refreshFormData(['gallery_paths']);
+
             return;
         }
 
-        $paths = $this->record->gallery_paths;
-        if (! is_array($paths) || $paths === []) {
-            LandingSection::ensurePracticeGalleryFilesFromPublicDefaults();
-            $this->record->refresh();
+        if ($this->record->key === 'reviews') {
+            $this->refreshFormData([
+                'review_video_slots' => LandingSection::normalizeReviewVideoSlotsForStorage(
+                    $this->record->review_video_slots ?? []
+                ),
+            ]);
         }
-
-        // Нельзя form->fill([...]) только с gallery_paths — в Filament это затирает весь state формы.
-        $this->refreshFormData(['gallery_paths']);
     }
 
     protected function getHeaderActions(): array

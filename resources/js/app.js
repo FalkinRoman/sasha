@@ -57,6 +57,83 @@ function initYouTubePoster() {
     });
 }
 
+/** Превью с MP4/WebM: постер до клика, затем нативный плеер с controls */
+function initPosterVideo() {
+    document.querySelectorAll('[data-poster-video-btn]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const frame = btn.closest('.pv-video-frame');
+            if (!frame) {
+                return;
+            }
+            const video = frame.querySelector('video[data-poster-video]');
+            if (!video || !(video instanceof HTMLVideoElement)) {
+                return;
+            }
+            video.setAttribute('controls', '');
+            video.classList.remove('hidden');
+            btn.remove();
+            void video.play();
+        });
+    });
+}
+
+/** Блок отзывов: три превью → подложка с нативным видео или YouTube */
+function initReviewsVideoOverlay() {
+    const root = document.getElementById('pv-reviews-video-overlay');
+    const videoEl = document.getElementById('pv-reviews-video-el');
+    const ytEl = document.getElementById('pv-reviews-yt-el');
+    if (!root || !videoEl || !ytEl) {
+        return;
+    }
+
+    const close = () => {
+        root.classList.add('hidden');
+        root.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('overflow-hidden');
+        videoEl.pause();
+        videoEl.removeAttribute('src');
+        videoEl.classList.add('hidden');
+        ytEl.src = 'about:blank';
+        ytEl.classList.add('hidden');
+    };
+
+    const open = (kind, src, youtubeBase) => {
+        videoEl.classList.add('hidden');
+        ytEl.classList.add('hidden');
+        if (kind === 'native' && src) {
+            videoEl.src = src;
+            videoEl.classList.remove('hidden');
+            void videoEl.play().catch(() => {});
+        } else if (kind === 'youtube' && youtubeBase) {
+            const url = youtubeBase.includes('?') ? `${youtubeBase}&autoplay=1` : `${youtubeBase}?autoplay=1`;
+            ytEl.src = url;
+            ytEl.classList.remove('hidden');
+        } else {
+            return;
+        }
+        root.classList.remove('hidden');
+        root.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('overflow-hidden');
+    };
+
+    document.querySelectorAll('[data-pv-review-video-open]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const kind = btn.getAttribute('data-kind');
+            const src = btn.getAttribute('data-src') || '';
+            const yt = btn.getAttribute('data-youtube') || '';
+            open(kind || '', src, yt);
+        });
+    });
+
+    root.querySelector('[data-pv-reviews-video-backdrop]')?.addEventListener('click', close);
+    root.querySelector('[data-pv-reviews-video-close]')?.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !root.classList.contains('hidden')) {
+            close();
+        }
+    });
+}
+
 /**
  * Заставка главной: SVG «прорисовка» → логотип → плавный уход.
  */
@@ -1044,6 +1121,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initResults30EqualHeight();
     initProstoScrollReveal();
     initYouTubePoster();
+    initPosterVideo();
+    initReviewsVideoOverlay();
     initHeroCounter();
     initProstoQuiz();
     initRegisterWizard();

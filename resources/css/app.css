@@ -390,6 +390,22 @@
             transform 0.38s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
+    /* Три превью отзывов: фиксированное соотношение 2:4 (иначе absolute img + несгенерированный aspect-* даёт высоту 0) */
+    .pv-review-video-tile {
+        aspect-ratio: 2 / 4;
+        width: 100%;
+    }
+
+    /* Три превью отзывов: иконка play сразу видна (без ожидания is-revealed у большого блока) */
+    .pv-review-video-tile .pv-video-playhint-icon {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .pv-review-video-tile .pv-video-playhint--tile .pv-video-playhint-icon {
+        @apply h-12 w-12 sm:h-14 sm:w-14;
+    }
+
     /* Появление по скроллу */
     .pv-reveal {
         opacity: 0;

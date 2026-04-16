@@ -42,6 +42,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         opcache \
     && rm -rf /var/lib/apt/lists/*
 
+COPY docker/php/conf.d/99-prostoyoga-uploads.ini /usr/local/etc/php/conf.d/99-prostoyoga-uploads.ini
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
@@ -52,6 +54,9 @@ COPY --from=frontend /app/public/build ./public/build
 
 RUN composer install --no-dev --prefer-dist --no-interaction \
     && composer dump-autoload --optimize
+
+# Долгие загрузки больших файлов (иначе 502 при превышении времени воркера FPM)
+RUN sed -i 's/^;request_terminate_timeout = 0/request_terminate_timeout = 7200/' /usr/local/etc/php-fpm.d/www.conf
 
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \

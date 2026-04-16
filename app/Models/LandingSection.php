@@ -10,7 +10,14 @@ use Illuminate\Support\Facades\Storage;
 class LandingSection extends Model
 {
     /** Массивы в кэше, не сериализованные модели — иначе после деплоя/OPcache бывает __PHP_Incomplete_Class. */
-    public const CACHE_KEY = 'landing_sections_map_v2';
+    public const CACHE_KEY = 'landing_sections_map_v3';
+
+    /** Дефолтные постеры видео-отзывов (public/), по порядку слотов 1–3. */
+    public const REVIEW_VIDEO_DEFAULT_POSTERS = [
+        'images/reviw/1.webp',
+        'images/reviw/2.webp',
+        'images/reviw/3.webp',
+    ];
 
     /** Ключи секций, у которых на главной реально выводится одна картинка из админки. */
     public const KEYS_SINGLE_SITE_IMAGE = ['hero', 'preview_strip', 'quiz', 'author'];
@@ -76,7 +83,10 @@ class LandingSection extends Model
         'subtitle',
         'body',
         'image_path',
+        'video_url',
+        'video_path',
         'gallery_paths',
+        'review_video_slots',
         'sort_order',
         'is_active',
     ];
@@ -87,11 +97,17 @@ class LandingSection extends Model
             'is_active' => 'boolean',
             'sort_order' => 'integer',
             'gallery_paths' => 'array',
+            'review_video_slots' => 'array',
         ];
     }
 
     protected static function booted(): void
     {
+        static::saving(static function (LandingSection $section): void {
+            if ($section->key === 'reviews' && is_array($section->review_video_slots)) {
+                $section->review_video_slots = self::normalizeReviewVideoSlotsForStorage($section->review_video_slots);
+            }
+        });
         static::saved(static fn () => Cache::forget(self::CACHE_KEY));
         static::deleted(static fn () => Cache::forget(self::CACHE_KEY));
     }
@@ -238,5 +254,156 @@ class LandingSection extends Model
     public function previewThumbUrl(): ?string
     {
         return $this->displaySingleImageUrl();
+    }
+
+    /** YouTube watch / youtu.be / embed → URL для iframe. */
+    public static function youtubeEmbedUrlFromString(string $u): ?string
+    {
+        $u = trim($u);
+        if ($u === '') {
+            return null;
+        }
+        if (preg_match('#youtu\.be/([a-zA-Z0-9_-]{11})#', $u, $m)) {
+            return 'https://www.youtube.com/embed/'.$m[1];
+        }
+        if (preg_match('#[?&]v=([a-zA-Z0-9_-]{11})#', $u, $m)) {
+            return 'https://www.youtube.com/embed/'.$m[1];
+        }
+        if (preg_match('#youtube\.com/embed/([a-zA-Z0-9_-]{11})#', $u, $m)) {
+            return 'https://www.youtube.com/embed/'.$m[1];
+        }
+
+        return null;
+    }
+
+    public static function pathOrUrlLooksLikeDirectVideo(string $u): bool
+    {
+        $u = strtolower(trim($u));
+
+        return $u !== '' && (bool) preg_match('#\.(mp4|webm|mov)(\?|#|$)#', $u);
+    }
+
+    /**
+     * Для секции preview_strip: ссылка на YouTube → embed URL, иначе null (тогда может быть прямой файл).
+     */
+    public function previewStripYoutubeEmbedUrl(): ?string
+    {
+        if ($this->key !== 'preview_strip') {
+            return null;
+        }
+
+        return self::youtubeEmbedUrlFromString((string) ($this->video_url ?? ''));
+    }
+
+    public function previewStripIsDirectVideoUrl(): bool
+    {
+        if ($this->key !== 'preview_strip') {
+            return false;
+        }
+
+        return self::pathOrUrlLooksLikeDirectVideo((string) ($this->video_url ?? ''));
+    }
+
+    /** Абсолютный URL для self-hosted видео: сначала файл из админки, иначе URL/путь в video_url. */
+    public function previewStripDirectVideoPublicUrl(): ?string
+    {
+        if ($this->key !== 'preview_strip') {
+            return null;
+        }
+        $stored = trim((string) ($this->video_path ?? ''));
+        if ($stored !== '') {
+            return static::publicUrlForStoredOrAssetPath($stored);
+        }
+        if (! $this->previewStripIsDirectVideoUrl()) {
+            return null;
+        }
+        $u = trim((string) $this->video_url);
+
+        return static::publicUrlForStoredOrAssetPath($u);
+    }
+
+    /**
+     * @return list<array{poster_path: ?string, video_path: ?string, video_url: ?string, caption: ?string}>
+     */
+    public static function normalizeReviewVideoSlotsForStorage(mixed $raw): array
+    {
+        $slots = is_array($raw) ? array_values($raw) : [];
+        while (count($slots) < 3) {
+            $slots[] = [];
+        }
+        $slots = array_slice($slots, 0, 3);
+        $out = [];
+        foreach ($slots as $s) {
+            if (! is_array($s)) {
+                $s = [];
+            }
+            $poster = isset($s['poster_path']) && is_string($s['poster_path']) && trim($s['poster_path']) !== '' ? trim($s['poster_path']) : null;
+            $vp = isset($s['video_path']) && is_string($s['video_path']) && trim($s['video_path']) !== '' ? trim($s['video_path']) : null;
+            $vu = isset($s['video_url']) && is_string($s['video_url']) ? trim($s['video_url']) : '';
+            $capRaw = isset($s['caption']) && is_string($s['caption']) ? trim($s['caption']) : '';
+            $caption = $capRaw !== '' ? mb_substr($capRaw, 0, 120) : null;
+            $out[] = [
+                'poster_path' => $poster,
+                'video_path' => $vp,
+                'video_url' => $vu !== '' ? $vu : null,
+                'caption' => $caption,
+            ];
+        }
+
+        return $out;
+    }
+
+    /** Три плитки для лендинга: постер, тип плеера, src. */
+    public function reviewsVideoTilesForView(): array
+    {
+        if ($this->key !== 'reviews') {
+            return [];
+        }
+        $slots = self::normalizeReviewVideoSlotsForStorage($this->review_video_slots ?? []);
+        $out = [];
+        foreach ($slots as $i => $slot) {
+            $defaultPoster = asset(self::REVIEW_VIDEO_DEFAULT_POSTERS[$i] ?? 'images/figma/promo.png');
+            $poster = isset($slot['poster_path']) && $slot['poster_path']
+                ? self::publicUrlForStoredOrAssetPath($slot['poster_path'])
+                : $defaultPoster;
+            $videoPath = (string) ($slot['video_path'] ?? '');
+            $videoUrl = (string) ($slot['video_url'] ?? '');
+            $native = $videoPath !== '' ? self::publicUrlForStoredOrAssetPath($videoPath) : null;
+            if ($native === null && $videoUrl !== '' && self::pathOrUrlLooksLikeDirectVideo($videoUrl)) {
+                $native = self::publicUrlForStoredOrAssetPath($videoUrl);
+            }
+            $yt = null;
+            if ($native === null && $videoUrl !== '') {
+                $yt = self::youtubeEmbedUrlFromString($videoUrl);
+            }
+            $kind = $native !== null ? 'native' : ($yt !== null ? 'youtube' : 'none');
+            $placeholder = false;
+            if ($kind === 'none') {
+                $kind = 'native';
+                $native = config('prostoy.review_tiles_placeholder_video_url');
+                $placeholder = true;
+            }
+            $cap = isset($slot['caption']) && is_string($slot['caption']) ? trim($slot['caption']) : '';
+            $caption = $cap !== '' ? $cap : null;
+            $out[] = [
+                'poster' => $poster,
+                'kind' => $kind,
+                'src' => $native,
+                'youtube_embed' => $yt,
+                'caption' => $caption,
+                'placeholder' => $placeholder,
+            ];
+        }
+
+        return $out;
+    }
+
+    /** Если секция reviews не загружена из БД — те же дефолтные постеры без видео. */
+    public static function defaultReviewTilesForLandingView(): array
+    {
+        return (new static([
+            'key' => 'reviews',
+            'review_video_slots' => [[], [], []],
+        ]))->reviewsVideoTilesForView();
     }
 }
