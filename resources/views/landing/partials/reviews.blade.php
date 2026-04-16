@@ -19,19 +19,21 @@
         </div>
 
         {{-- Без data-pv-reveal: иначе блок с opacity:0 до скролла — превью «пропадают». Аспект в CSS (не только Tailwind arbitrary). --}}
+        {{-- max-w-4xl как раньше: три плитки компактнее по центру, не разъезжаются на всю ширину 7xl --}}
         <div class="mx-auto mt-12 w-full max-w-4xl">
             <p class="text-center text-sm font-medium text-[#869274]">{{ filled($reviewsSec?->subtitle) ? $reviewsSec->subtitle : 'Три коротких видео — отзывы, которые записали ученицы' }}</p>
-            <div class="mt-4 grid grid-cols-1 gap-4 sm:mx-auto sm:grid-cols-3 sm:gap-x-4 sm:gap-y-2 sm:px-0">
+            <div class="pv-reviews-tiles mt-4">
                 @foreach ($reviewTiles as $i => $tile)
                     @php
                         $isPlaceholder = ! empty($tile['placeholder']);
                     @endphp
-                    <div class="flex flex-col items-stretch sm:items-center">
-                        <div class="pv-review-video-tile relative mx-auto w-full max-w-[min(100%,15.5rem)] overflow-hidden rounded-2xl shadow-[0_16px_44px_-26px_rgba(45,49,45,0.2)] ring-1 ring-[#ecece8]/80 sm:mx-0 sm:max-w-none">
+                    <div class="min-w-0 flex flex-col items-stretch">
+                        {{-- Ширина плитки ограничена: иначе в grid-cols-3 ячейка тянется на ~⅓ max-w-7xl и обложка с object-cover визуально «разъезжается». max-w — относительно колонки (100%), не больше ~15.5rem. --}}
+                        <div class="pv-review-video-tile relative mx-auto w-full max-w-[min(100%,15.5rem)] overflow-hidden rounded-2xl shadow-[0_16px_44px_-26px_rgba(45,49,45,0.2)] ring-1 ring-[#ecece8]/80">
                             <img
                                 src="{{ $tile['poster'] }}"
                                 alt=""
-                                class="absolute inset-0 h-full w-full object-cover object-center"
+                                class="absolute inset-0 h-full w-full max-w-none object-cover object-center"
                                 width="400"
                                 height="800"
                                 loading="lazy"

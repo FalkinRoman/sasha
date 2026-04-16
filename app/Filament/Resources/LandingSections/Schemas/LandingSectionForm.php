@@ -88,7 +88,7 @@ class LandingSectionForm
                             ->visible(fn (?LandingSection $record): bool => $record instanceof LandingSection && $record->key === 'preview_strip'),
                         FileUpload::make('image_path')
                             ->label('Одна картинка блока')
-                            ->helperText('Только для героя, превью видео, квиза и фото автора. Миниатюра — кликни, чтобы заменить.')
+                            ->helperText('Только для героя, превью видео, квиза и фото автора. Форматы: PNG, JPG, WebP, GIF. Миниатюра — кликни, чтобы заменить.')
                             ->image()
                             ->getUploadedFileUsing(PublicDiskImageUpload::resolveUploadedFileCallback())
                             ->directory('landing')

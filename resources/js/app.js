@@ -134,6 +134,88 @@ function initReviewsVideoOverlay() {
     });
 }
 
+/** Блок «Стиль практики» / preview: постер → тот же оверлей, что у видео-отзывов */
+function initPreviewStripVideoOverlay() {
+    const root = document.getElementById('pv-preview-strip-video-overlay');
+    const videoEl = document.getElementById('pv-preview-strip-video-el');
+    const ytEl = document.getElementById('pv-preview-strip-yt-el');
+    if (!root || !videoEl || !ytEl) {
+        return;
+    }
+    if (document.documentElement.dataset.pvPreviewStripVideoBound === '1') {
+        return;
+    }
+    document.documentElement.dataset.pvPreviewStripVideoBound = '1';
+
+    /* Вне секции: не режется overflow/transform предков; поверх липкого хедера. */
+    if (root.parentElement !== document.body) {
+        document.body.appendChild(root);
+    }
+
+    const fallbackNative =
+        'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
+    const fallbackYoutube = 'https://www.youtube.com/embed/jfKfPfyJRdk';
+
+    const close = () => {
+        root.classList.add('hidden');
+        root.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('overflow-hidden');
+        videoEl.pause();
+        videoEl.removeAttribute('src');
+        videoEl.classList.add('hidden');
+        ytEl.src = 'about:blank';
+        ytEl.classList.add('hidden');
+    };
+
+    const open = (kind, src, youtubeBase) => {
+        let k = (kind || '').trim();
+        let s = (src || '').trim();
+        let y = (youtubeBase || '').trim();
+        if (k !== 'native' && k !== 'youtube') {
+            k = 'native';
+        }
+        if (k === 'native' && !s) {
+            s = fallbackNative;
+        }
+        if (k === 'youtube' && !y) {
+            y = fallbackYoutube;
+        }
+        videoEl.classList.add('hidden');
+        ytEl.classList.add('hidden');
+        if (k === 'native' && s) {
+            videoEl.src = s;
+            videoEl.classList.remove('hidden');
+            void videoEl.play().catch(() => {});
+        } else if (k === 'youtube' && y) {
+            const url = y.includes('?') ? `${y}&autoplay=1` : `${y}?autoplay=1`;
+            ytEl.src = url;
+            ytEl.classList.remove('hidden');
+        }
+        root.classList.remove('hidden');
+        root.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('overflow-hidden');
+    };
+
+    /* Прямая привязка, как у отзывов: делегирование с document иногда «теряется» (порядок/всплытие/цель клика). */
+    document.querySelectorAll('[data-pv-preview-strip-open]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const kind = (btn.getAttribute('data-kind') || '').trim();
+            const src = (btn.getAttribute('data-src') || '').trim();
+            const yt = (btn.getAttribute('data-youtube') || '').trim();
+            open(kind, src, yt);
+        });
+    });
+
+    root.querySelector('[data-pv-preview-strip-backdrop]')?.addEventListener('click', close);
+    root.querySelector('[data-pv-preview-strip-close]')?.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !root.classList.contains('hidden')) {
+            close();
+        }
+    });
+}
+
 /**
  * Заставка главной: SVG «прорисовка» → логотип → плавный уход.
  */
@@ -1122,6 +1204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initProstoScrollReveal();
     initYouTubePoster();
     initPosterVideo();
+    initPreviewStripVideoOverlay();
     initReviewsVideoOverlay();
     initHeroCounter();
     initProstoQuiz();

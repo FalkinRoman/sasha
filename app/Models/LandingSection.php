@@ -310,8 +310,8 @@ class LandingSection extends Model
         if ($this->key !== 'preview_strip') {
             return null;
         }
-        $stored = trim((string) ($this->video_path ?? ''));
-        if ($stored !== '') {
+        $stored = self::coerceStoredFilePath($this->video_path ?? null);
+        if ($stored !== null && $stored !== '') {
             return static::publicUrlForStoredOrAssetPath($stored);
         }
         if (! $this->previewStripIsDirectVideoUrl()) {
@@ -320,6 +320,72 @@ class LandingSection extends Model
         $u = trim((string) $this->video_url);
 
         return static::publicUrlForStoredOrAssetPath($u);
+    }
+
+    /**
+     * Видео для модалки «Стиль практики»: загрузка/прямой .mp4 → YouTube из поля URL → тот же плейсхолдер, что у видео-отзывов.
+     *
+     * @return array{kind: 'native'|'youtube', src: string, youtube: string}
+     */
+    public function previewStripModalVideoForView(): array
+    {
+        if ($this->key !== 'preview_strip') {
+            return self::defaultPreviewStripModalVideoForView();
+        }
+        $direct = $this->previewStripDirectVideoPublicUrl();
+        if (is_string($direct) && trim($direct) !== '') {
+            return ['kind' => 'native', 'src' => trim($direct), 'youtube' => ''];
+        }
+        $yt = $this->previewStripYoutubeEmbedUrl();
+        if (is_string($yt) && trim($yt) !== '') {
+            return ['kind' => 'youtube', 'src' => '', 'youtube' => trim($yt)];
+        }
+
+        return self::defaultPreviewStripModalVideoForView();
+    }
+
+    /** @return array{kind: 'native'|'youtube', src: string, youtube: string} */
+    public static function defaultPreviewStripModalVideoForView(): array
+    {
+        $placeholder = config('prostoy.review_tiles_placeholder_video_url');
+        if (is_string($placeholder) && trim($placeholder) !== '') {
+            return ['kind' => 'native', 'src' => trim($placeholder), 'youtube' => ''];
+        }
+
+        return ['kind' => 'youtube', 'src' => '', 'youtube' => 'https://www.youtube.com/embed/jfKfPfyJRdk'];
+    }
+
+    /**
+     * Один путь к файлу на public disk: строка или формат FileUpload (ассоциативный массив uuid → path).
+     */
+    public static function coerceStoredFilePath(mixed $value): ?string
+    {
+        if (is_string($value)) {
+            $value = trim($value);
+
+            return $value === '' ? null : $value;
+        }
+        if (! is_array($value) || $value === []) {
+            return null;
+        }
+        if (! array_is_list($value)) {
+            foreach ($value as $candidate) {
+                $p = self::coerceStoredFilePath($candidate);
+                if ($p !== null) {
+                    return $p;
+                }
+            }
+
+            return null;
+        }
+        foreach ($value as $candidate) {
+            $p = self::coerceStoredFilePath($candidate);
+            if ($p !== null) {
+                return $p;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -337,8 +403,8 @@ class LandingSection extends Model
             if (! is_array($s)) {
                 $s = [];
             }
-            $poster = isset($s['poster_path']) && is_string($s['poster_path']) && trim($s['poster_path']) !== '' ? trim($s['poster_path']) : null;
-            $vp = isset($s['video_path']) && is_string($s['video_path']) && trim($s['video_path']) !== '' ? trim($s['video_path']) : null;
+            $poster = self::coerceStoredFilePath($s['poster_path'] ?? null);
+            $vp = self::coerceStoredFilePath($s['video_path'] ?? null);
             $vu = isset($s['video_url']) && is_string($s['video_url']) ? trim($s['video_url']) : '';
             $capRaw = isset($s['caption']) && is_string($s['caption']) ? trim($s['caption']) : '';
             $caption = $capRaw !== '' ? mb_substr($capRaw, 0, 120) : null;

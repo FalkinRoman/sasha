@@ -373,7 +373,7 @@
 
     /* Play: декоративный; без тёмной «рамки» — лёгкий градиент для читаемости кнопки */
     .pv-video-playhint {
-        @apply pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-gradient-to-t from-[#2d312d]/20 via-transparent to-transparent;
+        @apply pointer-events-none absolute inset-0 z-[1] flex items-center justify-center bg-gradient-to-t from-[#2d312d]/20 via-transparent to-transparent;
     }
 
     .pv-video-playhint-icon {
@@ -382,7 +382,8 @@
         transform: scale(0.88);
     }
 
-    .pv-video-reveal.is-revealed .pv-video-playhint-icon {
+    /* Лендинг «Стиль практики» + урок: play сразу виден (как у плиток отзывов), без ожидания is-revealed. */
+    .pv-video-reveal .pv-video-playhint-icon {
         opacity: 1;
         transform: scale(1);
         transition:
@@ -390,10 +391,31 @@
             transform 0.38s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
+    /* Три отзыва в ряд: колонки здесь — не зависит от попадания grid-cols-3 в билд / volume. */
+    .pv-reviews-tiles {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
+    }
+
+    @media (min-width: 640px) {
+        .pv-reviews-tiles {
+            gap: 1rem;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .pv-reviews-tiles {
+            gap: 1.5rem;
+        }
+    }
+
     /* Три превью отзывов: фиксированное соотношение 2:4 (иначе absolute img + несгенерированный aspect-* даёт высоту 0) */
     .pv-review-video-tile {
         aspect-ratio: 2 / 4;
         width: 100%;
+        min-height: 0; /* grid/flex: не раздувать ячейку из-за вложенного контента */
     }
 
     /* Три превью отзывов: иконка play сразу видна (без ожидания is-revealed у большого блока) */
