@@ -13,7 +13,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'is_admin', 'referral_code', 'referred_by_user_id', 'phone', 'telegram_username', 'newsletter_opt_in'])]
+#[Fillable([
+    'name', 'email', 'password', 'is_admin', 'is_blogger',
+    'referral_code', 'referred_by_user_id', 'phone', 'telegram_username', 'newsletter_opt_in',
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
@@ -26,6 +29,7 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'is_blogger' => 'boolean',
             'newsletter_opt_in' => 'boolean',
         ];
     }
@@ -48,6 +52,11 @@ class User extends Authenticatable implements FilamentUser
     public function referralEarnings(): HasMany
     {
         return $this->hasMany(ReferralEarning::class, 'referrer_user_id');
+    }
+
+    public function bloggerEarnings(): HasMany
+    {
+        return $this->hasMany(BloggerEarning::class, 'blogger_user_id');
     }
 
     /** Промокоды, привязанные к участнику (блогер / партнёр). */
@@ -74,6 +83,10 @@ class User extends Authenticatable implements FilamentUser
 
     public function hasActiveCourseAccess(): bool
     {
+        if ($this->is_blogger) {
+            return true;
+        }
+
         return $this->activePurchase() !== null;
     }
 

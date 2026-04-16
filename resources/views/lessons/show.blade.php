@@ -5,7 +5,7 @@
 @section('content')
     <div class="mx-auto max-w-3xl">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade">
-            <a href="{{ route('dashboard') }}" class="text-sm text-[#869274] hover:underline">← Назад к курсу</a>
+            <a href="{{ auth()->user()->is_blogger && ! auth()->user()->is_admin ? route('blogger.dashboard') : route('dashboard') }}" class="text-sm text-[#869274] hover:underline">← Назад к курсу</a>
         </div>
         <div data-pv-reveal class="pv-reveal pv-reveal--up mt-6" style="--rv-delay: 0.06s">
             <p class="text-xs font-medium uppercase tracking-wider text-[#869274]">Урок {{ $lesson->order_index }}</p>
@@ -105,6 +105,8 @@
                         Открыт
                     @elseif (auth()->user()->is_admin)
                         Админ · превью
+                    @elseif (auth()->user()->is_blogger)
+                        Блогер
                     @else
                         По тарифу
                     @endif
@@ -121,7 +123,7 @@
             <div data-pv-reveal class="pv-reveal pv-reveal--fade mt-10 rounded-2xl bg-[#869274] p-6 text-[#fffffa]" style="--rv-delay: 0.08s">
                 <p class="font-semibold">Мотивация в чате</p>
                 <p class="mt-2 text-sm text-white/90">Поделись впечатлением в Telegram — там еженедельные чек-ины и ответы на вопросы.</p>
-                <a href="https://t.me/telegram" target="_blank" rel="noopener" class="mt-4 inline-block text-sm font-medium underline">Перейти в сообщество</a>
+                <a href="{{ \App\Models\SiteSetting::telegramCommunityUrl() }}" target="_blank" rel="noopener" class="mt-4 inline-block text-sm font-medium underline">Перейти в сообщество</a>
             </div>
         @endif
     </div>

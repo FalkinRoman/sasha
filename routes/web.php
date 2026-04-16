@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\BloggerUserController;
 use App\Http\Controllers\Admin\BrandLogoController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\PurchaseController as AdminPurchaseController;
-use App\Http\Controllers\Admin\ReferralEarningController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -13,11 +13,12 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Blogger\BloggerDashboardController;
+use App\Http\Controllers\Blogger\BloggerSalesController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\TariffsController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\LandingSection;
@@ -28,10 +29,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function (Request $request) {
-    if ($request->filled('ref')) {
-        session(['referral_code_pending' => mb_strtoupper($request->string('ref'))]);
-    }
-
     $tariffs = Tariff::query()->orderBy('sort_order')->get();
     $presaleMode = SiteSetting::cabinetPresaleMode();
     $purchaseService = app(CoursePurchaseService::class);
@@ -49,28 +46,14 @@ Route::get('/', function (Request $request) {
     ]);
 })->name('home');
 
+Route::redirect('/referrals', '/', 301);
+
 Route::view('/support', 'pages.support')->name('pages.support');
 Route::view('/contacts', 'pages.contacts')->name('pages.contacts');
 Route::view('/privacy', 'pages.privacy')->name('pages.privacy');
 Route::redirect('/cookies', '/privacy', 301);
 Route::view('/personal-data', 'pages.personal-data')->name('pages.personal-data');
 Route::view('/terms', 'pages.terms')->name('pages.terms');
-
-Route::get('/referrals', function () {
-    $purchaseService = app(CoursePurchaseService::class);
-    $commissionPercent = $purchaseService->referralCommissionPercent;
-    [$minTariffRub, $maxTariffRub] = Tariff::displayPriceRangeRub();
-    $exampleMinBonusRub = (int) round($minTariffRub * $commissionPercent / 100);
-    $exampleMaxBonusRub = (int) round($maxTariffRub * $commissionPercent / 100);
-
-    return view('pages.referrals', compact(
-        'commissionPercent',
-        'minTariffRub',
-        'maxTariffRub',
-        'exampleMinBonusRub',
-        'exampleMaxBonusRub',
-    ));
-})->name('referrals.landing');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
@@ -95,12 +78,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/verify/resend', [EmailVerificationController::class, 'resend'])->name('verification.resend');
 });
 
+Route::middleware(['auth', 'blogger'])->prefix('blogger')->name('blogger.')->group(function () {
+    Route::get('/', BloggerDashboardController::class)->name('dashboard');
+    Route::get('/sales', BloggerSalesController::class)->name('sales');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/tariffs', TariffsController::class)->name('tariffs.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/cabinet/referrals', [ReferralProgramController::class, 'show'])->name('referrals.show');
     Route::get('/course/lesson/{lesson:slug}', [LessonController::class, 'show'])->name('lessons.show');
     Route::get('/checkout/{tariff:slug}', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout/{tariff:slug}', [CheckoutController::class, 'store'])->name('checkout.store');
@@ -111,16 +98,23 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/bloggers', [BloggerUserController::class, 'index'])->name('bloggers.index');
+    Route::get('/bloggers/create', [BloggerUserController::class, 'create'])->name('bloggers.create');
+    Route::post('/bloggers', [BloggerUserController::class, 'store'])->name('bloggers.store');
+    Route::get('/bloggers/{blogger}', [BloggerUserController::class, 'show'])->name('bloggers.show');
+    Route::post('/bloggers/{blogger}/reset-password', [BloggerUserController::class, 'resetPassword'])->name('bloggers.reset-password');
+    Route::delete('/bloggers/{blogger}', [BloggerUserController::class, 'destroy'])->name('bloggers.destroy');
+    Route::post('/bloggers/earnings/{earning}/paid', [BloggerUserController::class, 'markEarningPaid'])->name('bloggers.earnings.paid');
+    Route::delete('/bloggers/earnings/{earning}', [BloggerUserController::class, 'destroyEarning'])->name('bloggers.earnings.destroy');
     Route::get('/purchases', [AdminPurchaseController::class, 'index'])->name('purchases.index');
     Route::post('/purchases/{purchase}/confirm', [AdminPurchaseController::class, 'confirm'])->name('purchases.confirm');
     Route::post('/purchases/{purchase}/cancel', [AdminPurchaseController::class, 'cancel'])->name('purchases.cancel');
     Route::resource('lessons', AdminLessonController::class)->except(['show']);
     Route::resource('promocodes', PromoCodeController::class)->except(['show']);
-    Route::get('/referrals', [ReferralEarningController::class, 'index'])->name('referrals.index');
-    Route::post('/referrals/{earning}/paid', [ReferralEarningController::class, 'markPaid'])->name('referrals.paid');
     Route::get('/brand-logo', BrandLogoController::class)->name('brand-logo');
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::post('/settings/cabinet-mode', [SettingsController::class, 'updateCabinetMode'])->name('settings.cabinet-mode');
     Route::post('/settings/tariff-prices', [SettingsController::class, 'updateTariffPrices'])->name('settings.tariff-prices');
     Route::post('/settings/telegram', [SettingsController::class, 'updateTelegram'])->name('settings.telegram');
+    Route::post('/settings/telegram-community', [SettingsController::class, 'updateTelegramCommunity'])->name('settings.telegram-community');
 });

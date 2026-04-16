@@ -84,7 +84,7 @@
                         </dl>
                         @if ($purchase->tariff->includes_telegram)
                             <div class="shrink-0 sm:pl-2">
-                                <a href="https://t.me/telegram" target="_blank" rel="noopener" class="pv-btn-dark inline-flex w-full justify-center px-6 py-3 sm:w-auto">
+                                <a href="{{ \App\Models\SiteSetting::telegramCommunityUrl() }}" target="_blank" rel="noopener" class="pv-btn-dark inline-flex w-full justify-center px-6 py-3 sm:w-auto">
                                     Telegram-сообщество
                                 </a>
                             </div>

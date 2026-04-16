@@ -8,6 +8,7 @@ use App\Models\Tariff;
 use App\Services\CoursePurchaseService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
@@ -40,6 +41,7 @@ class SettingsController extends Controller
         return view('admin.settings.edit', [
             'cabinetPresaleMode' => SiteSetting::cabinetPresaleMode(),
             'telegramChatId' => $s->telegram_chat_id,
+            'telegramCommunityUrlStored' => $s->telegram_community_url,
             'telegramNotificationsEnabled' => (bool) $s->telegram_notifications_enabled,
             'telegramTokenConfigured' => is_string($s->telegram_bot_token) && $s->telegram_bot_token !== '',
             'tariffPricingRows' => $tariffPricingRows,
@@ -103,6 +105,34 @@ class SettingsController extends Controller
         $setting->save();
 
         return redirect()->route('admin.settings.edit')->with('ok', 'Настройки Telegram для заявок сохранены.');
+    }
+
+    public function updateTelegramCommunity(Request $request): RedirectResponse
+    {
+        $raw = $request->input('telegram_community_url');
+        $trimmed = is_string($raw) ? trim($raw) : '';
+
+        if ($trimmed === '') {
+            $setting = SiteSetting::instance();
+            $setting->telegram_community_url = null;
+            $setting->save();
+
+            return redirect()->route('admin.settings.edit')->with('ok', 'Ссылка на сообщество сброшена — в кабинете снова запасной адрес.');
+        }
+
+        $url = preg_match('#\Ahttps?://#i', $trimmed) ? $trimmed : 'https://'.ltrim($trimmed, '/');
+
+        Validator::make(
+            ['telegram_community_url' => $url],
+            ['telegram_community_url' => ['required', 'url:http,https', 'max:512']],
+            ['telegram_community_url.url' => 'Укажи корректный URL (https://…).']
+        )->validate();
+
+        $setting = SiteSetting::instance();
+        $setting->telegram_community_url = $url;
+        $setting->save();
+
+        return redirect()->route('admin.settings.edit')->with('ok', 'Ссылка на Telegram-сообщество для участников сохранена.');
     }
 
     public function updateTariffPrices(Request $request): RedirectResponse

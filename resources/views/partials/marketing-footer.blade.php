@@ -47,7 +47,6 @@
                         @else
                             <li><a href="{{ route('register') }}" class="pv-footer-link">Регистрация</a></li>
                         @endauth
-                        <li><a href="{{ route('referrals.landing') }}" class="pv-footer-link">Реферальная программа</a></li>
                     </ul>
                 </div>
 

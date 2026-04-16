@@ -14,7 +14,7 @@
             <div data-pv-reveal class="pv-reveal pv-reveal--up mt-10 rounded-2xl border border-[#dcdddb] bg-[#f6f8f1] p-8 text-left" style="--rv-delay: 0.08s">
                 <h2 class="font-semibold text-[#2d312d]">Сообщество</h2>
                 <p class="mt-2 text-sm text-[#7a837a]">Забирай поддержку и чек-ины в Telegram — вступай по ссылке ниже.</p>
-                <a href="https://t.me/telegram" target="_blank" rel="noopener" class="mt-6 inline-flex rounded-full bg-[#2d312d] px-5 py-2.5 text-sm font-medium text-[#fffffa]">Вступить в чат</a>
+                <a href="{{ \App\Models\SiteSetting::telegramCommunityUrl() }}" target="_blank" rel="noopener" class="mt-6 inline-flex rounded-full bg-[#2d312d] px-5 py-2.5 text-sm font-medium text-[#fffffa]">Вступить в чат</a>
             </div>
         @endif
 

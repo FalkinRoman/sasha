@@ -29,6 +29,11 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
+        $user = $request->user();
+        if ($user && $user->is_blogger && ! $user->is_admin) {
+            return redirect()->intended(route('blogger.dashboard'));
+        }
+
         return redirect()->intended(route('dashboard'));
     }
 

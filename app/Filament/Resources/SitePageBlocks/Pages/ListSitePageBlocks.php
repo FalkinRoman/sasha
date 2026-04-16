@@ -41,7 +41,7 @@ class ListSitePageBlocks extends ListRecords
             'privacy' => 'Политика конфиденциальности — блоки',
             'personal_data' => 'Персональные данные — блоки',
             'terms' => 'Публичная оферта — блоки',
-            'referrals' => 'Реферальная программа (лендинг) — блоки',
+            'referrals' => 'Снятая страница referrals — блоки (архив)',
             default => 'Блоки страницы',
         };
     }

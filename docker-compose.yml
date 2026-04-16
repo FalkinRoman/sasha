@@ -53,8 +53,9 @@ services:
     container_name: prostoy_nginx
     restart: unless-stopped
     ports:
-      - "${HTTP_PORT:-80}:80"
-      - "${HTTPS_PORT:-443}:443"
+      # Дефолт 8888/8443 — 8080 часто занят phpMyAdmin/другим стеком.
+      - "${HTTP_PORT:-8888}:80"
+      - "${HTTPS_PORT:-8443}:443"
     volumes:
       - .:/var/www/html:ro
       - prostoy_vendor:/var/www/html/vendor:ro

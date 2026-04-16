@@ -14,6 +14,7 @@ class SiteSetting extends Model
         'telegram_bot_token',
         'telegram_chat_id',
         'telegram_notifications_enabled',
+        'telegram_community_url',
     ];
 
     protected function casts(): array
@@ -45,6 +46,14 @@ class SiteSetting extends Model
     }
 
     /** Переопределение цены из /admin/settings; null — не задано. */
+    /** Ссылка «вступить в Telegram» в кабинете / на welcome; пусто — запасной t.me/telegram. */
+    public static function telegramCommunityUrl(): string
+    {
+        $u = trim((string) static::instance()->telegram_community_url);
+
+        return $u !== '' ? $u : 'https://t.me/telegram';
+    }
+
     public static function tariffPriceOverrideRubForSlug(string $slug): ?int
     {
         $row = static::instance();

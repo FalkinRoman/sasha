@@ -21,8 +21,14 @@ class CheckoutController extends Controller
         private YooKassaPaymentService $yooKassa
     ) {}
 
-    public function show(Tariff $tariff): View
+    public function show(Tariff $tariff): View|RedirectResponse
     {
+        $user = request()->user();
+        if ($user->is_blogger && ! $user->is_admin) {
+            return redirect()->route('blogger.dashboard')
+                ->with('flash', 'Оформление тарифов недоступно в кабинете блогера.');
+        }
+
         $promo = old('promocode', request('promocode', session('checkout_promo')));
 
         return view('checkout', [
@@ -37,6 +43,10 @@ class CheckoutController extends Controller
     public function store(Request $request, Tariff $tariff, TelegramLeadNotifierService $telegram): RedirectResponse
     {
         $user = $request->user();
+        if ($user->is_blogger && ! $user->is_admin) {
+            return redirect()->route('blogger.dashboard')
+                ->with('flash', 'Оформление тарифов недоступно в кабинете блогера.');
+        }
         $storedDigits = preg_replace('/\D/', '', (string) ($user->phone ?? '')) ?? '';
         $hasStoredPhone = strlen($storedDigits) >= 10;
 
@@ -57,7 +67,11 @@ class CheckoutController extends Controller
 
         $user->update(['phone' => $digits]);
 
-        $calc = $this->purchaseService->calculatePrices($tariff, $request->input('promocode'));
+        $promoInput = $request->input('promocode');
+        $promoResolved = is_string($promoInput) && trim($promoInput) !== ''
+            ? trim($promoInput)
+            : session('checkout_promo');
+        $calc = $this->purchaseService->calculatePrices($tariff, $promoResolved ? (string) $promoResolved : null);
 
         $manual = (bool) config('prostoy.presale_manual_payment');
         $yookassaOn = $this->yooKassa->isConfigured();

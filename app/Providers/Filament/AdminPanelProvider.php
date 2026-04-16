@@ -99,12 +99,6 @@ class AdminPanelProvider extends PanelProvider
                     ->group('Страницы сайта')
                     ->sort(15)
                     ->isActiveWhen(fn (): bool => self::sitePageBlocksNavActive('terms')),
-                NavigationItem::make('Реферальная программа (лендинг)')
-                    ->url(fn (): string => SitePageBlockResource::getUrl('index').'?p=referrals')
-                    ->icon(Heroicon::OutlinedUserGroup)
-                    ->group('Страницы сайта')
-                    ->sort(16)
-                    ->isActiveWhen(fn (): bool => self::sitePageBlocksNavActive('referrals')),
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -41,6 +41,11 @@ class Purchase extends Model
         return $this->hasOne(ReferralEarning::class);
     }
 
+    public function bloggerEarning(): HasOne
+    {
+        return $this->hasOne(BloggerEarning::class);
+    }
+
     public function confirmedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'confirmed_by_user_id');

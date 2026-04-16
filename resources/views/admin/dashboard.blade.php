@@ -4,7 +4,7 @@
 
 @section('content')
     <h1 class="text-2xl font-semibold text-white">Обзор и аналитика</h1>
-    <p class="mt-2 text-sm text-white/50">Сводка по курсу, оплатам и реферальной программе.</p>
+    <p class="mt-2 text-sm text-white/50">Сводка по курсу, оплатам и блогерам.</p>
 
     <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -45,24 +45,24 @@
         </div>
     </div>
 
-    <h2 class="mt-12 text-lg font-semibold text-white">Реферальная программа</h2>
+    <h2 class="mt-12 text-lg font-semibold text-white">Блогеры</h2>
     <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p class="text-xs uppercase text-white/50">Пришли по реф. ссылке</p>
-            <p class="mt-2 text-2xl font-semibold">{{ $referredUsersCount }}</p>
+            <p class="text-xs uppercase text-white/50">Аккаунтов блогеров</p>
+            <p class="mt-2 text-2xl font-semibold">{{ $bloggersCount }}</p>
         </div>
         <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p class="text-xs uppercase text-white/50">Рефереров (пригласили ≥1)</p>
-            <p class="mt-2 text-2xl font-semibold">{{ $referrersWhoInvitedCount }}</p>
+            <p class="text-xs uppercase text-white/50">Строк начислений блогерам</p>
+            <p class="mt-2 text-2xl font-semibold">{{ $bloggerEarningsRecordsCount }}</p>
         </div>
         <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p class="text-xs uppercase text-white/50">Начислений записей</p>
-            <p class="mt-2 text-2xl font-semibold">{{ $referralRecordsCount }}</p>
+            <p class="text-xs uppercase text-white/50">К выплате блогерам ₽</p>
+            <p class="mt-2 text-2xl font-semibold text-amber-200">{{ number_format($pendingBloggerPayoutsRub, 0, ',', ' ') }}</p>
         </div>
         <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <p class="text-xs uppercase text-white/50">К выплате ₽ / выплачено ₽</p>
-            <p class="mt-2 text-xl font-semibold text-amber-200">{{ number_format($pendingReferralsRub, 0, ',', ' ') }} / <span class="text-emerald-200/90">{{ number_format($paidReferralsRub, 0, ',', ' ') }}</span></p>
-            <a href="{{ route('admin.referrals.index') }}" class="mt-3 inline-block text-sm text-[#869274] hover:underline">Детали начислений →</a>
+            <p class="text-xs uppercase text-white/50">Выплачено блогерам ₽</p>
+            <p class="mt-2 text-2xl font-semibold text-emerald-200/90">{{ number_format($paidBloggerPayoutsRub, 0, ',', ' ') }}</p>
+            <a href="{{ route('admin.bloggers.index') }}" class="mt-3 inline-block text-sm text-[#869274] hover:underline">Управление блогерами →</a>
         </div>
     </div>
 

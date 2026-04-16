@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Lesson;
 use App\Models\SiteSetting;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __invoke(): View
+    public function __invoke(): View|RedirectResponse
     {
         $user = auth()->user();
+
+        if ($user->is_blogger && ! $user->is_admin) {
+            return redirect()->route('blogger.dashboard');
+        }
 
         $lessons = Lesson::query()
             ->where('course_slug', 'modern-yoga')

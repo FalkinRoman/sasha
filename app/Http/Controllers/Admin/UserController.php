@@ -11,6 +11,7 @@ class UserController extends Controller
     public function index(): View
     {
         $users = User::query()
+            ->where('is_blogger', false)
             ->withCount('purchases')
             ->withCount([
                 'purchases as active_access_count' => function ($q): void {
@@ -20,7 +21,6 @@ class UserController extends Controller
                         });
                 },
             ])
-            ->with('referrer:id,name,email')
             ->orderByDesc('id')
             ->paginate(20);
 

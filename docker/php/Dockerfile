@@ -51,7 +51,7 @@ COPY . .
 COPY --from=frontend /app/public/build ./public/build
 
 RUN composer install --no-dev --prefer-dist --no-interaction \
-    && composer dump-autoload --optimize --classmap-authoritative
+    && composer dump-autoload --optimize
 
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \

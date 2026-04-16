@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Администратор',
                 'password' => 'password',
                 'is_admin' => true,
-                'referral_code' => 'PROSTOADM',
+                'is_blogger' => false,
+                'referral_code' => null,
                 'email_verified_at' => now(),
             ]
         );
@@ -33,7 +34,8 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Обычный пользователь',
                 'password' => 'password',
                 'is_admin' => false,
-                'referral_code' => 'PROSTOUSR',
+                'is_blogger' => false,
+                'referral_code' => null,
                 'email_verified_at' => now(),
             ]
         );
@@ -41,10 +43,11 @@ class DatabaseSeeder extends Seeder
         $partner = User::query()->updateOrCreate(
             ['email' => 'partner@prostoyoga.ru'],
             [
-                'name' => 'Партнёр (демо)',
+                'name' => 'Блогер (демо)',
                 'password' => 'password',
                 'is_admin' => false,
-                'referral_code' => 'PARTNER01',
+                'is_blogger' => true,
+                'referral_code' => null,
                 'email_verified_at' => now(),
             ]
         );
@@ -125,7 +128,7 @@ class DatabaseSeeder extends Seeder
         PromoCode::query()->updateOrCreate(
             ['code' => 'BLOGGER15'],
             [
-                'discount_percent' => 15,
+                'discount_percent' => (int) config('prostoy.blogger_promo_discount_percent', 10),
                 'max_uses' => null,
                 'used_count' => 0,
                 'expires_at' => null,

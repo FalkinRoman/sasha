@@ -14,14 +14,22 @@
             <p class="text-[#7a837a]">{{ $tariff->description }}</p>
         </div>
 
-        @if (($presaleMode ?? false) && $calc['discount'] > 0)
+        @if (($calc['discount'] ?? 0) > 0)
             <div data-pv-reveal class="pv-reveal pv-reveal--up mt-6 rounded-2xl border border-[#869274]/30 bg-[#f6f8f1] px-4 py-4" style="--rv-delay: 0.08s">
-                <p class="text-xs font-semibold uppercase tracking-wider text-[#869274]">Предпродажа</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-[#869274]">
+                    @if ($calc['promo'] ?? null)
+                        Промокод <span class="font-mono">{{ $calc['promo']->code }}</span>
+                    @elseif ($presaleMode ?? false)
+                        Предпродажа
+                    @else
+                        Скидка
+                    @endif
+                </p>
                 <div class="mt-2 flex flex-wrap items-end gap-3">
                     <p class="text-lg text-[#7a837a] line-through tabular-nums">{{ number_format($calc['base'], 0, ',', ' ') }} ₽</p>
                     <p class="text-3xl font-semibold tabular-nums text-[#2d312d]">{{ number_format($calc['final'], 0, ',', ' ') }} ₽</p>
                 </div>
-                <p class="mt-1 text-sm text-[#5c655c]">Скидка {{ number_format($calc['discount'], 0, ',', ' ') }} ₽@if ($calc['promo']) <span class="font-mono text-[#869274]">· {{ $calc['promo']->code }}</span>@endif</p>
+                <p class="mt-1 text-sm text-[#5c655c]">Скидка {{ number_format($calc['discount'], 0, ',', ' ') }} ₽</p>
             </div>
         @else
             <div data-pv-reveal class="pv-reveal pv-reveal--up mt-6" style="--rv-delay: 0.1s">

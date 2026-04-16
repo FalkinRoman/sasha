@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\LandingSection;
 use App\Models\PromoCode;
+use App\Models\Purchase;
 use App\Models\SiteSetting;
 use App\Support\MarketingUrl;
 use Illuminate\Support\Carbon;
@@ -44,6 +45,13 @@ class AppServiceProvider extends ServiceProvider
         View::composer('partials.marketing-footer', function (\Illuminate\View\View $view): void {
             $footer = LandingSection::mapForView()->get('footer_brand');
             $view->with('landingFooterBrandBody', $footer?->body);
+        });
+
+        View::composer('layouts.admin', function (\Illuminate\View\View $view): void {
+            $view->with(
+                'adminPendingPurchasesCount',
+                Purchase::query()->where('status', 'pending')->count()
+            );
         });
 
         View::composer('partials.marketing-header', function (\Illuminate\View\View $view): void {

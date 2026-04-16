@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\BloggerEarning;
 use App\Models\PromoCode;
 use App\Models\Purchase;
-use App\Models\ReferralEarning;
 use App\Models\SiteSetting;
 use App\Models\Tariff;
 use App\Models\User;
@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class CoursePurchaseService
 {
-    public function __construct(
-        public int $referralCommissionPercent = 10
-    ) {}
+    public function __construct() {}
 
     /**
      * @return array{base: int, discount: int, final: int, promo: ?PromoCode, discount_percent: ?int}
@@ -133,21 +131,20 @@ class CoursePurchaseService
                 'confirmed_by_user_id' => $confirmedBy?->id,
             ]);
 
-            $locked->load('user');
-            $final = $locked->price_rub;
-            $user = $locked->user;
-
-            if ($user && $user->referred_by_user_id && $final > 0) {
-                $exists = ReferralEarning::query()
-                    ->where('purchase_id', $locked->id)
-                    ->exists();
+            $locked->load(['promocode.owner']);
+            $baseFullRub = (int) $locked->price_rub + (int) $locked->discount_rub;
+            $promo = $locked->promocode;
+            $owner = $promo?->owner;
+            if ($owner && $owner->is_blogger && $baseFullRub > 0) {
+                $exists = BloggerEarning::query()->where('purchase_id', $locked->id)->exists();
                 if (! $exists) {
-                    $commission = (int) round($final * ($this->referralCommissionPercent / 100));
-                    ReferralEarning::query()->create([
-                        'referrer_user_id' => $user->referred_by_user_id,
+                    $pct = max(1, min(100, (int) config('prostoy.blogger_commission_percent', 10)));
+                    $commission = (int) round($baseFullRub * ($pct / 100));
+                    BloggerEarning::query()->create([
+                        'blogger_user_id' => $owner->id,
                         'purchase_id' => $locked->id,
                         'amount_rub' => $commission,
-                        'commission_percent' => $this->referralCommissionPercent,
+                        'commission_percent' => $pct,
                         'status' => 'pending',
                     ]);
                 }

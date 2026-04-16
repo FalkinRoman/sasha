@@ -89,6 +89,35 @@
     </div>
 
     <div class="mt-10 max-w-2xl rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#a4b092]">Telegram — ссылка для участников</p>
+        <p class="mt-3 text-sm leading-relaxed text-white/65">
+            Кнопки «Telegram-сообщество» на <strong class="text-white/90">дашборде</strong>, после оплаты и в уроке ведут сюда. Пустое поле — остаётся запасная ссылка <code class="rounded bg-black/30 px-1 text-xs">https://t.me/telegram</code>.
+        </p>
+        <form method="post" action="{{ route('admin.settings.telegram-community') }}" class="mt-6 space-y-4">
+            @csrf
+            <div>
+                <label for="telegram_community_url" class="block text-sm font-medium text-white/85">URL (https://t.me/… или invite)</label>
+                <input
+                    id="telegram_community_url"
+                    name="telegram_community_url"
+                    type="url"
+                    inputmode="url"
+                    autocomplete="off"
+                    placeholder="https://t.me/+xxxx или https://t.me/yourchannel"
+                    class="mt-2 w-full max-w-xl rounded-xl border border-white/15 bg-black/25 px-4 py-3 text-sm text-white placeholder:text-white/35 focus:border-[#869274]/55 focus:outline-none focus:ring-1 focus:ring-[#869274]/40 @error('telegram_community_url') border-amber-500/60 @enderror"
+                    value="{{ old('telegram_community_url', $telegramCommunityUrlStored ?? '') }}"
+                >
+                @error('telegram_community_url')
+                    <p class="mt-1 text-xs text-amber-200/90">{{ $message }}</p>
+                @enderror
+            </div>
+            <button type="submit" class="rounded-full bg-[#869274] px-6 py-2.5 text-sm font-semibold text-white transition hover:brightness-105">
+                Сохранить ссылку
+            </button>
+        </form>
+    </div>
+
+    <div class="mt-10 max-w-2xl rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8">
         <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#a4b092]">Telegram — заявки на оплату</p>
         <p class="mt-3 text-sm leading-relaxed text-white/65">
             Уведомления о новых заказах (ожидают оплаты / ручное подтверждение). Токен от <strong class="text-white/90">@BotFather</strong>,

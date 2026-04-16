@@ -26,7 +26,9 @@
             @if ($presaleMode ?? false)
                 Предпродажа@if ($presalePctIntro !== null): скидка <strong class="font-semibold text-[#2d312d]">{{ $presalePctIntro }}%</strong> уже в ценах ниже@else: скидка уже в ценах ниже@endif. Срок доступа по тарифу начнётся после переключения проекта в режим «запущен» в админке; видео — по мере публикации.
             @else
-                Выбери формат доступа. После оплаты уроки открываются в кабинете на срок тарифа.
+                Выбери формат доступа. После оплаты уроки открываются в кабинете на срок тарифа.@if (session('checkout_promo'))
+                    Промокод <strong class="font-mono text-[#2d312d]">{{ session('checkout_promo') }}</strong> учтён в ценах ниже.
+                @endif
             @endif
         </p>
 

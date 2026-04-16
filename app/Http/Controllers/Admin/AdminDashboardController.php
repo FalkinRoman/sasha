@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BloggerEarning;
 use App\Models\Lesson;
 use App\Models\PromoCode;
 use App\Models\Purchase;
-use App\Models\ReferralEarning;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -18,20 +18,22 @@ class AdminDashboardController extends Controller
         $usersCount = User::query()->count();
         $purchasesCount = Purchase::query()->where('status', 'paid')->count();
         $revenueRub = (int) Purchase::query()->where('status', 'paid')->sum('price_rub');
-        $pendingReferralsRub = (int) ReferralEarning::query()->where('status', 'pending')->sum('amount_rub');
-        $paidReferralsRub = (int) ReferralEarning::query()->where('status', 'paid')->sum('amount_rub');
+        $pendingBloggerPayoutsRub = (int) BloggerEarning::query()->where('status', 'pending')->sum('amount_rub');
+        $paidBloggerPayoutsRub = (int) BloggerEarning::query()->where('status', 'paid')->sum('amount_rub');
         $promosActive = PromoCode::query()->where('is_active', true)->count();
 
-        $usersWithActiveAccess = User::query()->whereHas('purchases', function ($q): void {
-            $q->where('status', 'paid')
-                ->where(function ($q2): void {
-                    $q2->whereNull('expires_at')->orWhere('expires_at', '>', now());
+        $usersWithActiveAccess = User::query()->where(function ($q): void {
+            $q->where('is_blogger', true)
+                ->orWhereHas('purchases', function ($q2): void {
+                    $q2->where('status', 'paid')
+                        ->where(function ($q3): void {
+                            $q3->whereNull('expires_at')->orWhere('expires_at', '>', now());
+                        });
                 });
         })->count();
 
-        $referredUsersCount = User::query()->whereNotNull('referred_by_user_id')->count();
-        $referrersWhoInvitedCount = User::query()->whereHas('referrals')->count();
-        $referralRecordsCount = ReferralEarning::query()->count();
+        $bloggersCount = User::query()->where('is_blogger', true)->count();
+        $bloggerEarningsRecordsCount = BloggerEarning::query()->count();
 
         $lessonsCount = Lesson::query()->count();
         $totalDiscountRub = (int) Purchase::query()->where('status', 'paid')->sum('discount_rub');
@@ -48,13 +50,12 @@ class AdminDashboardController extends Controller
             'usersCount',
             'purchasesCount',
             'revenueRub',
-            'pendingReferralsRub',
-            'paidReferralsRub',
+            'pendingBloggerPayoutsRub',
+            'paidBloggerPayoutsRub',
             'promosActive',
             'usersWithActiveAccess',
-            'referredUsersCount',
-            'referrersWhoInvitedCount',
-            'referralRecordsCount',
+            'bloggersCount',
+            'bloggerEarningsRecordsCount',
             'lessonsCount',
             'totalDiscountRub',
             'purchasesLast7Days',

@@ -24,6 +24,9 @@
             aria-controls="pv-admin-aside"
             aria-label="Открыть меню"
         >
+            @if (($adminPendingPurchasesCount ?? 0) > 0)
+                <span class="pointer-events-none absolute right-1 top-1 z-[1] h-2 w-2 rounded-full bg-amber-400 ring-2 ring-[#1e211e]" title="Есть заявки на подтверждение оплаты" aria-hidden="true"></span>
+            @endif
             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/>
             </svg>
@@ -42,8 +45,24 @@
                 <a href="{{ route('admin.dashboard') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.dashboard') ? 'bg-white/10 text-white' : '' }}">Обзор</a>
                 <a href="{{ route('admin.users.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.users.*') ? 'bg-white/10 text-white' : '' }}">Участники</a>
                 <a href="{{ route('admin.promocodes.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.promocodes.*') ? 'bg-white/10 text-white' : '' }}">Промокоды</a>
-                <a href="{{ route('admin.purchases.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.purchases.*') ? 'bg-white/10 text-white' : '' }}">Оплаты</a>
-                <a href="{{ route('admin.referrals.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.referrals.*') ? 'bg-white/10 text-white' : '' }}">Рефералы</a>
+                <a
+                    href="{{ route('admin.purchases.index') }}"
+                    @if (($adminPendingPurchasesCount ?? 0) > 0)
+                        title="Заявок на подтверждение: {{ $adminPendingPurchasesCount }}"
+                    @endif
+                    class="flex items-center justify-between gap-2 rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.purchases.*') ? 'bg-white/10 text-white' : '' }}"
+                >
+                    <span class="flex items-center gap-2">
+                        @if (($adminPendingPurchasesCount ?? 0) > 0)
+                            <span class="h-2 w-2 shrink-0 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.55)]" aria-hidden="true"></span>
+                        @endif
+                        Оплаты
+                    </span>
+                    @if (($adminPendingPurchasesCount ?? 0) > 0)
+                        <span class="inline-flex min-w-[1.375rem] shrink-0 items-center justify-center rounded-full bg-amber-400 px-1.5 py-0.5 text-[11px] font-bold tabular-nums leading-none text-[#1a1d1a]">{{ $adminPendingPurchasesCount > 99 ? '99+' : $adminPendingPurchasesCount }}</span>
+                    @endif
+                </a>
+                <a href="{{ route('admin.bloggers.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.bloggers.*') ? 'bg-white/10 text-white' : '' }}">Блогеры</a>
                 <a href="{{ route('admin.lessons.index') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.lessons.*') ? 'bg-white/10 text-white' : '' }}">Уроки (видео)</a>
                 <a href="{{ route('admin.brand-logo') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.brand-logo') ? 'bg-white/10 text-white' : '' }}">Логотип</a>
                 <a href="{{ route('admin.settings.edit') }}" class="rounded-lg px-3 py-2 hover:bg-white/5 {{ request()->routeIs('admin.settings.*') ? 'bg-white/10 text-white' : '' }}">Настройки</a>
@@ -54,7 +73,11 @@
         <main class="relative z-0 min-w-0 flex-1 px-4 pb-8 pt-2 max-md:pt-4 sm:px-6 md:p-8 md:pt-8">
             @unless (request()->routeIs('admin.dashboard'))
                 <nav class="mb-6 text-sm text-white/60" aria-label="Навигация в админке">
-                    <a href="{{ route('admin.dashboard') }}" class="text-[#869274] hover:underline">← К обзору админки</a>
+                    @if (request()->routeIs('admin.bloggers.*'))
+                        <a href="{{ route('admin.bloggers.index') }}" class="text-[#869274] hover:underline">← К списку блогеров</a>
+                    @else
+                        <a href="{{ route('admin.dashboard') }}" class="text-[#869274] hover:underline">← К обзору админки</a>
+                    @endif
                 </nav>
             @endunless
             @yield('content')
