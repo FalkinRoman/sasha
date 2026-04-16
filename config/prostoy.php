@@ -45,7 +45,9 @@ return [
 
     /**
      * Макс. размер видеофайла в админке (МБ): уроки + превью лендинга (Filament / Livewire).
-     * Приоритет: VIDEO_UPLOAD_MAX_MB, иначе LESSON_VIDEO_MAX_MB. Синхронизируй с PHP upload_max_filesize / post_max_size (в Docker — docker/php/conf.d/99-prostoyoga-uploads.ini).
+     * Приоритет: VIDEO_UPLOAD_MAX_MB, иначе LESSON_VIDEO_MAX_MB (дефолт 16384 ≈ 16 ГБ).
+     * Синхронизируй с PHP upload_max_filesize / post_max_size (в Docker — docker/php/conf.d/99-prostoyoga-uploads.ini) и nginx client_max_body_size.
+     * Кодек на сервере не меняется: в кабинете нативный плеер (video) — для всех ОС/браузеров лучше H.264 (AVC) + AAC в mp4/mov; HEVC с iPhone в Chrome на части ПК может не играться.
      */
     'lesson_video_max_mb' => $videoUploadMaxMb,
 

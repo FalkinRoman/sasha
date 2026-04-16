@@ -153,7 +153,7 @@ class LessonController extends Controller
             return;
         }
 
-        $maxKb = (int) config('prostoy.lesson_video_max_mb', 2048) * 1024;
+        $maxKb = (int) config('prostoy.lesson_video_max_mb', 16384) * 1024;
 
         $request->validate([
             'video_file' => [

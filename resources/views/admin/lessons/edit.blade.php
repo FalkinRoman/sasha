@@ -63,7 +63,7 @@
             @else
                 <p class="mt-1 text-xs text-white/45">Файл не загружен.</p>
             @endif
-            <p class="mt-2 text-xs text-white/45">Новый файл заменит старый. mp4, webm, mov — до {{ (int) config('prostoy.lesson_video_max_mb', 2048) }} МБ (nginx/php на проде должны позволять).</p>
+            <p class="mt-2 text-xs text-white/45">Новый файл заменит старый. mp4 / webm / mov — до {{ (int) config('prostoy.lesson_video_max_mb', 16384) }} МБ. Рекомендация: H.264 + AAC; HEVC с телефона в части браузеров на ПК не играется. nginx/php ≥ лимита.</p>
             <input type="file" name="video_file" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov" class="mt-3 block w-full text-sm text-white/80 file:mr-4 file:rounded-lg file:border-0 file:bg-[#869274] file:px-4 file:py-2 file:text-sm file:text-white">
             <div data-upload-progress class="mt-4 hidden rounded-xl border border-white/10 bg-white/[0.06] p-4">
                 <div class="h-2 w-full overflow-hidden rounded-full bg-white/10">

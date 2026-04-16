@@ -69,7 +69,7 @@ class LandingSectionForm
                     ->schema([
                         FileUpload::make('video_path')
                             ->label('Видеофайл (превью на главной)')
-                            ->helperText(fn (): string => 'mp4 / webm / mov. Макс. '.(int) config('prostoy.lesson_video_max_mb', 16384).' МБ (VIDEO_UPLOAD_MAX_MB или LESSON_VIDEO_MAX_MB в .env). Если файл загружен — он главнее ссылки ниже.')
+                            ->helperText(fn (): string => 'mp4 / webm / mov, макс. '.(int) config('prostoy.lesson_video_max_mb', 16384).' МБ (.env VIDEO_UPLOAD_MAX_MB). Для веба: H.264 + AAC; с iPhone лучше «наиболее совместимые», не только HEVC. Файл важнее ссылки ниже.')
                             ->acceptedFileTypes(['video/mp4', 'video/webm', 'video/quicktime'])
                             ->maxSize((int) config('prostoy.lesson_video_max_mb', 16384) * 1024)
                             ->getUploadedFileUsing(PublicDiskImageUpload::resolveUploadedVideoFileCallback())
@@ -163,7 +163,7 @@ class LandingSectionForm
                 ->nullable(),
             FileUpload::make($base.'.video_path')
                 ->label('Видеофайл')
-                ->helperText('mp4 / webm / mov')
+                ->helperText('mp4 / webm / mov; для плеера в браузере — H.264 + AAC')
                 ->acceptedFileTypes(['video/mp4', 'video/webm', 'video/quicktime'])
                 ->maxSize($maxKb)
                 ->getUploadedFileUsing(PublicDiskImageUpload::resolveUploadedVideoFileCallback())

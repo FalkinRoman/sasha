@@ -33,7 +33,7 @@
 
         <div>
             <p class="text-sm font-medium text-white/90">Видео</p>
-            <p class="mt-1 text-xs text-white/45">Файл на сервер: до {{ (int) config('prostoy.lesson_video_max_mb', 2048) }} МБ (mp4, webm, mov). На проде подними лимиты nginx/php под этот размер. Без файла — ссылка ниже в «Дополнительно».</p>
+            <p class="mt-1 text-xs text-white/45">Файл на сервер: до {{ (int) config('prostoy.lesson_video_max_mb', 16384) }} МБ, mp4 / webm / mov. Для плеера в кабинете и в VLC: кодек <span class="font-mono text-white/70">H.264 (AVC) + AAC</span> — iPhone: «наиболее совместимые», не только HEVC. Nginx/php на проде ≥ лимита. Без файла — ссылка в «Дополнительно».</p>
             <div class="relative mt-3">
                 <input
                     id="video_file"
