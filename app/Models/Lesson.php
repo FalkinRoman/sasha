@@ -59,13 +59,18 @@ class Lesson extends Model
     }
 
     /**
-     * Видео можно показывать этому пользователю: участник — только после даты релиза;
-     * админ — любое загруженное видео (проверка кабинета до публикации).
+     * Видео можно показывать этому пользователю: участник — после даты релиза;
+     * бесплатное превью — сразу при наличии файла/ссылки (без released_at и без режима предпродажи);
+     * админ — любое загруженное видео.
      */
     public function mediaAvailableForUser(?User $user): bool
     {
         if ($user !== null && $user->is_admin) {
             return $this->hasLessonVideoSource();
+        }
+
+        if ($this->is_preview_free && $user !== null && $this->userCanOpen($user) && $this->hasLessonVideoSource()) {
+            return true;
         }
 
         return $this->isMediaReleased();
