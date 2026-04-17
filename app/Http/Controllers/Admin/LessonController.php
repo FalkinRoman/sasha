@@ -7,6 +7,7 @@ use App\Models\Lesson;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -160,7 +161,23 @@ class LessonController extends Controller
                 'required',
                 'file',
                 'max:'.$maxKb,
-                'mimetypes:video/mp4,video/webm,video/quicktime,video/ogg',
+                /*
+                 * Не полагаемся на finfo/mimetypes: большие mp4/mov из HandBrake, VLC, телефонов
+                 * часто приходят как application/octet-stream или application/mp4 — тогда mimetypes:video/mp4 даёт 422.
+                 * Воспроизводимость в браузере — отдельно (H.264+AAC); здесь только расширение + размер.
+                 */
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    if (! $value instanceof UploadedFile) {
+                        $fail('Некорректный файл.');
+
+                        return;
+                    }
+                    $ext = strtolower($value->getClientOriginalExtension());
+                    $allowed = ['mp4', 'm4v', 'mov', 'qt', 'webm', 'ogv', 'ogg'];
+                    if (! in_array($ext, $allowed, true)) {
+                        $fail('Допустимые расширения: '.implode(', ', $allowed).'.');
+                    }
+                },
             ],
         ]);
     }
