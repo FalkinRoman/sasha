@@ -38,6 +38,8 @@ services:
       - .:/var/www/html
       - prostoy_vendor:/var/www/html/vendor
       - prostoy_public_build:/var/www/html/public/build
+      # Лимиты загрузки: bind поверх образа — после git pull достаточно up -d (без rebuild), иначе часто остаётся дефолт PHP 8M.
+      - ./docker/php/conf.d/99-prostoyoga-uploads.ini:/usr/local/etc/php/conf.d/99-prostoyoga-uploads.ini:ro
     depends_on:
       mysql:
         condition: service_healthy
@@ -81,6 +83,7 @@ services:
       - .:/var/www/html
       - prostoy_vendor:/var/www/html/vendor
       - prostoy_public_build:/var/www/html/public/build
+      - ./docker/php/conf.d/99-prostoyoga-uploads.ini:/usr/local/etc/php/conf.d/99-prostoyoga-uploads.ini:ro
     depends_on:
       app:
         condition: service_healthy
