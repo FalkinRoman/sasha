@@ -22,23 +22,31 @@
         {{-- max-w-4xl как раньше: три плитки компактнее по центру, не разъезжаются на всю ширину 7xl --}}
         <div class="mx-auto mt-12 w-full max-w-4xl">
             <p class="text-center text-sm font-medium text-[#869274]">{{ filled($reviewsSec?->subtitle) ? $reviewsSec->subtitle : 'Три коротких видео — отзывы, которые записали ученицы' }}</p>
-            {{-- grid + aspect в Blade: не зависеть только от app.css в public/build (том prostoy_public_build часто со старой сборкой → высота 0). --}}
-            <div class="pv-reviews-tiles mt-4 grid w-full grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+            {{-- Inline layout: не зависит от Tailwind/public/build (иначе absolute img → высота 0 → «три чёрные линии» от градиента кнопки). --}}
+            <div
+                class="pv-reviews-tiles mt-4"
+                style="display:grid;width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(0.5rem,2vw,1.25rem)"
+            >
                 @foreach ($reviewTiles as $i => $tile)
                     @php
                         $isPlaceholder = ! empty($tile['placeholder']);
+                        $fallbackPoster = asset(\App\Models\LandingSection::REVIEW_VIDEO_DEFAULT_POSTERS[$i] ?? 'images/figma/promo.png');
                     @endphp
                     <div class="min-w-0 flex flex-col items-stretch">
-                        {{-- Ширина плитки ограничена: иначе в grid-cols-3 ячейка тянется на ~⅓ max-w-7xl и обложка с object-cover визуально «разъезжается». max-w — относительно колонки (100%), не больше ~15.5rem. --}}
-                        <div class="pv-review-video-tile relative mx-auto aspect-[2/4] w-full max-w-[min(100%,15.5rem)] overflow-hidden rounded-2xl shadow-[0_16px_44px_-26px_rgba(45,49,45,0.2)] ring-1 ring-[#ecece8]/80">
+                        <div
+                            class="pv-review-video-tile relative mx-auto w-full overflow-hidden rounded-2xl shadow-[0_16px_44px_-26px_rgba(45,49,45,0.2)] ring-1 ring-[#ecece8]/80"
+                            style="aspect-ratio:2/4;max-width:min(100%,15.5rem);margin-inline:auto;background:#eef0ea;min-height:12rem"
+                        >
                             <img
                                 src="{{ $tile['poster'] }}"
                                 alt=""
-                                class="absolute inset-0 h-full w-full max-w-none object-cover object-center"
+                                class="absolute inset-0 z-0 h-full w-full max-w-none object-cover object-center"
                                 width="400"
                                 height="800"
                                 loading="lazy"
                                 decoding="async"
+                                data-pv-fallback-poster="{{ $fallbackPoster }}"
+                                onerror="if(this.dataset.pvFallbackPoster){this.onerror=null;this.src=this.dataset.pvFallbackPoster}"
                             >
                             @if (filled($tile['caption'] ?? null))
                                 <p class="pointer-events-none absolute inset-x-0 bottom-0 z-[15] bg-gradient-to-t from-black/55 to-transparent px-2 pb-2.5 pt-8 text-center text-[0.7rem] font-medium leading-snug text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] sm:text-xs">
