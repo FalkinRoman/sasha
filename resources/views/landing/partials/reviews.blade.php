@@ -5,6 +5,7 @@
         ? $reviewsSec->reviewsVideoTilesForView()
         : \App\Models\LandingSection::defaultReviewTilesForLandingView();
 @endphp
+{{-- Стили модалки + play: resources/css/app.css (inline style на проде часто падает под CSP style-src). --}}
 <section id="reviews" class="scroll-mt-24 w-full bg-[#fffffa] py-20 md:py-28">
     <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade mx-auto max-w-3xl text-center">
@@ -55,7 +56,7 @@
                             @endif
                             <button
                                 type="button"
-                                class="pv-review-play-btn group absolute inset-0 z-20 flex cursor-pointer items-center justify-center border-0 bg-gradient-to-t from-[#2d312d]/35 via-[#2d312d]/10 to-transparent p-0 transition hover:from-[#2d312d]/45"
+                                class="pv-review-play-btn absolute inset-0 z-20"
                                 aria-label="{{ $isPlaceholder ? 'Демо-видео (загрузи свой в админке)' : 'Смотреть видео-отзыв '.($i + 1) }}"
                                 data-pv-review-video-open
                                 data-kind="{{ $tile['kind'] }}"
@@ -63,7 +64,7 @@
                                 @if ($tile['kind'] === 'youtube') data-youtube="{{ $tile['youtube_embed'] }}" @endif
                             >
                                 <span class="pointer-events-none flex flex-col items-center justify-center gap-1">
-                                    <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/95 text-[#2d312d] shadow-[0_10px_36px_-8px_rgba(45,49,45,0.45)] ring-2 ring-white/60 transition group-hover:scale-[1.05] sm:h-14 sm:w-14">
+                                    <span class="pv-review-play-chip">
                                         <svg class="ml-0.5 h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
                                     </span>
                                 </span>
@@ -76,18 +77,19 @@
 
         <div
             id="pv-reviews-video-overlay"
-            class="fixed inset-0 z-[90] hidden"
+            class="pv-reviews-overlay-root"
             role="dialog"
             aria-modal="true"
             aria-hidden="true"
             aria-label="Видео-отзыв"
+            data-fallback-native="{{ e(config('prostoy.review_tiles_placeholder_video_url')) }}"
         >
-            <div class="absolute inset-0 bg-[#1a1d1a]/88 backdrop-blur-[2px]" data-pv-reviews-video-backdrop></div>
-            <div class="relative z-10 mx-auto flex min-h-full w-full max-w-5xl flex-col justify-center gap-3 px-4 py-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-8">
-                <div class="flex shrink-0 justify-end">
+            <div class="pv-reviews-backdrop" data-pv-reviews-video-backdrop></div>
+            <div class="pv-reviews-shell">
+                <div class="pv-reviews-close-row flex shrink-0 justify-end">
                     <button
                         type="button"
-                        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-xl font-light leading-none text-white transition hover:bg-white/20"
+                        class="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-white/10 text-xl font-light leading-none text-white transition hover:bg-white/20"
                         data-pv-reviews-video-close
                         aria-label="Закрыть"
                     >
@@ -97,14 +99,14 @@
                 <div class="min-h-0 overflow-hidden rounded-2xl bg-black shadow-[0_24px_80px_-24px_rgba(0,0,0,0.65)] ring-1 ring-white/10">
                     <video
                         id="pv-reviews-video-el"
-                        class="hidden max-h-[min(78vh,85vw)] w-full bg-black object-contain sm:max-h-[min(78vh,56.25vw)]"
+                        class="max-h-[min(78vh,85vw)] w-full bg-black object-contain sm:max-h-[min(78vh,56.25vw)]"
                         controls
                         playsinline
                         preload="metadata"
                     ></video>
                     <iframe
                         id="pv-reviews-yt-el"
-                        class="hidden aspect-video w-full bg-black sm:max-h-[min(78vh,56.25vw)]"
+                        class="aspect-video w-full bg-black sm:max-h-[min(78vh,56.25vw)]"
                         title="Видео-отзыв"
                         src="about:blank"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"

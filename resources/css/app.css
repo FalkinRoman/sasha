@@ -416,6 +416,120 @@
         aspect-ratio: 2 / 4;
         width: 100%;
         min-height: 0; /* grid/flex: не раздувать ячейку из-за вложенного контента */
+        transition:
+            transform 0.22s ease,
+            box-shadow 0.22s ease;
+    }
+
+    .pv-review-video-tile:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 48px -28px rgba(45, 49, 45, 0.22);
+    }
+
+    /* Модалка видео-отзывов: не в inline blade — иначе на строгом CSP пропадают play-подложка и fixed-оверлей */
+    #pv-reviews-video-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    #pv-reviews-video-overlay.pv-reviews-open {
+        display: flex;
+    }
+
+    #pv-reviews-video-overlay .pv-reviews-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(26, 29, 26, 0.88);
+    }
+
+    #pv-reviews-video-overlay .pv-reviews-shell {
+        position: relative;
+        z-index: 10;
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 64rem;
+        margin: 0 auto;
+        padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom));
+    }
+
+    #pv-reviews-video-overlay .pv-reviews-close-row {
+        display: flex;
+        flex-shrink: 0;
+        justify-content: flex-end;
+    }
+
+    #pv-reviews-video-el:not(.pv-reviews-shown),
+    #pv-reviews-yt-el:not(.pv-reviews-shown) {
+        display: none !important;
+    }
+
+    #pv-reviews-video-el.pv-reviews-shown {
+        display: block;
+        width: 100%;
+        max-height: min(78vh, 85vw);
+        background: #000;
+        object-fit: contain;
+    }
+
+    #pv-reviews-yt-el.pv-reviews-shown {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        max-height: min(78vh, 56.25vw);
+        background: #000;
+        border: 0;
+    }
+
+    .pv-review-play-btn {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        background: linear-gradient(to top, rgba(45, 49, 45, 0.38), rgba(45, 49, 45, 0.1), transparent);
+        transition: background 0.2s ease;
+    }
+
+    .pv-review-play-btn:hover {
+        background: linear-gradient(to top, rgba(45, 49, 45, 0.5), rgba(45, 49, 45, 0.14), transparent);
+    }
+
+    .pv-review-play-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #2d312d;
+        box-shadow:
+            0 10px 36px -8px rgba(45, 49, 45, 0.45),
+            0 0 0 2px rgba(255, 255, 255, 0.55);
+        transition: transform 0.2s ease;
+    }
+
+    .pv-review-play-btn:hover .pv-review-play-chip {
+        transform: scale(1.05);
+    }
+
+    @media (min-width: 640px) {
+        .pv-review-play-chip {
+            width: 3.5rem;
+            height: 3.5rem;
+        }
     }
 
     /* Три превью отзывов: иконка play сразу видна (без ожидания is-revealed у большого блока) */

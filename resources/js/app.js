@@ -85,53 +85,94 @@ function initReviewsVideoOverlay() {
     if (!root || !videoEl || !ytEl) {
         return;
     }
+    if (document.documentElement.dataset.pvReviewsVideoBound === '1') {
+        return;
+    }
+    document.documentElement.dataset.pvReviewsVideoBound = '1';
+
+    /* Вне секции: fixed не режется overflow/transform предков; как у preview-strip. */
+    if (root.parentElement !== document.body) {
+        document.body.appendChild(root);
+    }
+
+    const fallbackNative =
+        (root.dataset.fallbackNative && root.dataset.fallbackNative.trim()) ||
+        'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
+
+    const setMediaHidden = (el, hidden) => {
+        el.classList.toggle('pv-reviews-shown', !hidden);
+        el.style.display = hidden ? 'none' : '';
+    };
 
     const close = () => {
-        root.classList.add('hidden');
+        root.classList.remove('pv-reviews-open');
         root.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('overflow-hidden');
+        document.body.style.overflow = '';
         videoEl.pause();
         videoEl.removeAttribute('src');
-        videoEl.classList.add('hidden');
+        setMediaHidden(videoEl, true);
         ytEl.src = 'about:blank';
-        ytEl.classList.add('hidden');
+        setMediaHidden(ytEl, true);
     };
 
-    const open = (kind, src, youtubeBase) => {
-        videoEl.classList.add('hidden');
-        ytEl.classList.add('hidden');
-        if (kind === 'native' && src) {
-            videoEl.src = src;
-            videoEl.classList.remove('hidden');
-            void videoEl.play().catch(() => {});
-        } else if (kind === 'youtube' && youtubeBase) {
+    const open = (kindRaw, srcRaw, youtubeBaseRaw) => {
+        let kind = (kindRaw || '').trim();
+        if (kind !== 'native' && kind !== 'youtube') {
+            kind = 'native';
+        }
+        let src = (srcRaw || '').trim();
+        const youtubeBase = (youtubeBaseRaw || '').trim();
+
+        setMediaHidden(videoEl, true);
+        setMediaHidden(ytEl, true);
+
+        if (kind === 'youtube' && youtubeBase) {
             const url = youtubeBase.includes('?') ? `${youtubeBase}&autoplay=1` : `${youtubeBase}?autoplay=1`;
             ytEl.src = url;
-            ytEl.classList.remove('hidden');
+            setMediaHidden(ytEl, false);
         } else {
-            return;
+            if (!src) {
+                src = fallbackNative;
+            }
+            videoEl.src = src;
+            setMediaHidden(videoEl, false);
+            void videoEl.play().catch(() => {});
         }
-        root.classList.remove('hidden');
+        root.classList.add('pv-reviews-open');
         root.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('overflow-hidden');
+        document.body.style.overflow = 'hidden';
     };
 
-    document.querySelectorAll('[data-pv-review-video-open]').forEach((btn) => {
-        btn.addEventListener('click', () => {
+    /* capture: не теряется, если где-то на пути stopPropagation (bubble-делегирование ломали) */
+    document.addEventListener(
+        'click',
+        (e) => {
+            const t = e.target;
+            if (!(t instanceof Element)) {
+                return;
+            }
+            const btn = t.closest('[data-pv-review-video-open]');
+            if (!btn) {
+                return;
+            }
+            e.preventDefault();
             const kind = btn.getAttribute('data-kind');
             const src = btn.getAttribute('data-src') || '';
             const yt = btn.getAttribute('data-youtube') || '';
             open(kind || '', src, yt);
-        });
-    });
+        },
+        true
+    );
 
     root.querySelector('[data-pv-reviews-video-backdrop]')?.addEventListener('click', close);
     root.querySelector('[data-pv-reviews-video-close]')?.addEventListener('click', close);
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !root.classList.contains('hidden')) {
+        if (e.key === 'Escape' && root.classList.contains('pv-reviews-open')) {
             close();
         }
     });
+
+    close();
 }
 
 /** Блок «Стиль практики» / preview: постер → тот же оверлей, что у видео-отзывов */
