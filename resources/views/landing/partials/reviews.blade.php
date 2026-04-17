@@ -22,14 +22,15 @@
         {{-- max-w-4xl как раньше: три плитки компактнее по центру, не разъезжаются на всю ширину 7xl --}}
         <div class="mx-auto mt-12 w-full max-w-4xl">
             <p class="text-center text-sm font-medium text-[#869274]">{{ filled($reviewsSec?->subtitle) ? $reviewsSec->subtitle : 'Три коротких видео — отзывы, которые записали ученицы' }}</p>
-            <div class="pv-reviews-tiles mt-4">
+            {{-- grid + aspect в Blade: не зависеть только от app.css в public/build (том prostoy_public_build часто со старой сборкой → высота 0). --}}
+            <div class="pv-reviews-tiles mt-4 grid w-full grid-cols-3 gap-2 sm:gap-4 md:gap-6">
                 @foreach ($reviewTiles as $i => $tile)
                     @php
                         $isPlaceholder = ! empty($tile['placeholder']);
                     @endphp
                     <div class="min-w-0 flex flex-col items-stretch">
                         {{-- Ширина плитки ограничена: иначе в grid-cols-3 ячейка тянется на ~⅓ max-w-7xl и обложка с object-cover визуально «разъезжается». max-w — относительно колонки (100%), не больше ~15.5rem. --}}
-                        <div class="pv-review-video-tile relative mx-auto w-full max-w-[min(100%,15.5rem)] overflow-hidden rounded-2xl shadow-[0_16px_44px_-26px_rgba(45,49,45,0.2)] ring-1 ring-[#ecece8]/80">
+                        <div class="pv-review-video-tile relative mx-auto aspect-[2/4] w-full max-w-[min(100%,15.5rem)] overflow-hidden rounded-2xl shadow-[0_16px_44px_-26px_rgba(45,49,45,0.2)] ring-1 ring-[#ecece8]/80">
                             <img
                                 src="{{ $tile['poster'] }}"
                                 alt=""
