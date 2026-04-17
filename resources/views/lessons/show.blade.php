@@ -24,16 +24,42 @@
             >
                 <div class="relative z-10">
                     @if ($lesson->hasServerVideo())
-                        <div class="aspect-video overflow-hidden rounded-xl bg-[#1a1d1a] shadow-[0_12px_40px_-22px_rgba(45,49,45,0.14)]">
+                        @php $lessonPoster = $lesson->posterPublicUrl() ?? asset('images/lesson-placeholder.svg'); @endphp
+                        {{-- Как у YouTube: постер + play, без автозапуска; src грузится по клику не хуже preload=metadata --}}
+                        <div class="pv-video-frame relative aspect-video w-full overflow-hidden rounded-xl bg-[#1a1d1a] shadow-[0_12px_40px_-22px_rgba(45,49,45,0.14)]">
                             <video
-                                class="h-full w-full object-contain"
-                                controls
+                                class="hidden h-full w-full object-contain"
+                                data-poster-video
                                 playsinline
-                                preload="metadata"
+                                preload="none"
+                                poster="{{ $lessonPoster }}"
                                 src="{{ $lesson->serverVideoPublicUrl() }}"
                             >
-                                В браузере нет поддержки воспроизведения этого видео.
+                                В браузере нет поддержки воспроизведения этого видео (нужен H.264 + AAC в mp4/mov).
                             </video>
+                            <button
+                                type="button"
+                                class="absolute inset-0 z-10 flex h-full w-full cursor-pointer items-stretch justify-stretch border-0 bg-transparent p-0"
+                                aria-label="Смотреть видео урока"
+                                data-poster-video-btn
+                            >
+                                <img
+                                    src="{{ $lessonPoster }}"
+                                    alt=""
+                                    class="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+                                    width="1200"
+                                    height="675"
+                                    loading="lazy"
+                                    decoding="async"
+                                    data-pv-fallback="{{ asset('images/lesson-placeholder.svg') }}"
+                                    onerror="if(this.dataset.pvFallback){this.onerror=null;this.src=this.dataset.pvFallback;}"
+                                >
+                                <span class="pv-video-playhint">
+                                    <span class="pv-video-playhint-icon">
+                                        <svg class="ml-1 h-7 w-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                    </span>
+                                </span>
+                            </button>
                         </div>
                     @elseif ($embedUrl)
                         <div class="pv-video-frame aspect-video w-full overflow-hidden rounded-xl">

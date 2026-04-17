@@ -391,6 +391,14 @@
             transform 0.38s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
+    /*
+     * Все нативные <video controls>: убрать «⋯» в Chrome/Edge/Safari (shadow UI, не controlsList).
+     * Firefox — своё меню, этим не скрыть.
+     */
+    video::-webkit-media-controls-overflow-button {
+        display: none !important;
+    }
+
     /* Три отзыва в ряд: колонки здесь — не зависит от попадания grid-cols-3 в билд / volume. */
     .pv-reviews-tiles {
         display: grid;
