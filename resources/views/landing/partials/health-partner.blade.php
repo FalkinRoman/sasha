@@ -1,13 +1,12 @@
-{{-- Партнёрство Союза «Здоровье Здоровых» + логотипы medic — сразу после блока «Обо мне» --}}
+{{-- Чекап в подарок (2–3 тариф) + логотипы medic — после блока «Обо мне» --}}
 @php
     $medicLogos = ['1.png.webp', '2.png.webp', '3.png.webp', '42.png.webp', '51.jpg.webp'];
 @endphp
 <section id="health-partner" class="scroll-mt-24 w-full border-t border-[#ecece8] bg-gradient-to-b from-[#f4f7ef] via-[#fafbf6] to-[#fffffa] py-20 md:py-28">
-    {{-- Как why-simple: общая колонка ~900px, без «разъезда» на ультрашироких экранах --}}
+    {{-- Как why-simple: общая колонка ~900px --}}
     <div class="mx-auto w-full max-w-[900px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade text-center">
-            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#869274]">Союз «Здоровье Здоровых»</p>
-            <h2 class="mx-auto mt-4 max-w-3xl text-2xl font-semibold leading-snug tracking-tight text-[#2d312d] md:text-3xl md:leading-tight">
+            <h2 class="mx-auto max-w-3xl text-2xl font-semibold leading-snug tracking-tight text-[#2d312d] md:text-3xl md:leading-tight">
                 Я официальный партнёр Союза «Здоровье Здоровых» и даю вам то, чего нет на обычных курсах
             </h2>
         </div>
@@ -18,13 +17,15 @@
             style="--rv-delay: 0.06s"
         >
             <p>
-                Приобретая курс у меня, вы получаете не только знания, но и
+                Практикуя вместе со мной, вы получаете не только знания, но и
                 <span class="font-semibold text-[#2d312d]">реальную заботу о своём здоровье</span>.
             </p>
             <p>
                 В подарок каждому участнику
                 <span class="font-semibold text-[#2d312d]">2 и 3 тарифа</span>
-                — профессиональный бесплатный чекап организма по системе Союза «Здоровье Здоровых» и приложения Биогеном.
+                —
+                <span class="font-semibold text-[#2d312d]">профессиональный глубокий чекап всего организма, с расшифровкой и рекомендациями</span>
+                — бесплатно.
             </p>
             <p class="font-medium text-[#2d312d]">Это глубокая диагностика, которая помогает увидеть:</p>
             <ul class="space-y-3 rounded-2xl border border-[#d8e5cc] bg-[#f6faf1]/95 px-5 py-5 shadow-[0_12px_40px_-28px_rgba(45,49,45,0.12)] sm:px-7 sm:py-6">
@@ -51,7 +52,7 @@
             class="pv-reveal pv-reveal--up mx-auto mt-10 max-w-3xl rounded-2xl border border-[#869274]/30 bg-gradient-to-br from-[#eaf3dd]/90 to-[#f6faf1] px-6 py-6 shadow-[0_14px_48px_-28px_rgba(45,49,45,0.14)] md:mt-12 md:px-8 md:py-7"
             style="--rv-delay: 0.1s"
         >
-            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#6b7a6b]">Почему это ценно</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#6b7a6b]">Почему это ценно?</p>
             <p class="mt-3 text-base leading-relaxed text-[#2d312d] md:text-lg">
                 Обычная стоимость такого чекапа и рекомендаций от специалистов —
                 <span class="whitespace-nowrap font-semibold text-[#5c6b52]">от 40&nbsp;000 до 70&nbsp;000 рублей</span>.
