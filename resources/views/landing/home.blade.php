@@ -4,7 +4,7 @@
 
 @section('canonical', $marketingHome)
 
-@section('meta_description', 'PROSTO.YOGA — 12 практик онлайн, 3 раза в неделю. За 30 дней: осанка, тело, энергия. Предпродажа со скидкой, бесплатный урок после регистрации.')
+@section('meta_description', 'PROSTO.YOGA — 12 практик онлайн, 3 раза в неделю. За 30 дней: осанка, тело, энергия. Бесплатный урок после регистрации.')
 
 @section('content')
     @include('partials.splash-intro')
@@ -16,6 +16,7 @@
     @include('landing.partials.preview-strip')
     @include('landing.partials.quiz')
     @include('landing.partials.author')
+    @include('landing.partials.health-partner')
     @include('landing.partials.why-simple')
     @include('landing.partials.program-12')
     @include('landing.partials.surprise')

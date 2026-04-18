@@ -7,24 +7,13 @@
         <div data-pv-reveal class="pv-reveal pv-reveal--up">
             <h1 class="text-3xl font-semibold text-[#2d312d]">Тарифы</h1>
         </div>
-        @php
-            $presalePctIntro = null;
-            if (($presaleMode ?? false) && ! empty($priceCalcs)) {
-                foreach ($priceCalcs as $c) {
-                    if (($c['discount'] ?? 0) > 0 && ($c['discount_percent'] ?? null) !== null) {
-                        $presalePctIntro = (int) $c['discount_percent'];
-                        break;
-                    }
-                }
-            }
-        @endphp
         @if (session('flash'))
             <div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">{{ session('flash') }}</div>
         @endif
 
         <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-3 max-w-2xl text-[#7a837a]" style="--rv-delay: 0.08s">
             @if ($presaleMode ?? false)
-                Предпродажа@if ($presalePctIntro !== null): скидка <strong class="font-semibold text-[#2d312d]">{{ $presalePctIntro }}%</strong> уже в ценах ниже@else: скидка уже в ценах ниже@endif. Срок доступа по тарифу начнётся после переключения проекта в режим «запущен» в админке; видео — по мере публикации.
+                Проект ещё не запущен: отсчёт дней доступа по тарифу начнётся после переключения «Проект запущен» в админке. Видео — по мере публикации.
             @else
                 Выбери формат доступа. После оплаты уроки открываются в кабинете на срок тарифа.@if (session('checkout_promo'))
                     Промокод <strong class="font-mono text-[#2d312d]">{{ session('checkout_promo') }}</strong> учтён в ценах ниже.
@@ -49,7 +38,6 @@
                     @include('partials.tariff-presale-price', [
                         'tariff' => $tariff,
                         'pc' => $priceCalcs[$tariff->id] ?? null,
-                        'presaleMode' => $presaleMode ?? false,
                         'finalClass' => 'text-2xl font-semibold tabular-nums text-[#2d312d] whitespace-nowrap',
                     ])
                     <p class="mt-1 text-xs text-[#7a837a]">
@@ -78,7 +66,11 @@
                         <p class="mt-6 rounded-full bg-[#eaf3dd] py-2.5 text-center text-sm font-medium text-[#2d312d]">Текущий тариф</p>
                     @else
                         <a href="{{ route('checkout.show', $tariff) }}" class="pv-btn-dark mt-6 py-2.5">
-                            {{ ($presaleManual ?? false) ? 'Оформить предпродажу' : 'Перейти к оплате' }}
+                            @if (($presaleManual ?? false) && ($presaleMode ?? false))
+                                Заявка на оплату
+                            @else
+                                Перейти к оплате
+                            @endif
                         </a>
                     @endif
                 </article>

@@ -35,11 +35,14 @@ class SiteSetting extends Model
         }
 
         return static::query()->create([
-            'cabinet_presale_mode' => true,
+            'cabinet_presale_mode' => false,
         ]);
     }
 
-    /** Режим предпродажи в кабинете: неактивные карточки, тексты про предпродажу, срок доступа не тикает. */
+    /**
+     * true = до старта проекта (карточки уроков приглушены, expires_at не ставится до «Проект запущен»).
+     * Исторически колонка называлась cabinet_presale_mode.
+     */
     public static function cabinetPresaleMode(): bool
     {
         return (bool) static::instance()->cabinet_presale_mode;

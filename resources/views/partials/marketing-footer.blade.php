@@ -40,6 +40,7 @@
                         <li><a href="{{ $marketingHome }}#results-30" class="pv-footer-link">Результаты</a></li>
                         <li><a href="{{ $marketingHome }}#preview" class="pv-footer-link">Превью</a></li>
                         <li><a href="{{ $marketingHome }}#prosto-test" class="pv-footer-link">Тест</a></li>
+                        <li><a href="{{ $marketingHome }}#health-partner" class="pv-footer-link">Чекап</a></li>
                         <li><a href="{{ $marketingHome }}#program" class="pv-footer-link">12 практик</a></li>
                         <li><a href="{{ $marketingHome }}#tariffs" class="pv-footer-link">Тарифы</a></li>
                         @auth

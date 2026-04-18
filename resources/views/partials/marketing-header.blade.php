@@ -1,7 +1,5 @@
 <div class="sticky top-0 z-40 pt-[env(safe-area-inset-top,0px)]">
-@if (! empty($presaleTopBar ?? $presaleMode ?? false))
-    @include('partials.presale-top-bar')
-@endif
+{{-- Полоса «предпродажа» сверху отключена; partial: partials.presale-top-bar --}}
 <header class="w-full border-b border-[#ecece8]/80 bg-[#fffffa]/90 backdrop-blur-md">
     <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12">
         <a href="{{ $marketingHome }}" class="inline-flex shrink-0 items-center text-lg font-semibold leading-none tracking-tight text-[#2d312d] md:text-xl">
@@ -12,6 +10,7 @@
             <a href="{{ $marketingHome }}#preview" class="pv-nav-marketing">Превью</a>
             <a href="{{ $marketingHome }}#prosto-test" class="pv-nav-marketing">Тест</a>
             <a href="{{ $marketingHome }}#author" class="pv-nav-marketing">Автор</a>
+            <a href="{{ $marketingHome }}#health-partner" class="pv-nav-marketing">Чекап</a>
             <a href="{{ $marketingHome }}#program" class="pv-nav-marketing">12 практик</a>
             <a href="{{ $marketingHome }}#tariffs" class="pv-nav-marketing">Тарифы</a>
         </nav>
@@ -64,6 +63,7 @@
             <a href="{{ $marketingHome }}#preview" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Превью</a>
             <a href="{{ $marketingHome }}#prosto-test" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Тест</a>
             <a href="{{ $marketingHome }}#author" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Автор</a>
+            <a href="{{ $marketingHome }}#health-partner" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Чекап</a>
             <a href="{{ $marketingHome }}#program" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">12 практик</a>
             <a href="{{ $marketingHome }}#tariffs" class="rounded-xl px-3 py-2.5 transition duration-200 hover:bg-[#e5ebdd] hover:text-[#1f2a1f] active:bg-[#dde6d2]">Тарифы</a>
         </nav>

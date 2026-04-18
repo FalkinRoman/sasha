@@ -1,8 +1,7 @@
-{{-- Цена: в режиме предпродажи (из админки) — зачёркнутая база, −N%, итог; иначе одна цифра --}}
+{{-- Цена: при скидке по промокоду — зачёркнутая база, −N%, итог; иначе одна цифра --}}
 @props([
     'tariff',
     'pc' => null,
-    'presaleMode' => false,
     'finalClass' => 'text-2xl font-semibold tabular-nums text-[#2d312d] whitespace-nowrap',
 ])
 @php
@@ -16,8 +15,6 @@
             @endif
             @if (! empty($pc['promo']))
                 <span class="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#869274]">{{ $pc['promo']->code }}</span>
-            @elseif ($presaleMode)
-                <span class="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#869274]">Предпродажа</span>
             @endif
         </div>
         <p class="text-sm font-medium text-[#7a837a] line-through decoration-[#7a837a]/45 tabular-nums">{{ number_format($pc['base'], 0, ',', ' ') }} ₽</p>

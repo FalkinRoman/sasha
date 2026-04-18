@@ -19,8 +19,6 @@
                 <p class="text-xs font-semibold uppercase tracking-wider text-[#869274]">
                     @if ($calc['promo'] ?? null)
                         Промокод <span class="font-mono">{{ $calc['promo']->code }}</span>
-                    @elseif ($presaleMode ?? false)
-                        Предпродажа
                     @else
                         Скидка
                     @endif
@@ -68,8 +66,8 @@
 
         @if ($presaleManual ?? false)
             <div class="mt-8 rounded-2xl border border-[#dce2d6] bg-[#fffffa] p-5 text-sm leading-relaxed text-[#5c655c]">
-                <p class="font-semibold text-[#2d312d]">Оплата на этапе предпродажи</p>
-                <p class="mt-2">Онлайн-оплата картой появится позже. Сейчас — перевод на карту или по реквизитам: после заявки с тобой свяжется менеджер, пришлёт реквизиты. После зачисления мы подтвердим оплату — <strong>доступ откроется автоматически</strong>.</p>
+                <p class="font-semibold text-[#2d312d]">Оплата через менеджера</p>
+                <p class="mt-2">После заявки с тобой свяжется менеджер (реквизиты / карта). После подтверждения оплаты <strong>доступ откроется автоматически</strong>.</p>
             </div>
         @endif
 
@@ -117,7 +115,7 @@
                     name="promocode"
                     id="promocode"
                     value="{{ old('promocode', request('promocode', session('checkout_promo'))) }}"
-                    placeholder="Оставь пустым — применится предпродажная скидка, если активна"
+                    placeholder="Необязательно — если есть промокод"
                     @class([
                         'mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-2 focus:ring-[#869274]/25',
                         'pv-input-error' => $errors->has('promocode'),

@@ -3,9 +3,7 @@
 namespace App\Providers;
 
 use App\Models\LandingSection;
-use App\Models\PromoCode;
 use App\Models\Purchase;
-use App\Models\SiteSetting;
 use App\Support\MarketingUrl;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
@@ -38,10 +36,6 @@ class AppServiceProvider extends ServiceProvider
 
         View::share('marketingHome', MarketingUrl::base());
 
-        /*
-         * Полоса предпродажи: композитор именно на партиал — при @extends('layouts.marketing')
-         * дочерний вид (landing.home) не гарантированно триггерит composers у родительского layout.
-         */
         View::composer('partials.marketing-footer', function (\Illuminate\View\View $view): void {
             $footer = LandingSection::mapForView()->get('footer_brand');
             $view->with('landingFooterBrandBody', $footer?->body);
@@ -55,18 +49,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('partials.marketing-header', function (\Illuminate\View\View $view): void {
-            $presaleTopBar = SiteSetting::cabinetPresaleMode();
-            $presaleTopBarPercent = null;
-            if ($presaleTopBar) {
-                $code = config('prostoy.presale_auto_promo_code');
-                if (is_string($code) && $code !== '') {
-                    $promo = PromoCode::query()->whereRaw('UPPER(code) = ?', [mb_strtoupper($code)])->first();
-                    $presaleTopBarPercent = $promo ? (int) round((float) $promo->discount_percent) : 20;
-                } else {
-                    $presaleTopBarPercent = 20;
-                }
-            }
-            $view->with(compact('presaleTopBar', 'presaleTopBarPercent'));
+            $view->with([
+                'presaleTopBar' => false,
+                'presaleTopBarPercent' => null,
+            ]);
         });
 
         /** Не зависит от intl / локали PHP — всегда русские названия месяцев */

@@ -12,13 +12,14 @@
 
     @php $cpm = $cabinetPresaleMode ?? false; @endphp
     <div class="mt-10 max-w-2xl rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#a4b092]">Режим кабинета</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#a4b092]">Старт проекта и доступ</p>
         <p class="mt-3 text-sm leading-relaxed text-white/65">
-            <strong class="font-semibold text-white/90">Предпродажа</strong> — карточки уроков (кроме бесплатного превью) в приглушённом виде, баннеры и тарифы с логикой предпродажи; срок доступа по тарифу <span class="whitespace-nowrap">не идёт</span>, пока курс в этом режиме.
+            <strong class="font-semibold text-white/90">До старта</strong> — карточки уроков (кроме бесплатного превью) в приглушённом виде; оплаченным покупкам срок доступа (30/60 дн. по тарифу) <span class="whitespace-nowrap">не ставится</span>, пока не нажмёшь «Проект запущен». Тогда для уже оплаченных без даты — отсчёт от этого дня; новые оплаты сразу получают срок от даты оплаты.
         </p>
         <p class="mt-3 text-sm leading-relaxed text-white/65">
-            <strong class="font-semibold text-white/90">Проект запущен</strong> — обычный кабинет: «по тарифу», активные цвета, отсчёт дней доступа с момента оплаты (или массовый старт при первом переключении с предпродажи).
+            <strong class="font-semibold text-white/90">Проект запущен</strong> — обычный кабинет, активные карточки, отсчёт дней доступа по правилам тарифа.
         </p>
+        {{-- Старый блок «предпродажа» (тексты, полоса в шапке, авто-скидка PRESALE*) закомментирован в коде/частично в partials.presale-top-bar — при необходимости вернуть. --}}
         <div class="mt-6 flex flex-wrap gap-2">
             <form method="post" action="{{ route('admin.settings.cabinet-mode') }}" class="inline">
                 @csrf
@@ -28,7 +29,7 @@
                     value="1"
                     class="rounded-full px-5 py-2.5 text-sm font-semibold transition {{ $cpm ? 'bg-[#869274] text-white hover:brightness-105' : 'border border-white/15 bg-white/5 text-white/85 hover:border-[#869274]/40 hover:bg-white/[0.08]' }}"
                 >
-                    Предпродажа
+                    До старта проекта
                 </button>
             </form>
             <form method="post" action="{{ route('admin.settings.cabinet-mode') }}" class="inline">

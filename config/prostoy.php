@@ -11,19 +11,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Предпродажа в кабинете и ценах
+    | Оплата через менеджера (без ЮKassa в один клик)
     |--------------------------------------------------------------------------
-    | Включение «этапа предпродажи» для участников — переключатель в админке «Настройки» (/admin/settings):
-    | таблица site_settings.cabinet_presale_mode. От него зависят тексты, скидка PRESALE20
-    | в корзине и отсутствие отсчёта срока доступа до переключения на «проект запущен».
+    | PRESALE_MANUAL_PAYMENT=true: заказ «ожидает оплаты», менеджер + подтверждение.
+    | Переключатель «до старта / проект запущен» — в админке site_settings.cabinet_presale_mode
+    | (исторически «предпродажа»): до запуска у оплаченных не ставится expires_at, пока не «Проект запущен».
     |
-    | PRESALE_MANUAL_PAYMENT=true: заказ в статусе «ожидает оплаты», доступ после подтверждения
-    | админом или ЮKassa.
+    | Закомментировано ранее: авто-скидка PRESALE* в ценах — отключена в CoursePurchaseService.
+    | 'presale_auto_promo_code' => env('PRESALE_AUTO_PROMO_CODE', 'PRESALE20'),
     */
     'presale_manual_payment' => env('PRESALE_MANUAL_PAYMENT', true),
 
-    /** Промокод из БД: автоматически учитывается в расчёте, пока cabinet_presale_mode = true. */
-    'presale_auto_promo_code' => env('PRESALE_AUTO_PROMO_CODE', 'PRESALE20'),
+    /** Оставлено для совместимости config(); в расчёте цен не используется. */
+    'presale_auto_promo_code' => env('PRESALE_AUTO_PROMO_CODE', ''),
 
     /** Единая почта поддержки и контактов (футер, страницы, письма). */
     'contact_email' => env('PROSTOY_CONTACT_EMAIL', 'prostoyoga@mail.ru'),
@@ -33,7 +33,7 @@ return [
 
     'meta_description' => env(
         'PROSTOY_META_DESCRIPTION',
-        'PROSTO.YOGA — 12 практик онлайн, 3 раза в неделю. За 30 дней: осанка, тело, энергия. Тарифы и предпродажа на prostoyoga.ru.'
+        'PROSTO.YOGA — 12 практик онлайн, 3 раза в неделю. За 30 дней: осанка, тело, энергия. Тарифы на prostoyoga.ru.'
     ),
 
     /** Путь от public/ или полный URL для og:image (шаринг ссылки). */

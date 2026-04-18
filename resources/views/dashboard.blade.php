@@ -20,7 +20,7 @@
                         <div class="min-w-0 flex-1 pr-0 lg:pr-4">
                             <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#869274]">Администратор</p>
                             <h1 class="mt-3 text-2xl font-semibold tracking-tight text-[#2d312d] sm:text-3xl">Панель управления</h1>
-                            <p class="mt-4 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Карточка «Твой путь» для участников здесь скрыта. Ниже — тот же список уроков с превью; открой урок, чтобы проверить видео. Редактирование — в админке. Режим предпродажи / запуска курса — в разделе «Настройки».</p>
+                            <p class="mt-4 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Карточка «Твой путь» для участников здесь скрыта. Ниже — тот же список уроков с превью; открой урок, чтобы проверить видео. Редактирование — в админке. Старт проекта и доступ — в «Настройки».</p>
                         </div>
                         <div class="flex shrink-0 flex-wrap gap-3 pt-1 lg:max-w-md lg:justify-end lg:pt-1">
                             <a href="{{ route('admin.dashboard') }}" class="pv-btn-dark inline-flex px-6 py-2.5 text-sm font-semibold">Админка · обзор</a>
@@ -34,7 +34,7 @@
         @else
             @if ($pendingPurchase && $presaleManual)
                 <section class="mb-8 overflow-hidden rounded-2xl border border-amber-200/80 bg-gradient-to-br from-amber-50 to-[#fffffa] p-5 shadow-[0_6px_32px_-18px_rgba(45,49,45,0.08)] sm:p-6" aria-label="Заявка на тариф">
-                    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800/90">Предпродажа · заявка принята</p>
+                    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800/90">Заявка на оплату принята</p>
                     <p class="mt-3 max-w-2xl text-sm leading-relaxed text-[#5c655c]">Заявка принята. Тариф <span class="font-semibold text-[#2d312d]">«{{ $pendingPurchase->tariff->name }}»</span>. В ближайшее время с тобой свяжется менеджер.</p>
                 </section>
             @endif
@@ -57,7 +57,7 @@
                         </div>
                         <p class="mt-4 max-w-2xl text-[#5c655c] leading-relaxed">
                             @if ($cabinetPresaleMode ?? false)
-                                12 практик в своём темпе. На этапе предпродажи видео выходят по мере готовности — следи за плашками «Скоро» и «Готовится».
+                                12 практик в своём темпе. До старта проекта видео выходят по мере готовности — следи за плашками «Скоро» и «Готовится».
                             @else
                                 12 практик в своём темпе. Уроки открываются по тарифу; новые видео — по дате публикации (плашки «Скоро» / «Видео»).
                             @endif
@@ -98,12 +98,12 @@
                         <h1 class="mt-3 text-3xl font-semibold text-[#2d312d]">Твой путь</h1>
                         <p class="mt-3 text-[#7a837a]">
                             @if ($cabinetPresaleMode ?? false)
-                                12 практик · предпродажа со скидкой. Первое превью открыто после регистрации; полный доступ — после оплаты (пока переводом, онлайн-касса подключается).
+                                12 практик. Первое превью — после регистрации; полный доступ — после оплаты. До «Проект запущен» срок доступа по тарифу не идёт.
                             @else
                                 12 практик. Первое превью — после регистрации; остальные уроки — по выбранному тарифу после оплаты.
                             @endif
                         </p>
-                        <a href="{{ route('tariffs.index') }}" class="pv-btn-olive mt-6 inline-flex px-6 py-2.5">{{ ($cabinetPresaleMode ?? false) ? 'Тарифы и предпродажа' : 'Тарифы' }}</a>
+                        <a href="{{ route('tariffs.index') }}" class="pv-btn-olive mt-6 inline-flex px-6 py-2.5">Тарифы</a>
                     </div>
                 </section>
             @endif

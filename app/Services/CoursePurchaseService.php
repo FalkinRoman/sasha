@@ -32,14 +32,7 @@ class CoursePurchaseService
             }
         }
 
-        $autoCode = config('prostoy.presale_auto_promo_code');
-        if (SiteSetting::cabinetPresaleMode() && is_string($autoCode) && $autoCode !== '') {
-            $presale = PromoCode::query()->whereRaw('UPPER(code) = ?', [mb_strtoupper($autoCode)])->first();
-            if ($presale && $presale->isUsable()) {
-                $d = (int) round($base * ($presale->discount_percent / 100));
-                $candidates[] = ['discount' => $d, 'promo' => $presale];
-            }
-        }
+        // Авто-скидка по presale_auto_promo_code отключена: базовая цена, скидка только если ввели промокод.
 
         $discount = 0;
         $promo = null;
@@ -158,7 +151,7 @@ class CoursePurchaseService
     }
 
     /**
-     * После выхода из предпродажи: для оплаченных покупок без срока — старт отсчёта по тарифу от сегодня.
+     * После переключения «Проект запущен»: у оплаченных покупок без expires_at — старт отсчёта по тарифу от сегодня.
      */
     public function startTariffClockForPaidWithoutExpiry(): int
     {
