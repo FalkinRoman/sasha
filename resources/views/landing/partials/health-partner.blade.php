@@ -3,17 +3,18 @@
     $medicLogos = ['1.png.webp', '2.png.webp', '3.png.webp', '42.png.webp', '51.jpg.webp'];
 @endphp
 <section id="health-partner" class="scroll-mt-24 w-full border-t border-[#ecece8] bg-gradient-to-b from-[#f4f7ef] via-[#fafbf6] to-[#fffffa] py-20 md:py-28">
-    <div class="mx-auto w-full max-w-[920px] px-5 sm:px-8 lg:px-12">
+    {{-- Как why-simple: общая колонка ~900px, без «разъезда» на ультрашироких экранах --}}
+    <div class="mx-auto w-full max-w-[900px] px-5 sm:px-8 lg:px-12">
         <div data-pv-reveal class="pv-reveal pv-reveal--fade text-center">
             <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[#869274]">Союз «Здоровье Здоровых»</p>
-            <h2 class="mx-auto mt-4 max-w-4xl text-2xl font-semibold leading-snug tracking-tight text-[#2d312d] md:text-3xl md:leading-tight">
+            <h2 class="mx-auto mt-4 max-w-3xl text-2xl font-semibold leading-snug tracking-tight text-[#2d312d] md:text-3xl md:leading-tight">
                 Я официальный партнёр Союза «Здоровье Здоровых» и даю вам то, чего нет на обычных курсах
             </h2>
         </div>
 
         <div
             data-pv-reveal
-            class="pv-reveal pv-reveal--fade mx-auto mt-10 max-w-none space-y-6 text-left text-base leading-relaxed text-[#5c655c] md:mt-12 md:text-lg"
+            class="pv-reveal pv-reveal--fade mx-auto mt-10 max-w-3xl space-y-6 text-left text-base leading-relaxed text-[#5c655c] md:mt-12 md:text-lg"
             style="--rv-delay: 0.06s"
         >
             <p>
@@ -47,7 +48,7 @@
 
         <div
             data-pv-reveal
-            class="pv-reveal pv-reveal--up mx-auto mt-10 max-w-2xl rounded-2xl border border-[#869274]/30 bg-gradient-to-br from-[#eaf3dd]/90 to-[#f6faf1] px-6 py-6 shadow-[0_14px_48px_-28px_rgba(45,49,45,0.14)] md:mt-12 md:px-8 md:py-7"
+            class="pv-reveal pv-reveal--up mx-auto mt-10 max-w-3xl rounded-2xl border border-[#869274]/30 bg-gradient-to-br from-[#eaf3dd]/90 to-[#f6faf1] px-6 py-6 shadow-[0_14px_48px_-28px_rgba(45,49,45,0.14)] md:mt-12 md:px-8 md:py-7"
             style="--rv-delay: 0.1s"
         >
             <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#6b7a6b]">Почему это ценно</p>
