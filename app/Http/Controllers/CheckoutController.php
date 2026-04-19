@@ -49,11 +49,26 @@ class CheckoutController extends Controller
         }
         $storedDigits = preg_replace('/\D/', '', (string) ($user->phone ?? '')) ?? '';
         $hasStoredPhone = strlen($storedDigits) >= 10;
+        $isCommunityTariff = $tariff->slug === 'community';
 
-        $request->validate([
-            'promocode' => ['nullable', 'string', 'max:32'],
-            'phone' => [$hasStoredPhone ? 'nullable' : 'required', 'string', 'max:40'],
-        ]);
+        if ($isCommunityTariff) {
+            $request->merge([
+                'social_username' => trim((string) $request->input('social_username', '')),
+            ]);
+        }
+
+        $request->validate(
+            [
+                'promocode' => ['nullable', 'string', 'max:32'],
+                'phone' => [$hasStoredPhone ? 'nullable' : 'required', 'string', 'max:40'],
+                'social_username' => $isCommunityTariff
+                    ? ['required', 'string', 'max:191']
+                    : ['nullable', 'string', 'max:191'],
+            ],
+            [
+                'social_username.required' => 'Укажи ник в Instagram или Telegram.',
+            ]
+        );
 
         $rawPhone = $request->input('phone');
         $digits = ($hasStoredPhone && (! is_string($rawPhone) || trim((string) $rawPhone) === ''))
@@ -67,6 +82,8 @@ class CheckoutController extends Controller
 
         $user->update(['phone' => $digits]);
 
+        $socialUsername = $isCommunityTariff ? (string) $request->input('social_username') : null;
+
         $promoInput = $request->input('promocode');
         $promoResolved = is_string($promoInput) && trim($promoInput) !== ''
             ? trim($promoInput)
@@ -77,14 +94,15 @@ class CheckoutController extends Controller
         $yookassaOn = $this->yooKassa->isConfigured();
 
         if ($calc['final'] === 0) {
-            $purchase = DB::transaction(function () use ($user, $tariff, $calc, $digits, $telegram) {
+            $purchase = DB::transaction(function () use ($user, $tariff, $calc, $digits, $socialUsername, $telegram) {
                 $p = $this->purchaseService->createPendingPurchase(
                     $user,
                     $tariff,
                     $calc['final'],
                     $calc['discount'],
                     $calc['promo'],
-                    $digits
+                    $digits,
+                    $socialUsername
                 );
                 $telegram->notifyPurchaseIntent($p);
                 $this->purchaseService->finalizePurchaseAsPaid($p);
@@ -103,7 +121,8 @@ class CheckoutController extends Controller
             $calc['final'],
             $calc['discount'],
             $calc['promo'],
-            $digits
+            $digits,
+            $socialUsername
         );
 
         $telegram->notifyPurchaseIntent($purchase);

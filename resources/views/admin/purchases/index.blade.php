@@ -12,12 +12,13 @@
 
     <h2 class="mt-10 text-lg font-semibold text-white">Ожидают подтверждения</h2>
     <div class="mt-4 overflow-x-auto rounded-2xl border border-white/10">
-        <table class="w-full min-w-[920px] text-left text-sm">
+        <table class="w-full min-w-[1000px] text-left text-sm">
             <thead class="border-b border-white/10 bg-white/5 text-xs uppercase text-white/50">
                 <tr>
                     <th class="px-4 py-3">ID</th>
                     <th class="px-4 py-3">Участник</th>
                     <th class="px-4 py-3">Телефон</th>
+                    <th class="px-4 py-3">Instagram / TG</th>
                     <th class="px-4 py-3">Тариф</th>
                     <th class="px-4 py-3">К оплате ₽</th>
                     <th class="px-4 py-3">Промо</th>
@@ -34,6 +35,7 @@
                             <div class="text-xs text-white/45">{{ $p->user->email }}</div>
                         </td>
                         <td class="px-4 py-3 font-mono text-xs text-white/80">{{ $p->contact_phone ?? $p->user->phone ?? '—' }}</td>
+                        <td class="px-4 py-3 max-w-[200px] truncate font-mono text-xs text-white/70" title="{{ $p->social_username ?? '' }}">{{ $p->social_username ?? '—' }}</td>
                         <td class="px-4 py-3">{{ $p->tariff->name }}</td>
                         <td class="px-4 py-3 tabular-nums">{{ number_format($p->price_rub, 0, ',', ' ') }}</td>
                         <td class="px-4 py-3 font-mono text-xs text-white/70">{{ $p->promocode?->code ?? '—' }}</td>
@@ -53,7 +55,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="px-4 py-8 text-center text-white/45">Нет ожидающих заказов.</td>
+                        <td colspan="9" class="px-4 py-8 text-center text-white/45">Нет ожидающих заказов.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -62,12 +64,13 @@
 
     <h2 class="mt-12 text-lg font-semibold text-white">Последние подтверждённые</h2>
     <div class="mt-4 overflow-x-auto rounded-2xl border border-white/10">
-        <table class="w-full min-w-[800px] text-left text-sm">
+        <table class="w-full min-w-[920px] text-left text-sm">
             <thead class="border-b border-white/10 bg-white/5 text-xs uppercase text-white/50">
                 <tr>
                     <th class="px-4 py-3">ID</th>
                     <th class="px-4 py-3">Участник</th>
                     <th class="px-4 py-3">Телефон</th>
+                    <th class="px-4 py-3">Instagram / TG</th>
                     <th class="px-4 py-3">Тариф</th>
                     <th class="px-4 py-3">Сумма ₽</th>
                     <th class="px-4 py-3">Оплачен</th>
@@ -80,6 +83,7 @@
                         <td class="px-4 py-3 font-mono text-white/70">#{{ $p->id }}</td>
                         <td class="px-4 py-3 text-white">{{ $p->user->email }}</td>
                         <td class="px-4 py-3 font-mono text-xs text-white/70">{{ $p->contact_phone ?? $p->user->phone ?? '—' }}</td>
+                        <td class="px-4 py-3 max-w-[200px] truncate font-mono text-xs text-white/55" title="{{ $p->social_username ?? '' }}">{{ $p->social_username ?? '—' }}</td>
                         <td class="px-4 py-3">{{ $p->tariff->name }}</td>
                         <td class="px-4 py-3 tabular-nums">{{ number_format($p->price_rub, 0, ',', ' ') }}</td>
                         <td class="px-4 py-3 text-white/60">{{ $p->paid_at?->format('d.m.Y H:i') }}</td>
@@ -93,7 +97,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-8 text-center text-white/45">Пока нет записей.</td>
+                        <td colspan="8" class="px-4 py-8 text-center text-white/45">Пока нет записей.</td>
                     </tr>
                 @endforelse
             </tbody>

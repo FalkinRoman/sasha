@@ -108,6 +108,27 @@
                     <p class="mt-1.5 text-xs text-[#7a837a]">Нужен для связи по оплате и доступу к курсу.</p>
                 @endif
             </div>
+            @if ($tariff->slug === 'community')
+                <div>
+                    <label for="social_username" class="block text-sm font-medium text-[#2d312d]">
+                        Ник в Instagram или Telegram <span class="font-normal text-[#7a837a]">(обязательно)</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="social_username"
+                        id="social_username"
+                        value="{{ old('social_username') }}"
+                        required
+                        autocomplete="username"
+                        placeholder="@username или ссылка"
+                        @class([
+                            'mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-2 focus:ring-[#869274]/25',
+                            'pv-input-error' => $errors->has('social_username'),
+                        ])
+                    >
+                    <p class="mt-1.5 text-xs text-[#7a837a]">Нужен, чтобы добавить тебя в закрытый чат сообщества.</p>
+                </div>
+            @endif
             <div>
                 <label for="promocode" class="block text-sm font-medium text-[#2d312d]">Промокод</label>
                 <input

@@ -54,7 +54,7 @@ class CoursePurchaseService
         ];
     }
 
-    public function createPendingPurchase(User $user, Tariff $tariff, int $finalRub, int $discountRub, ?PromoCode $promo, ?string $contactPhone = null): Purchase
+    public function createPendingPurchase(User $user, Tariff $tariff, int $finalRub, int $discountRub, ?PromoCode $promo, ?string $contactPhone = null, ?string $socialUsername = null): Purchase
     {
         return Purchase::query()->create([
             'user_id' => $user->id,
@@ -63,6 +63,7 @@ class CoursePurchaseService
             'price_rub' => $finalRub,
             'discount_rub' => $discountRub,
             'contact_phone' => $contactPhone,
+            'social_username' => $socialUsername,
             'status' => 'pending',
             'paid_at' => null,
             'expires_at' => null,

@@ -44,18 +44,30 @@ class TelegramLeadNotifierService
         $phone = $purchase->contact_phone ?? $user->phone ?? '—';
         $phoneFmt = $this->formatPhoneForHumans((string) $phone);
 
+        $social = trim((string) ($purchase->social_username ?? ''));
+        $socialLine = $social !== ''
+            ? '📷 <b>Instagram / Telegram:</b> '.$this->e($social)
+            : null;
+
         $lines = [
             '<b>'.$this->e($opener).'</b>',
             '',
             '👤 <b>Имя:</b> '.$this->e($user->name),
             '📧 <b>Email:</b> '.$this->e($user->email),
             '📱 <b>Телефон:</b> '.$this->e($phoneFmt),
+        ];
+
+        if ($socialLine !== null) {
+            $lines[] = $socialLine;
+        }
+
+        $lines = array_merge($lines, [
             '📦 <b>Тариф:</b> '.$this->e($tariff->name),
             '💵 <b>Сумма:</b> '.number_format($purchase->price_rub, 0, ',', ' ').' ₽',
             '🆔 <b>Заказ #</b>'.$purchase->id.' · '.$this->e($purchase->status),
             '',
             '<a href="'.$this->e($adminUrl).'">Открыть оплаты в админке</a>',
-        ];
+        ]);
 
         $text = implode("\n", $lines);
 
