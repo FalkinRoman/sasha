@@ -23,6 +23,120 @@ class TelegramLeadNotifierService
         '💜 Милота дня: новый участник оставил телефон и хочет к нам.',
     ];
 
+    /**
+     * Тест sendMessage (тот же токен / chat / флаг, что и у лидов).
+     *
+     * @return array{ok: bool, message: string, sources?: array<string, string>}
+     */
+    public function sendTestMessage(?string $text = null): array
+    {
+        $sources = $this->describeCredentialSources();
+
+        if (! $this->notificationsEnabled()) {
+            return [
+                'ok' => false,
+                'message' => $this->explainNotifyDisabled(),
+                'sources' => $sources,
+            ];
+        }
+
+        $token = $this->resolveBotToken();
+        $chatId = $this->resolveChatId();
+
+        if ($token === null) {
+            return [
+                'ok' => false,
+                'message' => 'Нет токена бота: ни расшифрованный telegram_bot_token в БД, ни TELEGRAM_BOT_TOKEN в .env.',
+                'sources' => $sources,
+            ];
+        }
+
+        if ($chatId === null) {
+            return [
+                'ok' => false,
+                'message' => 'Нет Chat ID: ни telegram_chat_id в БД, ни TELEGRAM_NOTIFICATIONS_CHAT_ID в .env.',
+                'sources' => $sources,
+            ];
+        }
+
+        $payload = $text ?? '<b>ProstoYoga</b> тест: если видишь это сообщение — доставка в Telegram работает. '.now()->toIso8601String();
+
+        try {
+            $response = Http::timeout(8)
+                ->asForm()
+                ->post("https://api.telegram.org/bot{$token}/sendMessage", [
+                    'chat_id' => $chatId,
+                    'text' => $payload,
+                    'parse_mode' => 'HTML',
+                    'disable_web_page_preview' => true,
+                ]);
+
+            if ($response->successful()) {
+                return [
+                    'ok' => true,
+                    'message' => 'Сообщение отправлено (HTTP '.$response->status().').',
+                    'sources' => $sources,
+                ];
+            }
+
+            Log::warning('telegram.test sendMessage failed', [
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ]);
+
+            return [
+                'ok' => false,
+                'message' => 'Telegram API ответил с ошибкой: HTTP '.$response->status().' — '.$response->body(),
+                'sources' => $sources,
+            ];
+        } catch (\Throwable $e) {
+            Log::warning('telegram.test exception: '.$e->getMessage());
+
+            return [
+                'ok' => false,
+                'message' => 'Исключение при запросе: '.$e->getMessage(),
+                'sources' => $sources,
+            ];
+        }
+    }
+
+    /**
+     * @return array{token: string, chat_id: string, notify_flag: string}
+     */
+    private function describeCredentialSources(): array
+    {
+        $s = SiteSetting::instance();
+        $dbToken = is_string($s->telegram_bot_token) && $s->telegram_bot_token !== '';
+        $dbChat = is_string($s->telegram_chat_id) && trim((string) $s->telegram_chat_id) !== '';
+        $envToken = is_string(config('telegram.bot_token')) && config('telegram.bot_token') !== '';
+        $envChat = is_string(config('telegram.notifications_chat_id')) && config('telegram.notifications_chat_id') !== '';
+
+        return [
+            'token' => $dbToken ? 'database (приоритет)' : ($envToken ? 'env TELEGRAM_BOT_TOKEN' : 'missing'),
+            'chat_id' => $dbChat ? 'database (приоритет)' : ($envChat ? 'env TELEGRAM_NOTIFICATIONS_CHAT_ID' : 'missing'),
+            'notify_flag' => $dbToken && $dbChat
+                ? 'database telegram_notifications_enabled (если false — .env TELEGRAM_NOTIFICATIONS_ENABLED игнорируется)'
+                : 'env TELEGRAM_NOTIFICATIONS_ENABLED',
+        ];
+    }
+
+    private function explainNotifyDisabled(): string
+    {
+        $s = SiteSetting::instance();
+        $hasDbToken = is_string($s->telegram_bot_token) && $s->telegram_bot_token !== '';
+        $hasDbChat = is_string($s->telegram_chat_id) && trim((string) $s->telegram_chat_id) !== '';
+
+        if ($hasDbToken && $hasDbChat && ! $s->telegram_notifications_enabled) {
+            return 'В БД заполнены и токен, и Chat ID, но выключена галочка уведомлений (админка → Настройки). Включи её или убери одно из полей в БД, чтобы использовались TELEGRAM_* из .env.';
+        }
+
+        if (! (bool) config('telegram.notifications_enabled')) {
+            return 'Отправка выключена: для сценария без полной пары в БД нужен TELEGRAM_NOTIFICATIONS_ENABLED=true в .env (и php artisan config:clear при смене env).';
+        }
+
+        return 'Уведомления выключены (проверь APP_KEY и расшифровку токена в БД, либо config:cache).';
+    }
+
     public function notifyPurchaseIntent(Purchase $purchase): void
     {
         $token = $this->resolveBotToken();
