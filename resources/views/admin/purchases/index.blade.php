@@ -35,7 +35,8 @@
                             <div class="text-xs text-white/45">{{ $p->user->email }}</div>
                         </td>
                         <td class="px-4 py-3 font-mono text-xs text-white/80">{{ $p->contact_phone ?? $p->user->phone ?? '—' }}</td>
-                        <td class="px-4 py-3 max-w-[200px] truncate font-mono text-xs text-white/70" title="{{ $p->social_username ?? '' }}">{{ $p->social_username ?? '—' }}</td>
+                        @php($socDisplay = $p->effectiveSocialUsername())
+                        <td class="px-4 py-3 max-w-[200px] truncate font-mono text-xs text-white/70" title="{{ $socDisplay }}">{{ $socDisplay !== '' ? $socDisplay : '—' }}</td>
                         <td class="px-4 py-3">{{ $p->tariff->name }}</td>
                         <td class="px-4 py-3 tabular-nums">{{ number_format($p->price_rub, 0, ',', ' ') }}</td>
                         <td class="px-4 py-3 font-mono text-xs text-white/70">{{ $p->promocode?->code ?? '—' }}</td>
@@ -83,7 +84,8 @@
                         <td class="px-4 py-3 font-mono text-white/70">#{{ $p->id }}</td>
                         <td class="px-4 py-3 text-white">{{ $p->user->email }}</td>
                         <td class="px-4 py-3 font-mono text-xs text-white/70">{{ $p->contact_phone ?? $p->user->phone ?? '—' }}</td>
-                        <td class="px-4 py-3 max-w-[200px] truncate font-mono text-xs text-white/55" title="{{ $p->social_username ?? '' }}">{{ $p->social_username ?? '—' }}</td>
+                        @php($socPaid = $p->effectiveSocialUsername())
+                        <td class="px-4 py-3 max-w-[200px] truncate font-mono text-xs text-white/55" title="{{ $socPaid }}">{{ $socPaid !== '' ? $socPaid : '—' }}</td>
                         <td class="px-4 py-3">{{ $p->tariff->name }}</td>
                         <td class="px-4 py-3 tabular-nums">{{ number_format($p->price_rub, 0, ',', ' ') }}</td>
                         <td class="px-4 py-3 text-white/60">{{ $p->paid_at?->format('d.m.Y H:i') }}</td>

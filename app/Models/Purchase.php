@@ -62,4 +62,29 @@ class Purchase extends Model
 
         return $this->expires_at->isFuture();
     }
+
+    /** Ник из заявки или из профиля участника (для тарифов без поля на checkout). */
+    public function effectiveSocialUsername(): string
+    {
+        $fromPurchase = trim((string) ($this->social_username ?? ''));
+        if ($fromPurchase !== '' && ! self::socialUsernameLooksLikeSearchPaste($fromPurchase)) {
+            return $fromPurchase;
+        }
+        $this->loadMissing('user');
+        $fromUser = trim((string) ($this->user?->social_username ?? ''));
+
+        if ($fromUser !== '' && ! self::socialUsernameLooksLikeSearchPaste($fromUser)) {
+            return $fromUser;
+        }
+
+        return '';
+    }
+
+    private static function socialUsernameLooksLikeSearchPaste(string $value): bool
+    {
+        $lower = strtolower($value);
+
+        return str_contains($lower, 'google.com/search')
+            || str_contains($lower, 'google.ru/search');
+    }
 }

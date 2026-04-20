@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use App\Models\SiteSetting;
 use App\Models\Tariff;
+use App\Rules\SocialContactNotSearchUrl;
 use App\Services\CoursePurchaseService;
 use App\Services\TelegramLeadNotifierService;
 use App\Services\YooKassaPaymentService;
@@ -62,8 +63,8 @@ class CheckoutController extends Controller
                 'promocode' => ['nullable', 'string', 'max:32'],
                 'phone' => [$hasStoredPhone ? 'nullable' : 'required', 'string', 'max:40'],
                 'social_username' => $isCommunityTariff
-                    ? ['required', 'string', 'max:191']
-                    : ['nullable', 'string', 'max:191'],
+                    ? ['required', 'string', 'max:191', new SocialContactNotSearchUrl]
+                    : ['nullable', 'string', 'max:191', new SocialContactNotSearchUrl],
             ],
             [
                 'social_username.required' => 'Укажи ник в Instagram или Telegram.',
@@ -80,9 +81,13 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $user->update(['phone' => $digits]);
-
         $socialUsername = $isCommunityTariff ? (string) $request->input('social_username') : null;
+
+        $userFill = ['phone' => $digits];
+        if ($isCommunityTariff && trim((string) $socialUsername) !== '') {
+            $userFill['social_username'] = trim((string) $socialUsername);
+        }
+        $user->update($userFill);
 
         $promoInput = $request->input('promocode');
         $promoResolved = is_string($promoInput) && trim($promoInput) !== ''

@@ -158,9 +158,17 @@ class TelegramLeadNotifierService
         $phone = $purchase->contact_phone ?? $user->phone ?? '—';
         $phoneFmt = $this->formatPhoneForHumans((string) $phone);
 
-        $social = trim((string) ($purchase->social_username ?? ''));
+        $social = $purchase->effectiveSocialUsername();
+        if (strlen($social) > 160) {
+            $social = mb_substr($social, 0, 157).'…';
+        }
         $socialLine = $social !== ''
             ? '📷 <b>Instagram / Telegram:</b> '.$this->e($social)
+            : null;
+
+        $tgUsername = trim((string) ($user->telegram_username ?? ''));
+        $tgLine = $tgUsername !== ''
+            ? '🐘 <b>Telegram username:</b> @'.$this->e(ltrim($tgUsername, '@'))
             : null;
 
         $lines = [
@@ -173,6 +181,9 @@ class TelegramLeadNotifierService
 
         if ($socialLine !== null) {
             $lines[] = $socialLine;
+        }
+        if ($tgLine !== null) {
+            $lines[] = $tgLine;
         }
 
         $lines = array_merge($lines, [

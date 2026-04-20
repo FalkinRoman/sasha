@@ -52,6 +52,23 @@
                             >
                         </div>
                         <div>
+                            <label for="social_username" class="block text-sm font-medium text-[#2d312d]">
+                                Ник в Instagram или Telegram <span class="font-normal text-[#7a837a]">(как при регистрации)</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="social_username"
+                                id="social_username"
+                                value="{{ old('social_username', $user->social_username) }}"
+                                autocomplete="username"
+                                placeholder="@username или ссылка"
+                                @class([
+                                    'mt-2 w-full rounded-xl border border-[#dcdddb] px-4 py-3 text-sm focus:border-[#869274] focus:outline-none focus:ring-1 focus:ring-[#869274]',
+                                    'pv-input-error' => $errors->has('social_username'),
+                                ])
+                            >
+                        </div>
+                        <div>
                             <label for="telegram_username" class="block text-sm font-medium text-[#2d312d]">Telegram <span class="font-normal text-[#7a837a]">(username без t.me)</span></label>
                             <input
                                 type="text"

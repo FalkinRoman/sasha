@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\PromoCode;
 use App\Models\User;
+use App\Rules\SocialContactNotSearchUrl;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -48,7 +49,7 @@ class RegisterController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
                 'phone' => ['required', 'string', 'max:40'],
-                'social_username' => ['required', 'string', 'max:191'],
+                'social_username' => ['required', 'string', 'max:191', new SocialContactNotSearchUrl],
                 'password' => ['required', 'string', 'min:8', 'max:255'],
                 'promocode' => ['nullable', 'string', 'max:32'],
                 'policy_accept' => ['required', 'accepted'],
