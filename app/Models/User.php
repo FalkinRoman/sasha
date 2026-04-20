@@ -15,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 
 #[Fillable([
     'name', 'email', 'password', 'is_admin', 'is_blogger',
-    'referral_code', 'referred_by_user_id', 'phone', 'telegram_username', 'newsletter_opt_in',
+    'referral_code', 'referred_by_user_id', 'phone', 'telegram_username', 'social_username', 'newsletter_opt_in',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser

@@ -117,7 +117,7 @@
                         type="text"
                         name="social_username"
                         id="social_username"
-                        value="{{ old('social_username') }}"
+                        value="{{ old('social_username', auth()->user()->social_username) }}"
                         required
                         autocomplete="username"
                         placeholder="@username или ссылка"

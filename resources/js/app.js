@@ -740,6 +740,7 @@ const PV_VALIDATION_FIELD_IDS = {
     name: 'name',
     email: 'email',
     phone: 'phone',
+    social_username: 'social_username',
     password: 'password',
     password_confirmation: 'password_confirmation',
     promocode: 'promocode',
@@ -892,6 +893,7 @@ function initRegisterWizard() {
     const nameInput = document.getElementById('name');
     const phoneInput = document.getElementById('phone');
     const phoneHint = document.getElementById('phone-hint');
+    const socialInput = document.getElementById('social_username');
     const pwInput = document.getElementById('password');
     const strengthEl = document.getElementById('pv-reg-strength');
     const genBtn = document.getElementById('pv-reg-gen');
@@ -1043,7 +1045,14 @@ function initRegisterWizard() {
     phoneInput?.addEventListener('input', () => {
         if (phoneHint) {
             phoneHint.textContent = '';
-            phoneHint.className = 'min-h-[1.25rem] text-xs';
+            phoneHint.className = 'mt-1 min-h-0 text-xs leading-tight';
+        }
+    });
+
+    socialInput?.addEventListener('input', () => {
+        if (socialInput.value.trim().length > 0) {
+            socialInput.classList.remove('pv-input-error');
+            socialInput.removeAttribute('aria-invalid');
         }
     });
 
@@ -1113,18 +1122,31 @@ function initRegisterWizard() {
 
             return;
         }
+
         if (phoneDigits.length < 10) {
             phoneInput?.classList.add('pv-input-error');
             phoneInput?.setAttribute('aria-invalid', 'true');
             if (phoneHint) {
                 phoneHint.textContent = '';
-                phoneHint.className = 'min-h-[1.25rem] text-xs';
+                phoneHint.className = 'mt-1 min-h-0 text-xs leading-tight';
             }
             pvToast('Номер полностью — не меньше 10 цифр.');
             phoneInput?.focus();
 
             return;
         }
+
+        const social = (socialInput?.value || '').trim();
+        if (social.length === 0) {
+            socialInput?.classList.add('pv-input-error');
+            socialInput?.setAttribute('aria-invalid', 'true');
+            pvToast('Укажи ник в Instagram или Telegram.');
+            socialInput?.focus();
+
+            return;
+        }
+        socialInput?.classList.remove('pv-input-error');
+        socialInput?.removeAttribute('aria-invalid');
 
         nextBtn.disabled = true;
         const ok = lastEmailOk === true ? true : await checkEmailNow(true);

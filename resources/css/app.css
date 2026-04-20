@@ -371,6 +371,73 @@
         @apply box-border flex min-h-11 w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-[#869274] px-4 text-sm font-semibold text-[#fffffa] transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-[#869274]/35 focus:ring-offset-2;
     }
 
+    /* Регистрация: компактнее по высоте, чтобы на маленьком экране было видно «Вход» без скролла */
+    #pv-register-wizard .pv-auth-page-centered__inner {
+        @apply py-4 pt-[max(0.75rem,calc(0.5rem+env(safe-area-inset-top,0px)))] pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] sm:py-6 sm:pt-[max(1rem,calc(0.75rem+env(safe-area-inset-top,0px)))] sm:pb-[max(1rem,env(safe-area-inset-bottom,0px))];
+    }
+
+    #pv-register-wizard .pv-auth-page-centered__content {
+        @apply -translate-y-1 sm:-translate-y-2 md:-translate-y-2;
+    }
+
+    #pv-register-wizard .pv-auth-card {
+        @apply p-4 sm:p-5;
+    }
+
+    #pv-register-wizard .pv-auth-field {
+        @apply gap-1.5;
+    }
+
+    #pv-register-wizard .pv-auth-form {
+        @apply gap-3;
+    }
+
+    #pv-register-wizard .pv-reg-consent-stack {
+        @apply gap-2 pt-0;
+    }
+
+    #pv-register-wizard .pv-auth-input {
+        @apply min-h-10 py-2;
+    }
+
+    #pv-register-wizard .pv-auth-submit-olive,
+    #pv-register-wizard .pv-auth-submit-dark {
+        @apply min-h-10;
+    }
+
+    /* Вход: те же внешние отступы, что у регистрации + ровные зазоры внутри формы */
+    #pv-login-page .pv-auth-page-centered__inner {
+        @apply py-4 pt-[max(0.75rem,calc(0.5rem+env(safe-area-inset-top,0px)))] pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] sm:py-6 sm:pt-[max(1rem,calc(0.75rem+env(safe-area-inset-top,0px)))] sm:pb-[max(1rem,env(safe-area-inset-bottom,0px))];
+    }
+
+    #pv-login-page .pv-auth-page-centered__content {
+        @apply -translate-y-1 sm:-translate-y-2 md:-translate-y-2;
+    }
+
+    #pv-login-page .pv-auth-card {
+        @apply p-4 sm:p-5;
+    }
+
+    #pv-login-page .pv-auth-field {
+        @apply gap-2;
+    }
+
+    #pv-login-page .pv-auth-form {
+        @apply gap-5;
+    }
+
+    #pv-login-page .pv-auth-input {
+        @apply min-h-10 py-2;
+    }
+
+    #pv-login-page .pv-auth-submit-dark {
+        @apply mt-1 min-h-10;
+    }
+
+    #pv-login-page .pv-auth-check-row {
+        @apply gap-3 pt-0.5;
+    }
+
     /* Play: декоративный; без тёмной «рамки» — лёгкий градиент для читаемости кнопки */
     .pv-video-playhint {
         @apply pointer-events-none absolute inset-0 z-[1] flex items-center justify-center bg-gradient-to-t from-[#2d312d]/20 via-transparent to-transparent;

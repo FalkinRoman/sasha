@@ -4,19 +4,19 @@
 
 @section('content')
     @php($authFail = $errors->has('email'))
-    <div class="pv-auth-page-centered">
+    <div id="pv-login-page" class="pv-auth-page-centered">
         <div class="pv-auth-page-centered__inner">
         <div class="pv-auth-page-centered__content">
             <p class="text-center">
                 <a href="{{ $marketingHome }}" class="inline-flex min-h-10 items-center justify-center px-2 text-sm text-[#7a837a] transition hover:text-[#2d312d]">← На главную</a>
             </p>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up mt-4 text-center sm:mt-5" style="--rv-delay: 0.05s">
+            <div data-pv-reveal class="pv-reveal pv-reveal--up mt-2 text-center sm:mt-3" style="--rv-delay: 0.05s">
                 <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#869274]">Личный кабинет</p>
-                <h1 class="mt-2 text-2xl font-semibold tracking-tight text-[#2d312d]">Вход</h1>
-                <p class="mt-2 text-sm leading-snug text-[#5c655c]">Email и пароль — чтобы продолжить курс.</p>
+                <h1 class="mt-1 text-xl font-semibold tracking-tight text-[#2d312d] sm:text-2xl">Вход</h1>
+                <p class="mt-2 text-sm leading-relaxed text-[#5c655c] sm:mt-2.5">Email и пароль — чтобы продолжить курс.</p>
             </div>
 
-            <div data-pv-reveal class="pv-reveal pv-reveal--fade pv-auth-card mt-6 sm:mt-7" style="--rv-delay: 0.1s">
+            <div data-pv-reveal class="pv-reveal pv-reveal--fade pv-auth-card mt-3 sm:mt-4" style="--rv-delay: 0.1s">
                 <form method="post" action="{{ route('login') }}" class="pv-auth-form">
                     @csrf
                     @if (session('flash'))
@@ -65,7 +65,7 @@
                 </form>
             </div>
 
-            <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-8 text-center text-sm text-[#5c655c] sm:mt-9" style="--rv-delay: 0.16s">
+            <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-4 text-center text-sm text-[#5c655c] sm:mt-5" style="--rv-delay: 0.16s">
                 Нет аккаунта?
                 <a href="{{ route('register') }}" class="font-medium text-[#869274] underline underline-offset-2 hover:text-[#2d312d]">Регистрация</a>
             </p>

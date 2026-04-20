@@ -39,11 +39,16 @@ class RegisterController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $request->merge([
+            'social_username' => trim((string) $request->input('social_username', '')),
+        ]);
+
         $data = $request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
                 'phone' => ['required', 'string', 'max:40'],
+                'social_username' => ['required', 'string', 'max:191'],
                 'password' => ['required', 'string', 'min:8', 'max:255'],
                 'promocode' => ['nullable', 'string', 'max:32'],
                 'policy_accept' => ['required', 'accepted'],
@@ -53,6 +58,7 @@ class RegisterController extends Controller
                 'policy_accept.accepted' => 'Отметь согласие с офертой, политикой и обработкой данных.',
                 'password.required' => 'Нужен пароль — минимум 8 символов (можно сгенерировать).',
                 'password.min' => 'Пароль не короче 8 символов.',
+                'social_username.required' => 'Укажи ник в Instagram или Telegram.',
             ]
         );
 
@@ -81,6 +87,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $digits,
+            'social_username' => $data['social_username'],
             'password' => $data['password'],
             'referral_code' => null,
             'referred_by_user_id' => null,

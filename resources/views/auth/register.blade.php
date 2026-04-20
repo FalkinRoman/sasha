@@ -15,17 +15,17 @@
             <p class="text-center">
                 <a href="{{ $marketingHome }}" class="inline-flex min-h-10 items-center justify-center px-2 text-sm text-[#7a837a] transition hover:text-[#2d312d]">← На главную</a>
             </p>
-            <div data-pv-reveal class="pv-reveal pv-reveal--up mt-3 text-center sm:mt-4" style="--rv-delay: 0.05s">
+            <div data-pv-reveal class="pv-reveal pv-reveal--up mt-2 text-center sm:mt-3" style="--rv-delay: 0.05s">
                 <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#869274]">Новый аккаунт</p>
-                <h1 class="mt-1.5 text-2xl font-semibold tracking-tight text-[#2d312d]">Регистрация</h1>
+                <h1 class="mt-1 text-xl font-semibold tracking-tight text-[#2d312d] sm:text-2xl">Регистрация</h1>
             </div>
 
-            <div data-pv-reveal class="pv-reveal pv-reveal--fade pv-auth-card mt-5 sm:mt-6" style="--rv-delay: 0.1s">
+            <div data-pv-reveal class="pv-reveal pv-reveal--fade pv-auth-card mt-3 sm:mt-4" style="--rv-delay: 0.1s">
                 <form method="post" action="{{ route('register') }}" class="pv-auth-form" id="pv-register-form" novalidate>
                     @csrf
                     @php($pvRegPasswordError = $errors->has('password'))
 
-                    <div id="pv-reg-step1" @class(['flex flex-col gap-4', 'hidden' => $pvRegPasswordError])>
+                    <div id="pv-reg-step1" @class(['flex flex-col gap-3', 'hidden' => $pvRegPasswordError])>
                         <div class="pv-auth-field">
                             <label for="name" class="pv-auth-label">Имя</label>
                             <input
@@ -70,12 +70,28 @@
                                 placeholder="+7 900 000-00-00"
                                 @class(['pv-auth-input', 'pv-input-error' => $errors->has('phone')])
                             >
-                            <p id="phone-hint" class="min-h-[1.25rem] text-xs"></p>
+                            <p id="phone-hint" class="mt-1 min-h-0 text-xs leading-tight"></p>
+                        </div>
+
+                        <div class="pv-auth-field">
+                            <label for="social_username" class="pv-auth-label">
+                                Ник в Instagram или Telegram <span class="font-normal text-[#7a837a]">(обязательно)</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="social_username"
+                                id="social_username"
+                                value="{{ old('social_username', request('social_username')) }}"
+                                required
+                                autocomplete="username"
+                                placeholder="@username или ссылка"
+                                @class(['pv-auth-input', 'pv-input-error' => $errors->has('social_username')])
+                            >
                         </div>
 
                         <details
                             @class([
-                                '-mt-4 rounded-xl border border-[#e8ebe3] bg-[#fafaf8] p-2.5 open:border-[#dce2d6] open:bg-[#fffffa] sm:p-3',
+                                'mt-3 rounded-xl border border-[#e8ebe3] bg-[#fafaf8] p-2 open:border-[#dce2d6] open:bg-[#fffffa] sm:p-2.5',
                                 'pv-details-error' => $errors->has('promocode'),
                             ])
                             @if (old('promocode') || $errors->has('promocode')) open @endif
@@ -83,7 +99,7 @@
                             <summary class="cursor-pointer list-none text-sm font-medium text-[#869274] transition hover:text-[#2d312d] [&::-webkit-details-marker]:hidden">
                                 Промокод <span class="font-normal text-[#7a837a]">(необязательно)</span>
                             </summary>
-                            <div class="mt-2.5 flex flex-col gap-2">
+                            <div class="mt-2 flex flex-col gap-1.5">
                                 <input
                                     type="text"
                                     name="promocode"
@@ -93,7 +109,7 @@
                                     placeholder="Если есть — введи код"
                                     @class(['pv-auth-input', 'pv-input-error' => $errors->has('promocode')])
                                 >
-                                <p class="text-xs leading-snug text-[#7a837a]">Действующий код даст скидку или бонус на оплате.</p>
+                                <p class="text-[11px] leading-snug text-[#7a837a] sm:text-xs">Действующий код даст скидку на оплате.</p>
                             </div>
                         </details>
 
@@ -139,7 +155,7 @@
                         </div>
                     </div>
 
-                    <div id="pv-reg-step2" class="mt-1 flex flex-col gap-4 border-t border-[#eef0ea] pt-5 @unless ($pvRegPasswordError) hidden @endunless">
+                    <div id="pv-reg-step2" class="mt-1 flex flex-col gap-3 border-t border-[#eef0ea] pt-4 @unless ($pvRegPasswordError) hidden @endunless">
                         <div class="flex flex-col gap-1.5">
                             <p class="text-base font-semibold text-[#2d312d]">Придумай пароль</p>
                             <p class="text-sm text-[#7a837a]">Сохрани для входа или сгенерируй — потом можно сменить в профиле.</p>
@@ -203,7 +219,7 @@
                 </form>
             </div>
 
-            <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-6 text-center text-sm text-[#a0a0a0] sm:mt-7" style="--rv-delay: 0.16s">
+            <p data-pv-reveal class="pv-reveal pv-reveal--fade mt-4 text-center text-sm text-[#a0a0a0] sm:mt-5" style="--rv-delay: 0.16s">
                 Уже есть аккаунт?
                 <a href="{{ route('login') }}" class="font-normal text-inherit underline underline-offset-2 decoration-[#b8b8b8] transition hover:text-[#8a8a8a]">Вход</a>
             </p>
