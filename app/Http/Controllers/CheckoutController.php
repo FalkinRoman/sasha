@@ -50,21 +50,16 @@ class CheckoutController extends Controller
         }
         $storedDigits = preg_replace('/\D/', '', (string) ($user->phone ?? '')) ?? '';
         $hasStoredPhone = strlen($storedDigits) >= 10;
-        $isCommunityTariff = $tariff->slug === 'community';
 
-        if ($isCommunityTariff) {
-            $request->merge([
-                'social_username' => trim((string) $request->input('social_username', '')),
-            ]);
-        }
+        $request->merge([
+            'social_username' => trim((string) $request->input('social_username', '')),
+        ]);
 
         $request->validate(
             [
                 'promocode' => ['nullable', 'string', 'max:32'],
                 'phone' => [$hasStoredPhone ? 'nullable' : 'required', 'string', 'max:40'],
-                'social_username' => $isCommunityTariff
-                    ? ['required', 'string', 'max:191', new SocialContactNotSearchUrl]
-                    : ['nullable', 'string', 'max:191', new SocialContactNotSearchUrl],
+                'social_username' => ['required', 'string', 'max:191', new SocialContactNotSearchUrl],
             ],
             [
                 'social_username.required' => 'Укажи ник в Instagram или Telegram.',
@@ -81,13 +76,12 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $socialUsername = $isCommunityTariff ? (string) $request->input('social_username') : null;
+        $socialUsername = trim((string) $request->input('social_username'));
 
-        $userFill = ['phone' => $digits];
-        if ($isCommunityTariff && trim((string) $socialUsername) !== '') {
-            $userFill['social_username'] = trim((string) $socialUsername);
-        }
-        $user->update($userFill);
+        $user->update([
+            'phone' => $digits,
+            'social_username' => $socialUsername !== '' ? $socialUsername : null,
+        ]);
 
         $promoInput = $request->input('promocode');
         $promoResolved = is_string($promoInput) && trim($promoInput) !== ''
