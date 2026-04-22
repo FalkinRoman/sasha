@@ -98,6 +98,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('/bloggers', [BloggerUserController::class, 'index'])->name('bloggers.index');
     Route::get('/bloggers/create', [BloggerUserController::class, 'create'])->name('bloggers.create');
     Route::post('/bloggers', [BloggerUserController::class, 'store'])->name('bloggers.store');

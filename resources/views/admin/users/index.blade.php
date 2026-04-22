@@ -4,8 +4,11 @@
 
 @section('content')
     <h1 class="text-2xl font-semibold text-white">Участники</h1>
+    @if (session('ok'))
+        <p class="mt-4 text-sm text-emerald-400">{{ session('ok') }}</p>
+    @endif
     <div class="mt-8 overflow-x-auto rounded-2xl border border-white/10">
-        <table class="w-full min-w-[880px] text-left text-sm">
+        <table class="w-full min-w-[960px] text-left text-sm">
             <thead class="border-b border-white/10 bg-white/5 text-xs uppercase text-white/50">
                 <tr>
                     <th class="px-4 py-3">ID</th>
@@ -15,6 +18,7 @@
                     <th class="px-4 py-3">Instagram / TG</th>
                     <th class="px-4 py-3">Доступ</th>
                     <th class="px-4 py-3">Оплат</th>
+                    <th class="px-4 py-3 text-right">Действия</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-white/5">
@@ -33,6 +37,24 @@
                             @endif
                         </td>
                         <td class="px-4 py-3">{{ $u->purchases_count }}</td>
+                        <td class="px-4 py-3 text-right">
+                            <form
+                                action="{{ route('admin.users.destroy', $u) }}"
+                                method="post"
+                                class="inline"
+                                onsubmit="return confirm(this.getAttribute('data-confirm'));"
+                                data-confirm="{{ e('Удалить участника «'.$u->name.'» ('.$u->email.')? Строка в базе, заказы и сессии — безвозвратно.') }}"
+                            >
+                                @csrf
+                                @method('DELETE')
+                                <button
+                                    type="submit"
+                                    class="rounded-lg border border-rose-500/40 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/15"
+                                >
+                                    Удалить
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
