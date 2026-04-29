@@ -99,6 +99,30 @@
             <input type="checkbox" name="is_preview_free" value="1" @checked(old('is_preview_free', $lesson->is_preview_free)) class="rounded border-white/20">
             Бесплатное превью
         </label>
+        <div class="rounded-xl border border-white/10 bg-white/[0.03] p-4 space-y-3">
+            <p class="text-sm font-medium text-white/90">Скрытие видео по тарифам</p>
+            <label class="flex items-center gap-2 text-sm text-white/80">
+                <input
+                    type="checkbox"
+                    name="hide_video_for_base"
+                    value="1"
+                    @checked(old('hide_video_for_base', $lesson->hide_video_for_base))
+                    class="rounded border-white/20"
+                >
+                Скрыть видео для тарифа «Эконом» (base)
+            </label>
+            <label class="flex items-center gap-2 text-sm text-white/80">
+                <input
+                    type="checkbox"
+                    name="hide_video_for_community"
+                    value="1"
+                    @checked(old('hide_video_for_community', $lesson->hide_video_for_community))
+                    class="rounded border-white/20"
+                >
+                Скрыть видео для тарифа «PROSTO.Yoga» (community)
+            </label>
+            <p class="text-xs text-white/45">Тариф «PROSTO.TOP» (intensive) всегда видит видео.</p>
+        </div>
         @foreach ($errors->all() as $e)
             <p class="text-sm text-red-400">{{ $e }}</p>
         @endforeach

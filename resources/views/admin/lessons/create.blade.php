@@ -73,6 +73,18 @@
                     <input type="checkbox" name="is_preview_free" value="1" @checked(old('is_preview_free')) class="rounded border-white/20">
                     Открыть как бесплатное превью (без оплаты)
                 </label>
+                <div class="space-y-2 rounded-lg border border-white/10 bg-white/[0.03] p-3">
+                    <p class="text-xs font-medium text-white/80">Скрытие видео по тарифам</p>
+                    <label class="flex items-center gap-2 text-sm text-white/75">
+                        <input type="checkbox" name="hide_video_for_base" value="1" @checked(old('hide_video_for_base')) class="rounded border-white/20">
+                        Скрыть для «Эконом» (base)
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-white/75">
+                        <input type="checkbox" name="hide_video_for_community" value="1" @checked(old('hide_video_for_community')) class="rounded border-white/20">
+                        Скрыть для «PROSTO.Yoga» (community)
+                    </label>
+                    <p class="text-xs text-white/40">«PROSTO.TOP» (intensive) не скрываем.</p>
+                </div>
                 <p class="text-xs text-white/35">Техническое: slug и порядок в курсе выставляются автоматически. Подправить текст и длительность можно позже в «Изменить».</p>
             </div>
         </details>

@@ -10,12 +10,15 @@ class Lesson extends Model
         'course_slug', 'order_index', 'slug', 'title', 'subtitle',
         'short_description', 'body', 'duration_minutes', 'calories_estimate',
         'video_url', 'video_path', 'cover_image_path', 'released_at', 'is_preview_free',
+        'hide_video_for_base', 'hide_video_for_community',
     ];
 
     protected function casts(): array
     {
         return [
             'is_preview_free' => 'boolean',
+            'hide_video_for_base' => 'boolean',
+            'hide_video_for_community' => 'boolean',
             'released_at' => 'datetime',
         ];
     }
@@ -69,11 +72,28 @@ class Lesson extends Model
             return $this->hasLessonVideoSource();
         }
 
+        if ($this->isVideoHiddenForUserTariff($user)) {
+            return false;
+        }
+
         if ($this->is_preview_free && $user !== null && $this->userCanOpen($user) && $this->hasLessonVideoSource()) {
             return true;
         }
 
         return $this->isMediaReleased();
+    }
+
+    private function isVideoHiddenForUserTariff(?User $user): bool
+    {
+        if ($user === null) {
+            return false;
+        }
+
+        $purchase = $user->activePurchase();
+        $tariffSlug = $purchase?->tariff?->slug;
+
+        return ($this->hide_video_for_base && $tariffSlug === 'base')
+            || ($this->hide_video_for_community && $tariffSlug === 'community');
     }
 
     /** Обложка урока в кабинете. Без YouTube — только загруженный файл или null (тогда плейсхолдер в шаблоне). */

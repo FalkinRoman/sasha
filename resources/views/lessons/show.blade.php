@@ -115,14 +115,10 @@
             </div>
         @endif
 
-        <div data-pv-reveal class="pv-reveal pv-reveal--fade mt-8 grid gap-4 rounded-2xl border border-[#dcdddb] bg-[#f6f8f1]/50 p-6 sm:grid-cols-3" style="--rv-delay: 0.08s">
+        <div data-pv-reveal class="pv-reveal pv-reveal--fade mt-8 grid gap-4 rounded-2xl border border-[#dcdddb] bg-[#f6f8f1]/50 p-6 sm:grid-cols-2" style="--rv-delay: 0.08s">
             <div>
                 <p class="text-xs font-medium uppercase text-[#7a837a]">Длительность</p>
                 <p class="mt-1 text-lg font-semibold">{{ $lesson->duration_minutes }} мин</p>
-            </div>
-            <div>
-                <p class="text-xs font-medium uppercase text-[#7a837a]">В программе курса</p>
-                <p class="mt-1 text-lg font-semibold">День {{ $lesson->order_index }} из 8</p>
             </div>
             <div>
                 <p class="text-xs font-medium uppercase text-[#7a837a]">Доступ</p>

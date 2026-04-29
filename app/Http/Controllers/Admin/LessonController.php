@@ -51,6 +51,8 @@ class LessonController extends Controller
         $data['body'] = null;
         $data['calories_estimate'] = null;
         $data['is_preview_free'] = $request->boolean('is_preview_free');
+        $data['hide_video_for_base'] = $request->boolean('hide_video_for_base');
+        $data['hide_video_for_community'] = $request->boolean('hide_video_for_community');
 
         if ($request->hasFile('video_file')) {
             $data['video_path'] = $request->file('video_file')->store('lessons', 'public');
@@ -227,6 +229,8 @@ class LessonController extends Controller
 
         $data = $request->validate($rules);
         $data['is_preview_free'] = $request->boolean('is_preview_free');
+        $data['hide_video_for_base'] = $request->boolean('hide_video_for_base');
+        $data['hide_video_for_community'] = $request->boolean('hide_video_for_community');
 
         return $data;
     }
