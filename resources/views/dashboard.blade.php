@@ -124,6 +124,8 @@
                 @php
                     $open = $lesson->userCanOpen($user);
                     $released = $lesson->mediaAvailableForUser($user);
+                    $blockedByTariff = $lesson->isVideoBlockedForUserTariff($user);
+                    $availableTariffsLabel = implode(', ', $lesson->availableTariffLabels());
                     $thumb = $lesson->posterPublicUrl() ?? $lessonThumbFallback;
                     $presale = (bool) ($cabinetPresaleMode ?? false);
                     $preparing = $presale && ! $lesson->is_preview_free;
@@ -136,10 +138,14 @@
                     $showVideoBadge = $open && ($released || ! $presale) && (! $lesson->is_preview_free || $released);
                     $showPreparingBadge = $presale && $open && ! $lesson->is_preview_free && ! $released;
                 @endphp
-                <a
-                    href="{{ $open ? route('lessons.show', $lesson) : route('tariffs.index') }}"
-                    class="group pv-lesson-row {{ $preparing ? 'pv-lesson-row--preparing' : '' }}"
-                >
+                @if ($blockedByTariff)
+                    <div class="group pv-lesson-row cursor-not-allowed border-[#e2d6d6] bg-[#fff8f8]">
+                @else
+                    <a
+                        href="{{ $open ? route('lessons.show', $lesson) : route('tariffs.index') }}"
+                        class="group pv-lesson-row {{ $preparing ? 'pv-lesson-row--preparing' : '' }}"
+                    >
+                @endif
                     <div class="relative aspect-video w-[140px] shrink-0 sm:w-[180px] md:w-[200px]">
                         <div class="absolute inset-0 overflow-hidden rounded-xl ring-1 ring-[#dce2d6]/90">
                             @if ($preparing)
@@ -182,7 +188,9 @@
                                 </span>
                             @endif
                         </div>
-                        @if ($presaleLocked)
+                        @if ($blockedByTariff)
+                            <span class="absolute bottom-1 right-1 z-20 rounded bg-[#7d2f2f]/90 px-2 py-1 text-[10px] font-medium leading-tight text-[#fff5f5]">Нет доступа</span>
+                        @elseif ($presaleLocked)
                             <span class="pv-lesson-soon-badge pv-lesson-soon-badge--default absolute bottom-1 right-1">Скоро</span>
                         @elseif (! $open)
                             <span class="absolute bottom-1 right-1 z-20 rounded bg-[#1a1d1a]/80 px-2 py-1 text-[10px] font-medium leading-tight text-[#f4f6ef]">По тарифу</span>
@@ -196,7 +204,11 @@
                             @if ($lesson->is_preview_free)
                                 <span class="rounded-full bg-[#eaf3dd] px-2 py-0.5 text-[10px] font-medium text-[#2d312d]">Бесплатно</span>
                             @endif
-                            @if ($presaleLocked)
+                            @if ($blockedByTariff)
+                                <span class="rounded-full bg-[#fdecec] px-2 py-0.5 text-[10px] font-medium text-[#8b3838]">
+                                    Доступно: {{ $availableTariffsLabel }}
+                                </span>
+                            @elseif ($presaleLocked)
                                 <span class="pv-lesson-ready-badge pv-lesson-ready-badge--default shrink-0">После старта</span>
                             @elseif (! $open)
                                 <span class="rounded-full bg-[#f0f0f0] px-2 py-0.5 text-[10px] text-[#7a837a]">По подписке</span>
@@ -212,10 +224,17 @@
                             @if ($lesson->subtitle)
                                 <p class="mt-2 text-xs font-medium text-[#869274]">{{ $lesson->subtitle }}</p>
                             @endif
+                            @if ($blockedByTariff)
+                                <p class="mt-2 text-xs font-medium text-[#8b3838]">Переход в урок отключён для вашего тарифа.</p>
+                            @endif
                             <p class="mt-1.5 text-xs text-[#7a837a]">{{ $lesson->duration_minutes }} мин</p>
                         </div>
                     </div>
-                </a>
+                @if ($blockedByTariff)
+                    </div>
+                @else
+                    </a>
+                @endif
             @endforeach
         </div>
     </div>

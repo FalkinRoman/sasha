@@ -19,6 +19,12 @@ class LessonController extends Controller
                 ->with('flash', 'Чтобы смотреть этот урок, выбери тариф.');
         }
 
+        if ($lesson->isVideoBlockedForUserTariff($user)) {
+            return redirect()
+                ->route('dashboard')
+                ->with('flash', 'Этот урок недоступен на вашем тарифе. Проверь доступные тарифы в карточке урока.');
+        }
+
         return view('lessons.show', [
             'lesson' => $lesson,
             'purchase' => $user->activePurchase(),

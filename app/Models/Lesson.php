@@ -72,7 +72,7 @@ class Lesson extends Model
             return $this->hasLessonVideoSource();
         }
 
-        if ($this->isVideoHiddenForUserTariff($user)) {
+        if ($this->isVideoBlockedForUserTariff($user)) {
             return false;
         }
 
@@ -83,7 +83,7 @@ class Lesson extends Model
         return $this->isMediaReleased();
     }
 
-    private function isVideoHiddenForUserTariff(?User $user): bool
+    public function isVideoBlockedForUserTariff(?User $user): bool
     {
         if ($user === null) {
             return false;
@@ -94,6 +94,24 @@ class Lesson extends Model
 
         return ($this->hide_video_for_base && $tariffSlug === 'base')
             || ($this->hide_video_for_community && $tariffSlug === 'community');
+    }
+
+    /** На каких тарифах урок доступен по настройкам скрытия видео. */
+    public function availableTariffLabels(): array
+    {
+        $labels = [];
+
+        if (! $this->hide_video_for_base) {
+            $labels[] = 'Эконом';
+        }
+
+        if (! $this->hide_video_for_community) {
+            $labels[] = 'PROSTO.Yoga';
+        }
+
+        $labels[] = 'PROSTO.TOP';
+
+        return $labels;
     }
 
     /** Обложка урока в кабинете. Без YouTube — только загруженный файл или null (тогда плейсхолдер в шаблоне). */
